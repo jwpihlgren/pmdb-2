@@ -1,0 +1,7 @@
+<ul>
+    @for(button of pageButtons(); track $index) {
+        <li>
+            <button (click)="requestPage(button.page)" [disabled]="button.disabled">{{button.content}}</button>
+        </li>
+    }
+</ul>

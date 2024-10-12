@@ -1,0 +1,12 @@
+@defer(on immediate; when trendingMovies() !== undefined) {
+<ul>
+    @for( movie of trendingMovies(); track $index) {
+    <li><a [routerLink]=[movie.id]> <span>{{movie.title}}</span></a></li>
+    }
+</ul>
+<app-pagination (pageRequest)="paginate($event)" [pagination]=pagination()></app-pagination>
+}
+
+@placeholder(minimum 100ms) {
+    <span>Loading</span>
+}

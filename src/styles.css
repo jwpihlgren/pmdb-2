@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+  --clr-background: #272727;
+  --clr-on-background: #ffffff;
+
+  --duration-short: 200ms;
+  --duration-medium: 400ms;
+  --duration-long: 200ms;
+}
+
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --clr-background: #ffffff;
+    --clr-on-background: #272727;
+  }
+}
+
+@media (prefers-reduced-motion) {
+  :root {
+    --duration-short: 0ms;
+    --duration-medium: 0ms;
+    --duration-long: 0ms;
+  }
+}
+
+html {
+  color: var(--clr-on-background, black);
+  background: var(--clr-background, white);
+}

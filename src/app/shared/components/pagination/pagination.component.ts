@@ -1,0 +1,44 @@
+import { Component, computed, input, InputSignal, OnInit, output, OutputEmitterRef, Signal } from '@angular/core';
+import { Pagination } from '../../models/interfaces/pagination';
+
+@Component({
+    selector: 'app-pagination',
+    standalone: true,
+    imports: [],
+    templateUrl: './pagination.component.html',
+    styleUrl: './pagination.component.css'
+})
+export class PaginationComponent implements  OnInit {
+
+    pagination: InputSignal<Pagination> = input.required<Pagination>()
+    pageRequest: OutputEmitterRef<number> = output<number>()
+    pageButtons!: Signal<PageButton[]> 
+
+    generatePageButtons(pagination: Pagination): PageButton[] {
+        const pageButtons: PageButton[] = []
+        const page: number = pagination.page
+        const maxPage: number = pagination.totalPages - 1
+        pageButtons.push({page: 1, isCurrent: false, disabled: page === 1 , content: `<<`})
+        pageButtons.push({page: page - 1, isCurrent: false, disabled: page < 2, content: `${page - 1}`})
+        pageButtons.push({page: page, isCurrent: true, disabled: true, content: `${page}`})
+        pageButtons.push({page: page + 1, isCurrent: false, disabled: page >= maxPage , content: `${page + 1}`})
+        pageButtons.push({page: maxPage, isCurrent: false, disabled: page === maxPage, content: `>>`})
+        return pageButtons
+    }
+
+    requestPage(page: number): void {
+       this.pageRequest.emit(page)
+    }
+
+    ngOnInit(): void {
+        console.log(this.pagination())
+        this.pageButtons = computed(() => this.generatePageButtons(this.pagination())) 
+    }
+}
+
+interface PageButton {
+    page: number
+    isCurrent: boolean
+    disabled: boolean
+    content: string
+}
