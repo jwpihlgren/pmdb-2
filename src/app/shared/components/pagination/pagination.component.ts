@@ -15,13 +15,16 @@ export class PaginationComponent implements  OnInit {
     pageButtons!: Signal<PageButton[]> 
 
     generatePageButtons(pagination: Pagination): PageButton[] {
+        // The tmdb response property total_page is often 999,
+        // but calling 999 gives 400 response saying 500 is max...
+        const TMDB_MAX_PAGE = 500
         const pageButtons: PageButton[] = []
         const page: number = pagination.page
-        const maxPage: number = pagination.totalPages - 1
+        const maxPage: number = Math.min(pagination.totalPages - 1, TMDB_MAX_PAGE)
         pageButtons.push({page: 1, isCurrent: false, disabled: page === 1 , content: `<<`})
-        pageButtons.push({page: page - 1, isCurrent: false, disabled: page < 2, content: `${page - 1}`})
+        if(page >= 2) pageButtons.push({page: page - 1, isCurrent: false, disabled: page < 2, content: `${page - 1}`})
         pageButtons.push({page: page, isCurrent: true, disabled: true, content: `${page}`})
-        pageButtons.push({page: page + 1, isCurrent: false, disabled: page >= maxPage , content: `${page + 1}`})
+        if(page < maxPage) pageButtons.push({page: page + 1, isCurrent: false, disabled: page >= maxPage , content: `${page + 1}`})
         pageButtons.push({page: maxPage, isCurrent: false, disabled: page === maxPage, content: `>>`})
         return pageButtons
     }
