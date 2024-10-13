@@ -14,10 +14,12 @@ import { DetailedMovie } from '../../shared/models/interfaces/detailed-movie';
     styleUrl: './detailed-movie.component.css'
 })
 export class DetailedMovieComponent {
+
+    movieDetails: Signal<DetailedMovie | undefined>
+
     constructor(private detailedMovie: MovieDetailService, activatedRoute: ActivatedRoute) {
         const id = activatedRoute.snapshot.paramMap.get("id")!
         this.movieDetails = toSignal(this.detailedMovie.get(id))
     }
 
-    movieDetails: Signal<DetailedMovie | undefined>
 }
