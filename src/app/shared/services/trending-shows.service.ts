@@ -31,8 +31,9 @@ export class TrendingShowsService {
     get(page: number = 1, timeWindow?: TmdbTimeWindow): Observable<TrendingShow[]> {
         if (timeWindow) {
             this.callerTimeWindow = timeWindow
-            this.pageSubject$.next(page)
         }
+
+        this.pageSubject$.next(page)
         return this.trendingShows$
     }
 

@@ -1,1 +1,5 @@
-<p>detailed-show works!</p>
+@defer(when detailedShow() !== undefined) {
+    <span>{{detailedShow()!.name}}</span>
+}@placeholder {
+ <span>Loading</span>
+}

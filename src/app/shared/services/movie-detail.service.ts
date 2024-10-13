@@ -12,20 +12,22 @@ import { TmdbDetailedMovie } from '../models/classes/tmdb-detailed-movie';
 export class MovieDetailService {
 
     api = environment.tmdbApiUrl
-    apikey = environment.tmdbApiKey
+    apiKey = environment.tmdbApiKey
 
     constructor(private http: HttpClient) { }
 
     get(id: string): Observable<DetailedMovie> {
-        const endpoint = "movie/"
-        const queryParams = `?api_key=${this.apikey}`
-        const url = `${this.api}${endpoint}${id}${queryParams}`
+        return this.request(id)
+    }
+
+    private request(id: string): Observable<DetailedMovie> {
+        const endpoint = `movie/${id}` 
+        const queryParams = `?api_key=${this.apiKey}`
+        const url = `${this.api}${endpoint}${queryParams}`
         const options = {}
 
         return this.http.get<TmdbMovieDetails>(url, options).pipe(
-            map(data => {
-                return new TmdbDetailedMovie(data)
-            })
+            map(data => new TmdbDetailedMovie(data))
         )
     }
 }
