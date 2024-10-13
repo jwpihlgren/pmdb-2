@@ -24,7 +24,7 @@ export class ShowsComponent {
         private router: Router) {
         const page = this.activatedRoute.snapshot.queryParamMap.get("page")
         if (!page) this.trendingShows = toSignal(this.trendingShowsService.get())
-        else this.trendingShows = toSignal(this.trendingShowsService.get())
+        else this.trendingShows = toSignal(this.trendingShowsService.get(+page))
         this.paginationResults = toSignal(this.trendingShowsService.getPaginationResults(), { requireSync: true })
     }
 
