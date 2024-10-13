@@ -32,7 +32,6 @@ export class PaginationComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.pagination())
         this.pageButtons = computed(() => this.generatePageButtons(this.pagination()))
     }
 }
