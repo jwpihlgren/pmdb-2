@@ -16,7 +16,7 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
 export class MoviesComponent {
 
     trendingMovies: Signal<TrendingMovie[] | undefined>
-    pagination: Signal<Pagination>
+    paginationResult: Signal<Pagination>
 
     constructor(
         private trendingMoviesService: TrendingMoviesService,
@@ -24,10 +24,8 @@ export class MoviesComponent {
         private router: Router) {
         const page = this.activatedRoute.snapshot.queryParamMap.get("page")
         if (!page) this.trendingMovies = toSignal(this.trendingMoviesService.get())
-        else {
-            this.trendingMovies = toSignal(this.trendingMoviesService.get(+page))
-        }
-        this.pagination = toSignal(this.trendingMoviesService.getPaginationResults(), { requireSync: true })
+        else this.trendingMovies = toSignal(this.trendingMoviesService.get(+page))
+        this.paginationResult = toSignal(this.trendingMoviesService.getPaginationResults(), { requireSync: true })
     }
 
     paginate(page: number): void {

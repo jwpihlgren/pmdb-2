@@ -4,7 +4,7 @@
     <li><a [routerLink]=[movie.id]> <span>{{movie.title}}</span></a></li>
     }
 </ul>
-<app-pagination (pageRequest)="paginate($event)" [pagination]=pagination()></app-pagination>
+<app-pagination (pageRequest)="paginate($event)" [pagination]=paginationResult()></app-pagination>
 }
 
 @placeholder(minimum 100ms) {
