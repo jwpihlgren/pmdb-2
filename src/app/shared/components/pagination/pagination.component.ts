@@ -1,5 +1,6 @@
 import { Component, computed, input, InputSignal, OnInit, output, OutputEmitterRef, Signal } from '@angular/core';
 import { Pagination } from '../../models/interfaces/pagination';
+import { PageButton } from '../../models/interfaces/page-button';
 
 @Component({
     selector: 'app-pagination',
@@ -36,9 +37,3 @@ export class PaginationComponent implements OnInit {
     }
 }
 
-interface PageButton {
-    page: number
-    isCurrent: boolean
-    disabled: boolean
-    content: string
-}
