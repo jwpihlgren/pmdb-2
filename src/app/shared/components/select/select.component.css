@@ -1,0 +1,29 @@
+.input-like {
+    min-height: 2rem;
+    background: var(--clr-backgrund, #ffffff);
+    border: 2px solid var(--clr-outline, blue);
+    border-radius: var(--radii-md, 5px);
+}
+
+ul.chip-list {
+    display: flex;
+    gap: var(--spacing-md, 0.5rem);
+    flex-wrap: wrap;
+    max-width: 200px;
+}
+
+li.chip {
+    list-style: none;
+    display: flex;
+    gap: var(--spacing-sm, 0.25rem);
+    padding: var(--spacing-sm, 0.25rem);
+    background: var(--clr-primary, red);
+    min-height: 8px;
+    border-radius: var(--shape-pill, 9999px)
+}
+
+button.chip-close {
+    background: yellow;
+    border: none;
+    border-radius: var(--shape-circle, 9999px)
+}

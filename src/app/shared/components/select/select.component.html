@@ -1,0 +1,19 @@
+<div class="input-like">
+    <ul class="chip-list">
+        <li class="chip">
+            <span class="chip-text">comedy</span>
+            <button class="chip-close">x</button>
+        </li>
+       <li class="chip">
+            <span class="chip-text">comedy</span>
+            <button class="chip-close">x</button>
+        </li>
+
+    </ul>
+</div>
+
+<select name="genre" id="genre-select" [size]=options.length multiple>
+    @for(option of options; track $index) {
+    <option value="option.value">{{option.name}}</option>
+    }
+</select>
