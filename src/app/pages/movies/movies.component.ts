@@ -5,11 +5,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Pagination } from '../../shared/models/interfaces/pagination';
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
+import { CardMovieComponent } from '../../shared/components/card-movie/card-movie.component';
 
 @Component({
     selector: 'app-movies',
     standalone: true,
-    imports: [RouterLink, PaginationComponent],
+    imports: [RouterLink, PaginationComponent, CardMovieComponent],
     templateUrl: './movies.component.html',
     styleUrl: './movies.component.css'
 })

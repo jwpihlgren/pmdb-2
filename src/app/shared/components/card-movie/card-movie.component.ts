@@ -1,21 +1,24 @@
-import { Component, input, InputSignal} from '@angular/core';
-import { TrendingMovie } from '../../models/interfaces/trending-movie';
+import { Component, inject, input, InputSignal } from '@angular/core';
+import { ImageService } from '../../services/image.service';
 
 @Component({
-  selector: 'app-card-movie',
-  standalone: true,
-  imports: [],
-  templateUrl: './card-movie.component.html',
-  styleUrl: './card-movie.component.css'
+    selector: 'app-card-movie',
+    standalone: true,
+    imports: [],
+    templateUrl: './card-movie.component.html',
+    styleUrl: './card-movie.component.css'
 })
 export class CardMovieComponent {
 
-    readonly params: InputSignal<TrendingMovie | undefined> = input()
-    
+    readonly params: InputSignal<CardMovieParams> = input.required()
+
+    constructor() {}
 
 }
 
 
 interface CardMovieParams {
-
+    src: string
+    title: string
+    overview: string
 }
