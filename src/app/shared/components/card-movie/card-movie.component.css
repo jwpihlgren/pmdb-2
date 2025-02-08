@@ -7,3 +7,12 @@ a {
     aspect-ratio: 3/4;
     position: relative;
 }
+
+.overview {
+    height: 4lh;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

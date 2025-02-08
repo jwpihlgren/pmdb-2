@@ -42,11 +42,9 @@ export class ImageService {
         }
 
         let closestSize: string | undefined = querySizes.find((querySize: string) => {
-            console.log(querySize, size)
             return +querySize.replace("w", "") > size
         })
         if (!closestSize) closestSize = querySizes[querySizes.length - 1]
-        console.log(querySizes, size)
         return `${this.imageUrl}${closestSize}${image}`
     }
 

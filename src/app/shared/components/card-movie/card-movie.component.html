@@ -1,4 +1,4 @@
-<a [routerLink]="['movie', params().id]">
+<a [routerLink]="[params().id]">
     <div class="img-container">
         <img [ngSrc]="params().posterImagePath" fill placeholder [loaderParams]="{type: 'poster'}">
     </div>
@@ -7,5 +7,5 @@
     <span>{{params().popularity}}</span>
     <span>{{params().releaseDate}}</span>
     <span>{{params().orignalLanguage}}</span>
-    <p>{{params().overview}} | truncate: maxCharacters</p>
+    <p class="overview">{{params().overview}}</p>
 </a>
