@@ -1,13 +1,12 @@
 import { Component, input, InputSignal } from '@angular/core';
 import { TrendingMovie } from '../../models/interfaces/trending-movie';
 import { RouterLink } from '@angular/router';
-import { NgOptimizedImage } from '@angular/common';
-import { TruncatePipe } from '../../pipes/truncate.pipe';
+import { ImageComponent } from '../image/image.component';
 
 @Component({
     selector: 'app-card-movie',
     standalone: true,
-    imports: [RouterLink, NgOptimizedImage, TruncatePipe],
+    imports: [RouterLink, ImageComponent],
     templateUrl: './card-movie.component.html',
     styleUrl: './card-movie.component.css',
 })

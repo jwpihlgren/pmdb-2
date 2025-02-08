@@ -1,12 +1,14 @@
-@defer(on immediate; when trendingMovies() !== undefined) {
-<ul>
-    @for( movie of trendingMovies(); track $index) {
-    <app-card-movie [params]="movie"></app-card-movie>
+<section>
+    @defer(on immediate; when trendingMovies() !== undefined) {
+    <ul>
+        @for( movie of trendingMovies(); track $index) {
+        <app-card-movie [params]="movie"></app-card-movie>
+        }
+    </ul>
+    <app-pagination (pageRequest)="paginate($event)" [pagination]=paginationResult()></app-pagination>
     }
-</ul>
-<app-pagination (pageRequest)="paginate($event)" [pagination]=paginationResult()></app-pagination>
-}
 
-@placeholder(minimum 100ms) {
+    @placeholder(minimum 100ms) {
     <span>Loading</span>
-}
+    }
+</section>

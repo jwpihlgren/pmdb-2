@@ -1,32 +1,98 @@
 /* You can add global styles to this file, and also import other style files */
-:root {
-  --clr-background: #272727;
-  --clr-on-background: #ffffff;
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-  --duration-short: 200ms;
-  --duration-medium: 400ms;
-  --duration-long: 200ms;
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --clr-background: #101A21;
+    --clr-on-background: #ffffff;
+
+    --clr-surface-elevation-1: #172630;
+    --clr-surface-elevation-2: #1E3240;
+    --clr-surface-elevation-3: #253E50;
+    --clr-surface-elevation-4: #2C4A60;
+    --clr-surface-elevation-5: #335570;
+    --clr-on-surface: #ffffff;
+    --clr-on-surface-accent: #D26A42;
+
+    --duration-short: 200ms;
+    --duration-medium: 400ms;
+    --duration-long: 200ms;
+
+
+    --fs-display-large: 5rem;
+    --fs-display-medium: 4rem;
+    --fs-display-small: 3rem;
+
+    --fs-headline-large: 2.5rem;
+    --fs-headline-medium: 2.0rem;
+    --fs-headline-small: 1rem;
+
+    --fs-body-large: 1.20rem;
+    --fs-body-medium: 1.0rem;
+    --fs-body-small: 0.80rem;
+
+    --heading-line-height-multiplier: 1.2;
+    --body-line-height-multiplier: 1.5;
+
+
+    --ff-heading: "Inter", serif;
+    --ff-body: "Inter", serif;
+
 }
 
 
 @media (prefers-color-scheme: light) {
-  :root {
-    --clr-background: #ffffff;
-    --clr-on-background: #272727;
-  }
+    :root {
+        --clr-background: #CAD5DD;
+        --clr-on-background: #101A21;
+
+        --clr-surface-elevation-1: #AFC2D0;
+        --clr-surface-elevation-2: #94AEBF;
+        --clr-surface-elevation-3: #799AAD;
+        --clr-surface-elevation-4: #5F859B;
+        --clr-surface-elevation-5: #466F88;
+
+        --clr-on-surface: #101A21;
+        --clr-on-surface-accent: #D26A42;
+    }
 }
 
 @media (prefers-reduced-motion) {
-  :root {
-    --duration-short: 0ms;
-    --duration-medium: 0ms;
-    --duration-long: 0ms;
-  }
+    :root {
+        --duration-short: 0ms;
+        --duration-medium: 0ms;
+        --duration-long: 0ms;
+    }
 }
 
 html {
-  color: var(--clr-on-background, black);
-  background: var(--clr-background, white);
+    color: var(--clr-on-background, black);
+    background: var(--clr-background, white);
+    font-family: var(--ff-body);
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-size: var(--fs-body-medium);
+    line-height: calc(var(--fs-body-medium) * var(--body-line-height-multiplier));
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--ff-heading);
+}
+
+h5 {
+    font-family: var(--ff-body);
+    font-size: var(--fs-headline-small);
+    font-weight: 600;
+    line-height: calc(var(--fs-headline-small) * var(--heading-line-height-multiplier));
+    letter-spacing: 0.25px;
+    text-transform: capitalize
 }
 
 img {

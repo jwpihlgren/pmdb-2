@@ -1,11 +1,10 @@
 <a [routerLink]="[params().id]">
-    <div class="img-container">
-        <img [ngSrc]="params().posterImagePath" fill placeholder [loaderParams]="{type: 'poster'}">
+    <app-image [params]="{src: params().posterImagePath, type: 'poster'}"></app-image>
+    <div class="content">
+        <h5 class="content--h5">{{params().title}}</h5>
+        <span>{{params().orignalLanguage}}</span>
+        <span>{{params().popularity}}</span>
+        <span>{{params().releaseDate}}</span>
+        <p class="content--overview">{{params().overview}}</p>
     </div>
-    <h5>{{params().title}}</h5>
-    <span>{{params().orignalLanguage}}</span>
-    <span>{{params().popularity}}</span>
-    <span>{{params().releaseDate}}</span>
-    <span>{{params().orignalLanguage}}</span>
-    <p class="overview">{{params().overview}}</p>
 </a>
