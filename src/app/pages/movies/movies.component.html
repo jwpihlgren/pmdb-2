@@ -1,7 +1,6 @@
 @defer(on immediate; when trendingMovies() !== undefined) {
 <ul>
     @for( movie of trendingMovies(); track $index) {
-    <li><a [routerLink]=[movie.id]> <span>{{movie.title}}</span></a></li>
     <app-card-movie [params]="movie"></app-card-movie>
     }
 </ul>

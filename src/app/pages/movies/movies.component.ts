@@ -1,4 +1,4 @@
-import { Component, Signal } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { TrendingMoviesService } from '../../shared/services/trending-movies.service';
 import { TrendingMovie } from '../../shared/models/interfaces/trending-movie';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -18,11 +18,12 @@ export class MoviesComponent {
 
     trendingMovies: Signal<TrendingMovie[] | undefined>
     paginationResult: Signal<Pagination>
+    protected trendingMoviesService: TrendingMoviesService = inject(TrendingMoviesService)
+    protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
+    protected router: Router = inject(Router)
 
-    constructor(
-        private trendingMoviesService: TrendingMoviesService,
-        private activatedRoute: ActivatedRoute,
-        private router: Router) {
+    constructor() {
+        console.log(this.activatedRoute)
         const page = this.activatedRoute.snapshot.queryParamMap.get("page")
         if (!page) this.trendingMovies = toSignal(this.trendingMoviesService.get())
         else this.trendingMovies = toSignal(this.trendingMoviesService.get(+page))

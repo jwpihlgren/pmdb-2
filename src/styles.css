@@ -28,3 +28,9 @@ html {
   color: var(--clr-on-background, black);
   background: var(--clr-background, white);
 }
+
+img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}

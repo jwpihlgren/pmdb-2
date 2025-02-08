@@ -1,6 +1,11 @@
-<img [src]="params().src">
-<h5>{{params().title}}</h5>
-<p>{{params().overview}} | truncate: maxCharacters</p>
-
-
-
+<a [routerLink]="['movie', params().id]">
+    <div class="img-container">
+        <img [ngSrc]="params().posterImagePath" fill placeholder [loaderParams]="{type: 'poster'}">
+    </div>
+    <h5>{{params().title}}</h5>
+    <span>{{params().orignalLanguage}}</span>
+    <span>{{params().popularity}}</span>
+    <span>{{params().releaseDate}}</span>
+    <span>{{params().orignalLanguage}}</span>
+    <p>{{params().overview}} | truncate: maxCharacters</p>
+</a>

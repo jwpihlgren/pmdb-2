@@ -18,7 +18,7 @@ export class TmdbTrendingMovie implements TrendingMovie {
     voteAverage: number
     voteCount: number
 
-    constructor(data: TmdbTrendingMovies["results"][0]) {
+constructor(data: TmdbTrendingMovies["results"][0]) {
         this.adult = data.adult 
         this.backdropImagePath = data.backdrop_path
         this.id = data.id
@@ -35,6 +35,4 @@ export class TmdbTrendingMovie implements TrendingMovie {
         this.voteAverage = data.vote_average
         this.voteCount = data.vote_count
     }
-
-
 }
