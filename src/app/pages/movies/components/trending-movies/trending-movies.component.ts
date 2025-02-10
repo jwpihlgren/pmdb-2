@@ -6,11 +6,12 @@ import { Pagination } from '../../../../shared/models/interfaces/pagination';
 import { TrendingMoviesService } from '../../../../shared/services/trending-movies.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { CardMovieComponent } from '../../../../shared/components/card-movie/card-movie.component';
+import { CardComponent } from '../../../../shared/components/card/card.component';
+import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
 
 @Component({
     selector: 'app-trending-movies',
-    imports: [CardGridComponent, PaginationComponent, CardMovieComponent],
+    imports: [CardGridComponent, PaginationComponent, CardComponent, ContentMovieComponent],
     templateUrl: './trending-movies.component.html',
     styleUrl: './trending-movies.component.css',
     standalone: true

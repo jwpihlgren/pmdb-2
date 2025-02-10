@@ -1,1 +1,15 @@
-<p>popular-movies works!</p>
+
+@defer(on immediate; when popoularMovies() !== undefined) {
+<app-card-grid>
+    @for( movie of popoularMovies(); track $index) {
+    <app-card [params]="{id: movie.id, src: movie.posterImagePath}">
+        <app-content-movie [params]="movie"></app-content-movie>
+    </app-card>
+    }
+</app-card-grid>
+<app-pagination (pageRequest)="paginate($event)" [pagination]=paginationResult()></app-pagination>
+}
+
+@placeholder(minimum 100ms) {
+<span>Loading</span>
+}

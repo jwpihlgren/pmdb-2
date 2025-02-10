@@ -6,7 +6,7 @@ export class TmdbTrendingMovie implements TrendingMovie {
     backdropImagePath: string
     id: number
     title: string
-    orignalLanguage: string
+    originalLanguage: string
     originalTitle: string
     overview: string
     posterImagePath: string
@@ -23,7 +23,7 @@ constructor(data: TmdbTrendingMovies["results"][0]) {
         this.backdropImagePath = data.backdrop_path
         this.id = data.id
         this.title = data.title
-        this.orignalLanguage = data.original_language
+        this.originalLanguage = data.original_language
         this.originalTitle = data.original_title
         this.overview = data.overview
         this.posterImagePath = data.poster_path
