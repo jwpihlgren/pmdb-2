@@ -13,5 +13,6 @@ export class HeaderComponent {
       {name: "Home", href: ""},
       {name: "Movies", href: "movies"},
       {name: "Shows", href: "shows"},
+      {name: "test", href: "test"},
   ]
 }

@@ -1,0 +1,12 @@
+@defer(on immediate; when trendingMovies() !== undefined) {
+<app-card-grid>
+    @for( movie of trendingMovies(); track $index) {
+    <app-card-movie [params]="movie"></app-card-movie>
+    }
+</app-card-grid>
+<app-pagination (pageRequest)="paginate($event)" [pagination]=paginationResult()></app-pagination>
+}
+
+@placeholder(minimum 100ms) {
+<span>Loading</span>
+}

@@ -1,0 +1,8 @@
+:host {
+    --card-min-width: 300px;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--card-min-width, 300px), 1fr));
+    gap: var(--spacing-xl, 1.5rem);
+}
+

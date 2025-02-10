@@ -1,14 +1,9 @@
 <section>
-    @defer(on immediate; when trendingMovies() !== undefined) {
-    <ul>
-        @for( movie of trendingMovies(); track $index) {
-        <app-card-movie [params]="movie"></app-card-movie>
-        }
-    </ul>
-    <app-pagination (pageRequest)="paginate($event)" [pagination]=paginationResult()></app-pagination>
-    }
-
-    @placeholder(minimum 100ms) {
-    <span>Loading</span>
-    }
+    <nav>
+        <ul>@for(tab of tabs; track $index){
+            <li><a [routerLink]="[tab.href]">{{tab.name}}</a></li>
+            }
+        </ul>
+    </nav>
+    <router-outlet></router-outlet>
 </section>

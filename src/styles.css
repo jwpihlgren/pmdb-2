@@ -7,16 +7,47 @@
 }
 
 :root {
-    --clr-background: #101A21;
-    --clr-on-background: #ffffff;
+    --clr-rust-100: #FDC3A5;
+    --clr-rust-90: #F7B393;
+    --clr-rust-80: #F1A481;
+    --clr-rust-70: #EC9570;
+    --clr-rust-60: #E6875F;
+    --clr-rust-50: #E07850;
+    --clr-rust-40: #D26A42;
+    /* Base Rusty Orange ok on backgroun */
+    --clr-rust-30: #C25F3B;
+    --clr-rust-20: #B25535;
+    --clr-rust-10: #A24B30;
+    --clr-rust-0: #922A21;
 
-    --clr-surface-elevation-1: #172630;
-    --clr-surface-elevation-2: #1E3240;
-    --clr-surface-elevation-3: #253E50;
-    --clr-surface-elevation-4: #2C4A60;
-    --clr-surface-elevation-5: #335570;
-    --clr-on-surface: #ffffff;
-    --clr-on-surface-accent: #D26A42;
+    --clr-petroleum-100: #101A21;
+    --clr-petroleum-95: #19232A;
+    --clr-petroleum-90: #222D34;
+    --clr-petroleum-80: #2C373E;
+    --clr-petroleum-70: #364148;
+    --clr-petroleum-60: #404B52;
+    --clr-petroleum-30: #CAD5DD;
+    --clr-petroleum-20: #D1D9E0;
+    --clr-petroleum-10: #D8DEE3;
+    --clr-petroleum-5: #E6E6E9;
+    --clr-petroleum-2: #F2EDEE;
+    --clr-petroleum-0: #FFFFFF;
+
+    --clr-primary: var(--clr-petroleum-100);
+    --clr-on-primary: var(--clr-petroleum-0);
+    --clr-accent: var(--clr-rust-40);
+    --clr-on-accent: var(--clr-petroleum-100);
+
+    --clr-background: var(--clr-primary);
+    --clr-on-background: var(--clr-on-primary);
+
+    --clr-surface-elevation-1: var(--clr-petroleum-95);
+    --clr-surface-elevation-2: var(--clr-petroleum-90);
+    --clr-surface-elevation-3: var(--clr-petroleum-80);
+    --clr-surface-elevation-4: var(--clr-petroleum-70);
+    --clr-surface-elevation-5: var(--clr-petroleum-60);
+    --clr-on-surface: var(--clr-petroleum-0);
+    --clr-on-surface-accent: var(--clr-accent);
 
     --duration-short: 200ms;
     --duration-medium: 400ms;
