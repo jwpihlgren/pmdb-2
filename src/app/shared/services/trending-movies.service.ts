@@ -44,7 +44,7 @@ export class TrendingMoviesService {
         return this.paginationResults$.asObservable()
     }
 
-    private request(page: number = 1, timeWindow: TmdbTimeWindow = "day"): Observable<TrendingMovie[]> {
+   private request(page: number = 1, timeWindow: TmdbTimeWindow = "day"): Observable<TrendingMovie[]> {
         const endpoint = `trending/movie/${timeWindow}`
         const queryParams = `?api_key=${this.apikey}&page=${page}`
         const url = `${this.api}${endpoint}${queryParams}`

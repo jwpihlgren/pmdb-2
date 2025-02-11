@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { DiscoverMoviesService } from '../../../../shared/services/discover-movies.service';
 
 @Component({
   selector: 'app-search-movies',
@@ -7,5 +8,11 @@ import { Component } from '@angular/core';
   styleUrl: './search-movies.component.css'
 })
 export class SearchMoviesComponent {
+    protected discoverService: DiscoverMoviesService = inject(DiscoverMoviesService)
 
+
+    constructor() {
+        this.discoverService.discover()
+        const res = this.discoverService.request().subscribe()
+    }
 }
