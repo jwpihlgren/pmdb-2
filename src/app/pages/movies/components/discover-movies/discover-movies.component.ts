@@ -2,14 +2,13 @@ import { Component, inject } from '@angular/core';
 import { DiscoverMoviesService } from '../../../../shared/services/discover-movies.service';
 
 @Component({
-  selector: 'app-search-movies',
+  selector: 'app-discover-movies',
   imports: [],
-  templateUrl: './search-movies.component.html',
-  styleUrl: './search-movies.component.css'
+  templateUrl: './discover-movies.component.html',
+  styleUrl: './discover-movies.component.css'
 })
-export class SearchMoviesComponent {
+export class DiscoverMoviesComponent {
     protected discoverService: DiscoverMoviesService = inject(DiscoverMoviesService)
-
 
     constructor() {
         this.discoverService.discover()

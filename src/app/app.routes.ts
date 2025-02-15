@@ -7,7 +7,7 @@ import { DetailedShowComponent } from './pages/detailed-show/detailed-show.compo
 import { ColorComponent } from './shared/components/color/color.component';
 import { TrendingMoviesComponent } from './pages/movies/components/trending-movies/trending-movies.component';
 import { PopularMoviesComponent } from './pages/movies/components/popular-movies/popular-movies.component';
-import { SearchMoviesComponent } from './pages/movies/components/search-movies/search-movies.component';
+import { DiscoverMoviesComponent } from './pages/movies/components/discover-movies/discover-movies.component';
 
 export const routes: Routes = [
     { path: "", pathMatch: "full", component: HomeComponent },
@@ -15,7 +15,7 @@ export const routes: Routes = [
         {path: "", redirectTo:"trending", pathMatch:"full"},
         {path: "trending", component: TrendingMoviesComponent},
         {path: "popular", component: PopularMoviesComponent},
-        {path: "search", component: SearchMoviesComponent},
+        {path: "discover", component: DiscoverMoviesComponent},
     ] },
     { path: "shows", pathMatch: "full", component: ShowsComponent },
     { path: "movies/:id", component: DetailedMovieComponent },

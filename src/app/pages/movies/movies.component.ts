@@ -14,6 +14,6 @@ export class MoviesComponent {
     tabs = [
         { name: "trending", href: "trending" },
         { name: "popular", href: "popular" },
-        { name: "search", href: "search" },
+        { name: "discover", href: "discover" },
     ]
 }
