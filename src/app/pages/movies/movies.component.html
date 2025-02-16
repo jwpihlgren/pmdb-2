@@ -1,9 +1,11 @@
 <app-hero-search (search)="search($event)"></app-hero-search>
+@defer(on immediate; when searchResults() !== undefined) {
 <ul>
     @for(result of searchResults().results; track $index) {
     <li>{{result.id}}</li>
     }
 </ul>
+}
 <section>
     <nav>
         <ul>@for(tab of tabs; track $index){

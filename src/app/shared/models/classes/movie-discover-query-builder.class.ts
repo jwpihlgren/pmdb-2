@@ -40,25 +40,24 @@ export default class MovieDiscoverQueryBuilder extends QueryBuilder<MovieDiscove
         return `${value}`
     })
 
-    releaseDateLte = this.paramFactory<Date>(this, "release_date.lte", (value: Date) => {
-        const valueYear = value.getFullYear()
-
+    releaseDateLte = this.paramFactory<[number, number, number]>(this, "release_date.lte", (value: [number, number, number]) => {
+        const [year, month, day] = value
         const minYear = 1900
         const maxYear = new Date().getFullYear()
 
-        if (valueYear < minYear || valueYear > maxYear) return ""
-        return `${valueYear}-${(value.getMonth()).toString().padStart(2, "0")}-${(value.getDay()).toString().padStart(2, "0")}`
+        if (year < minYear || year > maxYear) return ""
+        return `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`
 
     })
 
-    releaseDateGte = this.paramFactory<Date>(this, "release_date.gte", (value: Date) => {
-        const valueYear = value.getFullYear()
+    releaseDateGte = this.paramFactory<[number, number, number]>(this, "release_date.gte", (value: [number, number, number]) => {
+        const [year,month,day] = value
 
         const minYear = 1900
         const maxYear = new Date().getFullYear()
 
-        if (valueYear < minYear || valueYear > maxYear) return ""
-        return `${valueYear}-${(value.getMonth()).toString().padStart(2, "0")}-${(value.getDay()).toString().padStart(2, "0")}`
+        if (year < minYear || year > maxYear) return ""
+        return `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`
     })
 }
 

@@ -21,6 +21,7 @@ export class DiscoverMoviesComponent {
     protected discoverService: DiscoverMoviesService = inject(DiscoverMoviesService)
     protected configService: ConfigService = inject(ConfigService)
     genres!: Genre[]
+    years!: number[]
     results = toSignal(this.discoverService.results$)
     discoverForm = this.formBuilder.group({
         voteAverage: this.formBuilder.group({
@@ -43,12 +44,25 @@ export class DiscoverMoviesComponent {
 
     constructor() {
         this.genres = this.configService.movieGenres
+        this.years = this.generateYears()
     }
 
       onSubmit(): void {
         console.log(this.discoverForm.value)
         this.discoverService.discover(this.discoverForm.value as MovieDiscoverFormValue)
+    }
 
+    generateYears(): number[] {
+        const minYear = 1900
+        const maxYear = (new Date()).getFullYear()
+
+        const years: number[] = []
+
+        for(let i = maxYear; i >= minYear; i--) {
+            years.push(i)
+        }
+
+        return years
     }
 
 }

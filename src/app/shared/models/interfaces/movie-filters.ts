@@ -5,8 +5,8 @@ export default interface MovieFilters {
     withGenres(value: string[]): MovieFilters
     voteAverageLte(value: number): MovieFilters
     voteAverageGte(value: number): MovieFilters
-    releaseDateLte(value: Date): MovieFilters
-    releaseDateGte(value: Date): MovieFilters
+    releaseDateLte(value: [number, number, number]): MovieFilters
+    releaseDateGte(value: [number, number, number]): MovieFilters
 }
 
 

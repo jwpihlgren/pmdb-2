@@ -11,24 +11,39 @@
 
     <fieldset formGroupName="voteAverage">
         <legend>Vote average</legend>
-        <label for="vote-average-lte">
+        <label for="vote-average-gte">
             At least
-            <input id="vote-average-lte" type="number" min="0" max="10" formControlName="lte">
+            <input id="vote-average-gte" type="number" min="0" max="10" formControlName="gte">
         </label>
         <label for="vote-average-lte">
             At most
-            <input id="vote-average-lte" type="number" min="0" max="10" formControlName="gte">
+            <input id="vote-average-lte" type="number" min="0" max="10" formControlName="lte">
         </label>
     </fieldset>
     <fieldset formGroupName="releaseDate">
         <legend>Release date</legend>
-        <label for="release-date-lte">
-            At least
-            <input id="release-date-lte" type="date" min="1900-01-01" formControlName="lte">
-        </label>
         <label for="release-date-gte">
+            At least
+            <select id="release-date-gte" formControlName="gte">
+                <optgroup>
+                    <option [value]=""></option>
+                    @for(year of years; track $index) {
+                    <option [value]="year">{{year}}</option>
+                    }
+                </optgroup>
+            </select>
+        </label>
+        <label for="release-date-lte">
             At most
-            <input id="release-date-gte" type="date" min="1900-01-01" formControlName="gte">
+            <select id="release-date-lte" formControlName="lte">
+                <optgroup>
+                    <option [value]=""></option>
+                    @for(year of years; track $index) {
+                    <option [value]="year">{{year}}</option>
+                    }
+                </optgroup>
+            </select>
+
         </label>
     </fieldset>
 
