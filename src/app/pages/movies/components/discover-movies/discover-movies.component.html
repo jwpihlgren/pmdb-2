@@ -1,9 +1,47 @@
-<form class="search">
-    <label class="search--label" for="search">
-        <h5>Search</h5>
-    </label>
-    <div class="search-input">
-        <input class="search-input--input" id="search" type="search" placeholder="search">
-        <button class="search-input--clear">X</button>
-    </div>
+<form (ngSubmit)="onSubmit()" [formGroup]="discoverForm">
+    <fieldset formGroupName="genres">
+        <legend>Genres</legend>
+        @for(genre of genres; track genre.id) {
+        <label>
+            {{genre.name}}
+        </label>
+        <input [id]="genre.id" type="checkbox" [formControlName]="genre.id">
+        }
+    </fieldset>
+
+    <fieldset formGroupName="voteAverage">
+        <legend>Vote average</legend>
+        <label for="vote-average-lte">
+            At least
+            <input id="vote-average-lte" type="number" min="0" max="10" formControlName="lte">
+        </label>
+        <label for="vote-average-lte">
+            At most
+            <input id="vote-average-lte" type="number" min="0" max="10" formControlName="gte">
+        </label>
+    </fieldset>
+    <fieldset formGroupName="releaseDate">
+        <legend>Release date</legend>
+        <label for="release-date-lte">
+            At least
+            <input id="release-date-lte" type="date" min="1900-01-01" formControlName="lte">
+        </label>
+        <label for="release-date-gte">
+            At most
+            <input id="release-date-gte" type="date" min="1900-01-01" formControlName="gte">
+        </label>
+    </fieldset>
+
+    <fieldset formGroupName="include">
+        <legend>Include</legend>
+        <label for="include-adult">
+            Adult
+            <input id="include-adult" type="checkbox" formControlName="adult">
+        </label>
+        <label for="include-video">
+            Video
+            <input id="include-video" type="checkbox" formControlName="video">
+        </label>
+    </fieldset>
+    <button>Discover</button>
 </form>

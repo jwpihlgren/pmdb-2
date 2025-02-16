@@ -1,8 +1,13 @@
 abstract class QueryBuilder<Q> {
     private query: string[] = []
+
     getQuery(): string {
         return `?${this.query.join("&")}`
     }
+
+    apiKey = this.paramFactory(this as any, "api_key", (value: string) => {
+        return `${value}`
+    })
 
     protected dropParam(index: number): void {
         this.query.splice(index)

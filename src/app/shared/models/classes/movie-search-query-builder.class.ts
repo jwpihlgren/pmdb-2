@@ -1,4 +1,9 @@
+import { Injectable } from "@angular/core"
 import QueryBuilder from "./query-builder.class"
+
+@Injectable({
+    providedIn: 'root'
+})
 
 export default class MovieSearchQueryBuilder extends QueryBuilder<MovieSearchQueryBuilder> {
 
@@ -17,3 +22,4 @@ export default class MovieSearchQueryBuilder extends QueryBuilder<MovieSearchQue
     })
 
 }
+    

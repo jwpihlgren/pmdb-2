@@ -1,9 +1,45 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import MovieSearchQueryBuilder from '../models/classes/movie-search-query-builder.class';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, debounceTime, map, Observable, switchMap, tap } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class SearchMoviesService {
 
-  constructor() { }
+    private api = environment.tmdbApiUrl
+    private apikey = environment.tmdbApiKey
+
+    protected queryBuilder: MovieSearchQueryBuilder = inject(MovieSearchQueryBuilder)
+    protected querySubject$: BehaviorSubject<string> = new BehaviorSubject("")
+    searchResults$: any
+
+    http: HttpClient = inject(HttpClient)
+    constructor() {
+        this.searchResults$ = this.querySubject$.pipe(
+            switchMap((query: string) => {
+                return this.request(query)
+            })
+        )
+    }
+
+    search(query: string, page?: number): any {
+        this.querySubject$.next(query)
+    }
+
+    private request(query: string): Observable<any> {
+        const endpoint = "search/movie"
+        this.queryBuilder
+            .apiKey(this.apikey)
+            .searchQuery(query)
+        const queryParams = this.queryBuilder.getQuery()
+        const url = `${this.api}${endpoint}${queryParams}`
+
+        return this.http.get<any>(url).pipe(
+            debounceTime(200),
+            tap(data => console.log(data))
+        )
+    }
 }

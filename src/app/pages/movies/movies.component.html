@@ -1,3 +1,9 @@
+<app-hero-search (search)="search($event)"></app-hero-search>
+<ul>
+    @for(result of searchResults().results; track $index) {
+    <li>{{result.id}}</li>
+    }
+</ul>
 <section>
     <nav>
         <ul>@for(tab of tabs; track $index){

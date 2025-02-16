@@ -1,12 +1,12 @@
 export default interface MovieFilters {
     getQuery(): string
-    includeAdult(value: boolean): void
-    includeVideo(value: boolean): void
-    withGenres(value: string[]): void
-    voteAverageLte(value: number): void
-    voteAverageGte(value: number): void
-    releaseDateLte(value: Date): void
-    releaseDateGte(value: Date): void
+    includeAdult(value: boolean): MovieFilters
+    includeVideo(value: boolean): MovieFilters
+    withGenres(value: string[]): MovieFilters
+    voteAverageLte(value: number): MovieFilters
+    voteAverageGte(value: number): MovieFilters
+    releaseDateLte(value: Date): MovieFilters
+    releaseDateGte(value: Date): MovieFilters
 }
 
 

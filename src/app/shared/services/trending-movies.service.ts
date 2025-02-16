@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { TrendingMovie } from '../models/interfaces/trending-movie';
@@ -22,7 +22,9 @@ export class TrendingMoviesService {
     private paginationResults$: BehaviorSubject<Pagination> = new BehaviorSubject(new PlaceholderPagination())
     private callerTimeWindow?: TmdbTimeWindow
 
-    constructor(private http: HttpClient) {
+    protected http: HttpClient = inject(HttpClient)
+
+    constructor() {
         this.trendingMovies$ = this.pageSubject$.pipe(
             switchMap(page => this.request(page, this.callerTimeWindow))
         )
