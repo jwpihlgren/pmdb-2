@@ -47,7 +47,7 @@ export default class MovieDiscoverQueryBuilder extends QueryBuilder<MovieDiscove
         const maxYear = new Date().getFullYear()
 
         if (valueYear < minYear || valueYear > maxYear) return ""
-        return `${valueYear}-${value.getMonth()}-${value.getDay()}`
+        return `${valueYear}-${(value.getMonth()).toString().padStart(2, "0")}-${(value.getDay()).toString().padStart(2, "0")}`
 
     })
 
@@ -58,10 +58,8 @@ export default class MovieDiscoverQueryBuilder extends QueryBuilder<MovieDiscove
         const maxYear = new Date().getFullYear()
 
         if (valueYear < minYear || valueYear > maxYear) return ""
-        return `${valueYear}-${value.getMonth()}-${value.getDay()}`
-
+        return `${valueYear}-${(value.getMonth()).toString().padStart(2, "0")}-${(value.getDay()).toString().padStart(2, "0")}`
     })
-    
 }
 
 

@@ -29,9 +29,10 @@ export class DiscoverMoviesService {
             .includeVideo(true)
             .voteAverageGte(2)
             .voteAverageLte(8)
-            .releaseDateGte(new Date(1900, 2, 0))
+            .releaseDateGte(new Date(2023, 2, 0))
 
 
+        console.log(this.movieQueryBuilder.getQuery())
         return this.movieQueryBuilder.getQuery()
     }
 

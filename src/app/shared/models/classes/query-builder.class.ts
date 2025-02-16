@@ -21,9 +21,9 @@ abstract class QueryBuilder<Q> {
             if (previousParamIndex >= 0) {
                 this.dropParam(previousParamIndex)
             }
-            const queryValue = parse(value, options)
-            if (queryValue !== "") {
-                this.addParam(`${name}=${value}`)
+            const parsedValue = parse(value, options)
+            if (parsedValue !== "") {
+                this.addParam(`${name}=${parsedValue}`)
             }
             return derived
         }
