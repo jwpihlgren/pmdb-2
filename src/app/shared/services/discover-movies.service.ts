@@ -42,13 +42,14 @@ export class DiscoverMoviesService {
             return acc
         }, [] as string[])
 
+        console.log(genres)
         this.movieQueryBuilder.withGenres(genres)
         if (value.include.adult !== undefined) this.movieQueryBuilder.includeAdult(value.include.adult)
         if (value.include.video !== undefined) this.movieQueryBuilder.includeVideo(value.include.adult)
         if (value.voteAverage.lte) this.movieQueryBuilder.voteAverageLte(value.voteAverage.lte)
         if (value.voteAverage.gte) this.movieQueryBuilder.voteAverageGte(value.voteAverage.gte)
-        if (value.releaseDate.lte) this.movieQueryBuilder.releaseDateLte([+value.releaseDate.lte, 1, 1])
-        if (value.releaseDate.gte) this.movieQueryBuilder.releaseDateGte([+value.releaseDate.gte, 12, 31])
+        if (value.releaseDate.lte) this.movieQueryBuilder.releaseDateLte([+value.releaseDate.lte, 12, 31])
+        if (value.releaseDate.gte) this.movieQueryBuilder.releaseDateGte([+value.releaseDate.gte, 1, 1])
         let queryParams = this.movieQueryBuilder.getQuery()
         console.log(queryParams)
         queryParams = queryParams + `&api_key=${this.apikey}`
