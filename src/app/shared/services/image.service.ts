@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment.development';
 
 export class ImageService {
     protected storage = inject(StorageService)
-    config: TmdbConfig | null = this.storage.getLocalItem<TmdbConfig>(`${environment.storageKeyPrefix}-config`)
+    config: TmdbConfig | null = this.storage.getSessionItem<TmdbConfig>(`${environment.storageKeyPrefix}-config`)
 
     imageUrl: string = this.config?.images.secure_base_url || ""
 
@@ -45,6 +45,7 @@ export class ImageService {
             return +querySize.replace("w", "") > size
         })
         if (!closestSize) closestSize = querySizes[querySizes.length - 1]
+
         return `${this.imageUrl}${closestSize}${image}`
     }
 

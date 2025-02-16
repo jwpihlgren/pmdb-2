@@ -1,60 +1,65 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { BehaviorSubject, map, Observable, of, switchMap, tap } from 'rxjs';
+import { map, Observable, ReplaySubject, switchMap, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import MovieDiscoverQueryBuilder from '../models/classes/movie-discover-query-builder.class';
 import MovieFilters from '../models/interfaces/movie-filters';
+import { MovieDiscoverFormValue } from '../models/interfaces/movie-discover-form-value';
+import { TrendingMovie } from '../models/interfaces/trending-movie';
+import { TmdbTrendingMovie } from '../models/classes/tmdb-trending-movie';
+import { TmdbTrendingMovies } from '../models/interfaces/tmdb/tmdb-trending-movies';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DiscoverMoviesService {
+    protected http = inject(HttpClient)
 
     private api = environment.tmdbApiUrl
     private apikey = environment.tmdbApiKey
 
-
     private movieQueryBuilder: MovieFilters = new MovieDiscoverQueryBuilder()
-    private query$: BehaviorSubject<any> = new BehaviorSubject({})
-    results$: Observable<any>
-
-    protected http = inject(HttpClient)
+    private query$: ReplaySubject<MovieDiscoverFormValue> = new ReplaySubject()
+    results$: Observable<TrendingMovie[]>
 
     constructor() {
         this.results$ = this.query$.pipe(
             switchMap(data => {
-                return data
+                return this.request(data)
             })
         )
     }
 
-    discover(): string {
-        this.movieQueryBuilder
-            .includeVideo(true)
-            .voteAverageGte(2)
-            .voteAverageLte(8)
-            .releaseDateGte(new Date(2023, 2, 0))
-
-
-        console.log(this.movieQueryBuilder.getQuery())
-        return this.movieQueryBuilder.getQuery()
+    discover(value: MovieDiscoverFormValue): void {
+        this.query$.next(value)
     }
 
-    request(): Observable<any> {
+    private request(value: MovieDiscoverFormValue): Observable<TrendingMovie[]> {
         const endpoint = `discover/movie`
-        let queryParams = this.discover()
+
+        const genres: string[] = Object.entries(value.genres).reduce((acc, cur) => {
+            if (cur[1]) acc.push(cur[0])
+            return acc
+        }, [] as string[])
+
+        this.movieQueryBuilder.withGenres(genres)
+        if (value.include.adult !== undefined) this.movieQueryBuilder.includeAdult(value.include.adult)
+        if (value.include.video !== undefined) this.movieQueryBuilder.includeVideo(value.include.adult)
+        if (value.voteAverage.lte) this.movieQueryBuilder.voteAverageLte(value.voteAverage.lte)
+        if (value.voteAverage.gte) this.movieQueryBuilder.voteAverageGte(value.voteAverage.gte)
+        if (value.releaseDate.lte) this.movieQueryBuilder.releaseDateLte(value.releaseDate.lte)
+        if (value.releaseDate.gte) this.movieQueryBuilder.releaseDateGte(value.releaseDate.gte)
+
+        let queryParams = this.movieQueryBuilder.getQuery()
+        console.log(queryParams)
         queryParams = queryParams + `&api_key=${this.apikey}`
         const url = `${this.api}${endpoint}${queryParams}`
         const options = {}
 
-        return of({})
-        return this.http.get<any>(url, options).pipe(
-            tap(data => {
-                console.log(data)
+        return this.http.get<TmdbTrendingMovies>(url, options).pipe(
+            map(data => {
+                return data.results.map(datum => new TmdbTrendingMovie(datum))
             }),
         )
     }
-
-
-
 }
