@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import MovieSearchQueryBuilder from '../models/classes/movie-search-query-builder.class';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, debounceTime, map, Observable, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, debounceTime, map, Observable, ReplaySubject, Subject, switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 
 @Injectable({
@@ -13,8 +13,8 @@ export class SearchMoviesService {
     private apikey = environment.tmdbApiKey
 
     protected queryBuilder: MovieSearchQueryBuilder = inject(MovieSearchQueryBuilder)
-    protected querySubject$: BehaviorSubject<string> = new BehaviorSubject("")
-    searchResults$: any
+    protected querySubject$: Subject<string> = new Subject()
+    searchResults$: Observable<any>
 
     http: HttpClient = inject(HttpClient)
     constructor() {
