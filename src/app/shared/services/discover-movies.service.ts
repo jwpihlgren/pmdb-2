@@ -37,15 +37,11 @@ export class DiscoverMoviesService {
     private request(value: MovieDiscoverFormValue): Observable<TrendingMovie[]> {
         const endpoint = `discover/movie`
 
-        const genres: string[] = Object.entries(value.genres).reduce((acc, cur) => {
-            if (cur[1]) acc.push(cur[0])
-            return acc
-        }, [] as string[])
-
+        const genres: string[] = value.genres?.map( value => value.toString()) || []
         console.log(genres)
         this.movieQueryBuilder.withGenres(genres)
-        if (value.include.adult !== undefined) this.movieQueryBuilder.includeAdult(value.include.adult)
-        if (value.include.video !== undefined) this.movieQueryBuilder.includeVideo(value.include.adult)
+        if (value.include.adult !== null) this.movieQueryBuilder.includeAdult(value.include.adult)
+        if (value.include.video !== null) this.movieQueryBuilder.includeVideo(value.include.video)
         if (value.voteAverage.lte) this.movieQueryBuilder.voteAverageLte(value.voteAverage.lte)
         if (value.voteAverage.gte) this.movieQueryBuilder.voteAverageGte(value.voteAverage.gte)
         if (value.releaseDate.lte) this.movieQueryBuilder.releaseDateLte([+value.releaseDate.lte, 12, 31])

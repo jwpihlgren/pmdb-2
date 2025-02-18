@@ -1,4 +1,7 @@
+
+<app-listbox [params]="{list: [{value: 1, name: 'hello'}, {value: '2', name: 'bye'}]}"></app-listbox>
 <form (ngSubmit)="onSubmit()" [formGroup]="discoverForm">
+    <!--
     <fieldset formGroupName="genres">
         <legend>Genres</legend>
         @for(genre of genres; track genre.id) {
@@ -7,6 +10,11 @@
         </label>
         <input [id]="genre.id" type="checkbox" [formControlName]="genre.id">
         }
+    </fieldset>
+    -->
+    <fieldset>
+        <legend>Test</legend>
+        <app-listbox [params]="listboxParams" formControlName="genres"></app-listbox>
     </fieldset>
 
     <fieldset formGroupName="voteAverage">

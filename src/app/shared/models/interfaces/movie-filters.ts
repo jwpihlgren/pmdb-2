@@ -7,6 +7,8 @@ export default interface MovieFilters {
     voteAverageGte(value: number): MovieFilters
     releaseDateLte(value: [number, number, number]): MovieFilters
     releaseDateGte(value: [number, number, number]): MovieFilters
+    //withOriginCountry(value: string): MovieFilters
+    //withPeople(value: string[]): MovieFilters
 }
 
 
