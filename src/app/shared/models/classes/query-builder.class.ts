@@ -9,8 +9,8 @@ abstract class QueryBuilder<Q> {
         return `${value}`
     })
 
-    protected dropParam(index: number): void {
-        this.query.splice(index)
+    protected dropParam(name: string): void {
+        this.query = [...this.query].filter(elem => !elem.includes(name))
     }
 
     protected addParam(param: string): void {
@@ -22,13 +22,12 @@ abstract class QueryBuilder<Q> {
     }
     protected paramFactory<T, V = undefined>(derived: Q, name: string, parse: (value: T, options?: V) => string): (value: T, options?: V) => Q {
         return (value: T, options?: V) => {
-            const previousParamIndex = this.findParamIndex(name)
-            if (previousParamIndex >= 0) {
-                this.dropParam(previousParamIndex)
-            }
+
             const parsedValue = parse(value, options)
+            this.dropParam(name)
             if (parsedValue !== "") {
                 this.addParam(`${name}=${parsedValue}`)
+                console.log(this.query)
             }
             return derived
         }
