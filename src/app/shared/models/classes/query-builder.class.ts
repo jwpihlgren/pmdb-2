@@ -27,7 +27,6 @@ abstract class QueryBuilder<Q> {
             this.dropParam(name)
             if (parsedValue !== "") {
                 this.addParam(`${name}=${parsedValue}`)
-                console.log(this.query)
             }
             return derived
         }

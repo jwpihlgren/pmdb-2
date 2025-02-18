@@ -5,7 +5,7 @@
 .listbox {
     padding-block: var(--spacing-medium, 1rem);
     background: var(--clr-surface-elevation-1, red);
-    width: min-content;
+    width: max-content;
 }
 
 .listbox--item {

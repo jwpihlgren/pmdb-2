@@ -38,7 +38,6 @@ export class DiscoverMoviesService {
         const endpoint = `discover/movie`
 
         const genres: string[] = value.genres?.map( value => value.toString()) || []
-        console.log(genres)
         this.movieQueryBuilder.withGenres(genres)
         if (value.include.adult !== null) this.movieQueryBuilder.includeAdult(value.include.adult)
         if (value.include.video !== null) this.movieQueryBuilder.includeVideo(value.include.video)
