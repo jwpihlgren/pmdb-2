@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { DiscoverMoviesService } from '../../../../shared/services/discover-movies.service';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -11,6 +11,7 @@ import { ContentMovieComponent } from '../../../../shared/components/card/compon
 import { ListboxComponent } from '../../../../listbox/listbox.component';
 import { PeopleSearchService } from '../../../../shared/services/people-search.service';
 import { ComboboxComponent } from '../../../../shared/components/combobox/combobox.component';
+import { of } from 'rxjs';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class DiscoverMoviesComponent {
     listboxParams!: { list: { name: string, value: string | number }[] }
     years!: number[]
     results = toSignal(this.discoverService.results$)
+
 
     discoverForm = this.formBuilder.group({
         voteAverage: this.formBuilder.group({

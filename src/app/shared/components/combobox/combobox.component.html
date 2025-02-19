@@ -1,7 +1,17 @@
-<button (click)="onToggle($event)" (keyup)=handleKeyup($event) type="button" class="combobox--toggle" formControlName="comboboxFormControl">
+<button (click)="onToggle($event)" (keyup)=handleKeyup($event) type="button" class="combobox--toggle"
+    formControlName="comboboxFormControl">
     Toggle
     <div class="combobox--list" [ngClass]="{'combobox--list__open': open}">
         <ng-content></ng-content>
     </div>
 </button>
-<ul class="combobox--selected"></ul>
+<ul class="combobox--selected">
+    @defer(on immediate; when params() !== null) {
+        @for(selected of params(); track $index) {
+            hello
+            {{selected.value}} 
+            <span>{{selected.name}}</span>
+        }
+    }
+
+</ul>
