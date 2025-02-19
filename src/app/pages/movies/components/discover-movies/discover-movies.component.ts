@@ -9,6 +9,7 @@ import { CardGridComponent } from '../../../../shared/components/card-grid/card-
 import { CardComponent } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
 import { ListboxComponent } from '../../../../listbox/listbox.component';
+import { PeopleSearchService } from '../../../../shared/services/people-search.service';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class DiscoverMoviesComponent {
     protected formBuilder = inject(FormBuilder)
     protected discoverService: DiscoverMoviesService = inject(DiscoverMoviesService)
     protected configService: ConfigService = inject(ConfigService)
+    protected peopleSearchSevice: PeopleSearchService = inject(PeopleSearchService)
     genres!: Genre[]
     listboxParams!: { list: { name: string, value: string | number }[] }
     years!: number[]
@@ -48,6 +50,8 @@ export class DiscoverMoviesComponent {
         this.genres = this.configService.movieGenres
         this.listboxParams = { list: this.genres.map(g => { return { name: g.name, value: g.id } }) }
         this.years = this.generateYears()
+        this.peopleSearchSevice.results$.subscribe(data => console.log(data))
+        this.peopleSearchSevice.search("jason")
     }
 
     onSubmit(): void {

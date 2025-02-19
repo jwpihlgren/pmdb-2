@@ -5,7 +5,7 @@ import QueryBuilder from "./query-builder.class"
     providedIn: 'root'
 })
 
-export default class MovieSearchQueryBuilder extends QueryBuilder<MovieSearchQueryBuilder> {
+export default class SearchQueryBuilder extends QueryBuilder<SearchQueryBuilder> {
 
     constructor() {
         super()
