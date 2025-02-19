@@ -27,8 +27,9 @@ export class ListboxComponent implements ControlValueAccessor {
 
     disabled = false
 
-    onToggle(event: Event) {
+    onToggle(event: any) {
         const target = event.target as HTMLElement
+        if(target.tagName !== "LI") return
         const value: string = target.getAttribute("data-value") || ""
         this.markAsTouched()
         if (this.disabled) return
@@ -40,7 +41,16 @@ export class ListboxComponent implements ControlValueAccessor {
         } else if(indexOfValue >= 0) {
             this.selected.push(indexOfValue)
         }
-        this.onChange(this.selected)
+        this.onChange(this.selected.map(index => this.params().list[index].value))
+    }
+
+    handleKeyup(event: KeyboardEvent): void {
+        const target = event.target as HTMLElement
+        if(target.tagName !== "LI") return
+        if(event.key === " " || event.key === "Spacebar") {
+            event.preventDefault()
+            this.onToggle(event)
+        }
     }
 
     writeValue(selected: number[]): void {
@@ -65,6 +75,8 @@ export class ListboxComponent implements ControlValueAccessor {
     setDisabledState(isDisabled: boolean): void {
         this.disabled = isDisabled
     }
+
+
 }
 
 

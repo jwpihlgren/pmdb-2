@@ -4,7 +4,7 @@
 
 .listbox {
     padding-block: var(--spacing-medium, 1rem);
-    background: var(--clr-surface-elevation-1, red);
+    background: var(--clr-surface-elevation-2, red);
     width: max-content;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .listbox--item:hover {
-    background: var(--clr-surface-elevation-2);
+    background: var(--clr-surface-elevation-3);
 }
 
 .listbox--item.item__active {

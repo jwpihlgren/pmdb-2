@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { DiscoverMoviesService } from '../../../../shared/services/discover-movies.service';
 import { ConfigService } from '../../../../shared/services/config.service';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Genre } from '../../../../shared/models/interfaces/genre';
 import { MovieDiscoverFormValue } from '../../../../shared/models/interfaces/movie-discover-form-value';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -10,11 +10,12 @@ import { CardComponent } from '../../../../shared/components/card/card.component
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
 import { ListboxComponent } from '../../../../listbox/listbox.component';
 import { PeopleSearchService } from '../../../../shared/services/people-search.service';
+import { ComboboxComponent } from '../../../../shared/components/combobox/combobox.component';
 
 
 @Component({
     selector: 'app-discover-movies',
-    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ListboxComponent],
+    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ListboxComponent, ComboboxComponent],
     templateUrl: './discover-movies.component.html',
     styleUrl: './discover-movies.component.css'
 })
@@ -42,20 +43,19 @@ export class DiscoverMoviesComponent {
             adult: this.formBuilder.control(false),
             video: this.formBuilder.control(false)
         }),
-        genres: this.formBuilder.control([])
+        genres: this.formBuilder.control([]),
+        
     });
-
 
     constructor() {
         this.genres = this.configService.movieGenres
         this.listboxParams = { list: this.genres.map(g => { return { name: g.name, value: g.id } }) }
         this.years = this.generateYears()
-        this.peopleSearchSevice.results$.subscribe(data => console.log(data))
-        this.peopleSearchSevice.search("jason")
+        //this.peopleSearchSevice.results$.subscribe(data => console.log(data))
+        //this.peopleSearchSevice.search("jason")
     }
 
     onSubmit(): void {
-        console.log(this.discoverForm.value)
         const formValue: MovieDiscoverFormValue = this.discoverForm.getRawValue()
         this.discoverService.discover(formValue)
     }

@@ -1,7 +1,9 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="discoverForm">
-      <fieldset>
-        <legend>Test</legend>
-        <app-listbox [params]="listboxParams" formControlName="genres"></app-listbox>
+    <fieldset>
+        <legend>Genre</legend>
+        <app-combobox>
+            <app-listbox [params]="listboxParams" formControlName="genres"></app-listbox>
+        </app-combobox>
     </fieldset>
 
     <fieldset formGroupName="voteAverage">

@@ -1,0 +1,7 @@
+<button (click)="onToggle($event)" (keyup)=handleKeyup($event) type="button" class="combobox--toggle" formControlName="comboboxFormControl">
+    Toggle
+    <div class="combobox--list" [ngClass]="{'combobox--list__open': open}">
+        <ng-content></ng-content>
+    </div>
+</button>
+<ul class="combobox--selected"></ul>

@@ -1,12 +1,16 @@
-<ul class="listbox" role="listbox" [ngClass]="{'item__disabled': disabled}">
+<ul class="listbox" 
+    (click)="onToggle($event)" 
+    (keyup)="handleKeyup($event)" 
+    role="listbox" 
+    [ngClass]="{'item__disabled': disabled}">
     @for(item of params().list; track $index) {
     <li class="listbox--item" 
+        [tabIndex]=0
         [id]="'listbox-' + $index" 
         [attr.aria-selected]="selected.includes($index)" 
         [attr.data-value]="item.value"
         [ngClass]="{'item__active': selected.includes($index), item__disabled: disabled }"
         role="option"
-        (click)="onToggle($event)"
         >{{item.name}}</li>
     }
 </ul>

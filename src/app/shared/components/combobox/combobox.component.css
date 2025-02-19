@@ -1,0 +1,33 @@
+.combobox--toggle {
+    all: unset;
+    border: 1px solid var(--clr-on-surface);
+    background-color: var(--clr-surface-elevation-1);
+    color: var(--clr-on-surface);
+    padding: var(--spacing-md, 1rem);
+    position: relative;
+    cursor: pointer;
+}
+
+.combobox--toggle:hover {
+    background-color: var(--clr-surface-elevation-2);
+}
+
+.combobox--toggle:focus-visible {
+    outline: 2px solid var(--clr-on-surface);
+    outline-offset: 2px
+}
+
+.combobox--list {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    top: calc(100% + var(--spacing-sm, 0.5rem));
+    left: 0;
+    box-shadow: var(--shadow-elevation-2);
+    border-radius: var(--radii-md, 1rem);
+    overflow: hidden;
+}
+
+.combobox--list__open {
+    display: initial;
+}
