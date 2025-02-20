@@ -53,7 +53,6 @@ export class DiscoverMoviesService {
 
         return this.http.get<TmdbTrendingMovies>(url, options).pipe(
             map(data => {
-                console.log(data)
                 return data.results.map(datum => new TmdbTrendingMovie(datum))
             }),
         )

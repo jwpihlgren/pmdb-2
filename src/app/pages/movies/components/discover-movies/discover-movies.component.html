@@ -1,8 +1,10 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="discoverForm">
     <fieldset>
         <legend>Genre</legend>
-        <app-combobox [params]="discoverForm.value.genres">
-            <app-listbox [params]="listboxParams" formControlName="genres"></app-listbox>
+        <app-combobox>
+            <app-listbox class="list" [params]="listboxParams" formControlName="genres"></app-listbox>
+            <app-chip-list class="selected"
+                [params]="{removable: true, chips: parsedSelectedGenres()}"></app-chip-list>
         </app-combobox>
     </fieldset>
 

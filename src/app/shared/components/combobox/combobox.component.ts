@@ -15,6 +15,7 @@ export class ComboboxComponent {
         if (event.target === event.currentTarget) {
             this.open = !this.open
         }
+        console.log(this.open)
     }
 
     handleKeyup(event: KeyboardEvent): void {

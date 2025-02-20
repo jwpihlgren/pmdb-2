@@ -2,16 +2,9 @@
     formControlName="comboboxFormControl">
     Toggle
     <div class="combobox--list" [ngClass]="{'combobox--list__open': open}">
-        <ng-content></ng-content>
+        <ng-content select=".list"></ng-content>
     </div>
 </button>
-<ul class="combobox--selected">
-    @defer(on immediate; when params() !== null) {
-        @for(selected of params(); track $index) {
-            hello
-            {{selected.value}} 
-            <span>{{selected.name}}</span>
-        }
-    }
-
-</ul>
+<div class="combobox--selected">
+    <ng-content select=".selected"></ng-content>
+</div>

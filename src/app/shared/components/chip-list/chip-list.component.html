@@ -1,0 +1,10 @@
+<ul class="chiplist">
+    @for(chip of params().chips; track $index) {
+    <li>
+        {{chip}}
+        @if(params().removable) {
+            <button>remove</button>
+        }
+    </li>
+    }
+</ul>
