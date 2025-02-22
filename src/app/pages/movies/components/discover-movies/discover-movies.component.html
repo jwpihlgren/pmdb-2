@@ -1,7 +1,7 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="discoverForm">
     <fieldset>
         <legend>Genre</legend>
-        <app-combobox>
+        <app-combobox [title]="'choose'">
             <app-listbox class="list" [params]="listboxParams" formControlName="genres"></app-listbox>
             <app-chip-list class="selected">
                 @for(chip of discoverForm.value.genres; track $index) {
@@ -15,11 +15,17 @@
         <legend>Vote average</legend>
         <label for="vote-average-gte">
             At least
-            <input id="vote-average-gte" type="number" min="0" max="10" formControlName="gte">
+            <app-combobox [title]="discoverForm.value.voteAverage!.lte ? discoverForm.value.voteAverage!.lte[0] : ''">
+                <app-listbox class="list" id="vote-average-gte" formControlName="gte"
+                    [params]="voteAverageOptions"></app-listbox>
+            </app-combobox>
         </label>
         <label for="vote-average-lte">
             At most
-            <input id="vote-average-lte" type="number" min="0" max="10" formControlName="lte">
+            <app-combobox [title]="'test'">
+                <app-listbox class="list" id="vote-average-lte" formControlName="lte"
+                    [params]="voteAverageOptions"></app-listbox>
+            </app-combobox>
         </label>
     </fieldset>
     <fieldset formGroupName="releaseDate">
@@ -29,7 +35,7 @@
             <select id="release-date-gte" formControlName="gte">
                 <optgroup>
                     <option [value]=""></option>
-                    @for(year of years; track $index) {
+                    @for(year of generateNumberRange(2025, 1900); track $index) {
                     <option [value]="year">{{year}}</option>
                     }
                 </optgroup>
@@ -40,7 +46,7 @@
             <select id="release-date-lte" formControlName="lte">
                 <optgroup>
                     <option [value]=""></option>
-                    @for(year of years; track $index) {
+                    @for(year of generateNumberRange(2025, 1900); track $index) {
                     <option [value]="year">{{year}}</option>
                     }
                 </optgroup>

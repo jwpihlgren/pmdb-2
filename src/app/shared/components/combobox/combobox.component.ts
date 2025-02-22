@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input, InputSignal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { Closable } from '../../models/classes/closable.class';
 
@@ -9,5 +9,5 @@ import { Closable } from '../../models/classes/closable.class';
     styleUrl: './combobox.component.css',
 })
 export class ComboboxComponent extends Closable {
-
+    title: InputSignal<any> = input.required()
 }

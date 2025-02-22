@@ -1,6 +1,6 @@
 <button (click)="onToggle($event)" (keyup)=handleKeyUp($event) type="button" class="combobox--toggle"
     formControlName="comboboxFormControl">
-    Toggle
+    {{title()}}
     <div class="combobox--list" [ngClass]="{'combobox--list__open': open}">
         <ng-content select=".list"></ng-content>
     </div>

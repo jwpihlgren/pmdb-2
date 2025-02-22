@@ -12,7 +12,6 @@ import { ListboxComponent } from '../../../../listbox/listbox.component';
 import { PeopleSearchService } from '../../../../shared/services/people-search.service';
 import { ComboboxComponent } from '../../../../shared/components/combobox/combobox.component';
 import { ChipListComponent } from '../../../../shared/components/chip-list/chip-list.component';
-import { map } from 'rxjs';
 import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
 
 @Component({
@@ -30,13 +29,20 @@ export class DiscoverMoviesComponent {
     genres!: Genre[]
 
     listboxParams!: { list: { name: string, value: string | number }[] }
-    years!: number[]
+    years: number[] = this.generateNumberRange(new Date().getFullYear(), 1900)
     results = toSignal(this.discoverService.results$)
+    voteAverageOptions = {
+        list: this.generateNumberRange(1, 10).map(n => {
+            return {
+                name: n + "", value: n
+            }
+        })
+    }
 
     discoverForm = this.formBuilder.group({
         voteAverage: this.formBuilder.group({
-            lte: this.formBuilder.control<number | null>(null),
-            gte: this.formBuilder.control<number | null>(null)
+            lte: this.formBuilder.control<number[]>([]),
+            gte: this.formBuilder.control<number[]>([])
         }),
         releaseDate: this.formBuilder.group({
             lte: this.formBuilder.control<number | null>(null),
@@ -52,15 +58,13 @@ export class DiscoverMoviesComponent {
     constructor() {
         this.genres = this.configService.movieGenres
         this.listboxParams = { list: this.genres.map(g => { return { name: g.name, value: g.id } }) }
-        this.years = this.generateYears()
-
         //this.peopleSearchSevice.results$.subscribe(data => console.log(data))
         //this.peopleSearchSevice.search("jason")
     }
 
     get selectedGenres() {
         return this.discoverForm.get('genres') as FormControl
-    } 
+    }
 
     onSubmit(): void {
         const formValue: MovieDiscoverFormValue = this.discoverForm.getRawValue()
@@ -76,18 +80,15 @@ export class DiscoverMoviesComponent {
     parseGenre(id: string | number): string | undefined {
         return this.genres.find(g => g.id === id)?.name
     }
+    
+    generateNumberRange(start: number, end: number, step: number = 1): number[] {
 
-    generateYears(): number[] {
-        const minYear = 1900
-        const maxYear = (new Date()).getFullYear()
-
-        const years: number[] = []
-
-        for (let i = maxYear; i >= minYear; i--) {
-            years.push(i)
+        const reverse: boolean = start > end
+        const range: number[] = []
+        for (let i = start; reverse ? i >= end : i <= end; reverse ? i -= step : i += step) {
+            range.push(i)
         }
-
-        return years
+        return range
     }
 
 }
