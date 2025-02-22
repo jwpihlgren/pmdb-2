@@ -1,5 +1,6 @@
-import { Component, input, InputSignal } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgClass } from '@angular/common';
+import { Closable } from '../../models/classes/closable.class';
 
 @Component({
     selector: 'app-combobox',
@@ -7,21 +8,6 @@ import { NgClass } from '@angular/common';
     templateUrl: './combobox.component.html',
     styleUrl: './combobox.component.css',
 })
-export class ComboboxComponent {
-    
-    protected open = false
+export class ComboboxComponent extends Closable {
 
-    onToggle(event: Event): void {
-        if (event.target === event.currentTarget) {
-            this.open = !this.open
-        }
-        console.log(this.open)
-    }
-
-    handleKeyup(event: KeyboardEvent): void {
-        if(event.key === "Escape") {
-            this.open = false
-        }
-        console.log(event)
-    }
 }

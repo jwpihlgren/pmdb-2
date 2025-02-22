@@ -12,12 +12,10 @@ export class ChipComponent {
     action = output<string>()
 
     onClick(value: string) {
-        console.log("click")
         this.action.emit(value)
     }
 
     handleKeyup(params: {value: string, event: KeyboardEvent}):void {
-        console.log(params)
         if(params.event.key !== " " && params.event.key !== "Space") return
         this.onClick(params.value)
     }
