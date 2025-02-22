@@ -3,8 +3,11 @@
         <legend>Genre</legend>
         <app-combobox>
             <app-listbox class="list" [params]="listboxParams" formControlName="genres"></app-listbox>
-            <app-chip-list class="selected"
-                [params]="{removable: true, chips: parsedSelectedGenres()}"></app-chip-list>
+            <app-chip-list class="selected">
+                @for(chip of discoverForm.value.genres; track $index) {
+                <app-chip [value]="chip.toString()" (action)="onRemove($event)">{{parseGenre(chip)}}</app-chip>
+                }
+            </app-chip-list>
         </app-combobox>
     </fieldset>
 

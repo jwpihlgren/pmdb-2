@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal, Signal, } from '@angular/core';
 import { DiscoverMoviesService } from '../../../../shared/services/discover-movies.service';
 import { ConfigService } from '../../../../shared/services/config.service';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Genre } from '../../../../shared/models/interfaces/genre';
 import { MovieDiscoverFormValue } from '../../../../shared/models/interfaces/movie-discover-form-value';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -12,10 +12,12 @@ import { ListboxComponent } from '../../../../listbox/listbox.component';
 import { PeopleSearchService } from '../../../../shared/services/people-search.service';
 import { ComboboxComponent } from '../../../../shared/components/combobox/combobox.component';
 import { ChipListComponent } from '../../../../shared/components/chip-list/chip-list.component';
+import { map } from 'rxjs';
+import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
 
 @Component({
     selector: 'app-discover-movies',
-    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ListboxComponent, ComboboxComponent, ChipListComponent],
+    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ListboxComponent, ComboboxComponent, ChipListComponent, ChipComponent],
     templateUrl: './discover-movies.component.html',
     styleUrl: './discover-movies.component.css'
 })
@@ -30,9 +32,6 @@ export class DiscoverMoviesComponent {
     listboxParams!: { list: { name: string, value: string | number }[] }
     years!: number[]
     results = toSignal(this.discoverService.results$)
-    selectedGenres!: Signal<string[] | number[] | null | undefined>
-    parsedSelectedGenres!: Signal<any>
-
 
     discoverForm = this.formBuilder.group({
         voteAverage: this.formBuilder.group({
@@ -54,19 +53,28 @@ export class DiscoverMoviesComponent {
         this.genres = this.configService.movieGenres
         this.listboxParams = { list: this.genres.map(g => { return { name: g.name, value: g.id } }) }
         this.years = this.generateYears()
-        this.selectedGenres = computed(() => this.discoverForm.value.genres)
-        this.parsedSelectedGenres = computed(() => {
-            this.selectedGenres()?.map(g => {
-                return this.lookUpGenre(g)
-            }) || []
-        })
+
         //this.peopleSearchSevice.results$.subscribe(data => console.log(data))
         //this.peopleSearchSevice.search("jason")
     }
 
+    get selectedGenres() {
+        return this.discoverForm.get('genres') as FormControl
+    } 
+
     onSubmit(): void {
         const formValue: MovieDiscoverFormValue = this.discoverForm.getRawValue()
         this.discoverService.discover(formValue)
+    }
+
+    onRemove(value: string): void {
+        const selectedGenres = this.selectedGenres.getRawValue()
+        const updatedGenres = selectedGenres.filter((genre: string | number) => genre.toString() !== value.toString())
+        this.selectedGenres.setValue(updatedGenres)
+    }
+
+    parseGenre(id: string | number): string | undefined {
+        return this.genres.find(g => g.id === id)?.name
     }
 
     generateYears(): number[] {
@@ -80,10 +88,6 @@ export class DiscoverMoviesComponent {
         }
 
         return years
-    }
-
-    lookUpGenre(id: number | string): string {
-        return this.genres.find(g => g.id === +id)?.name || "error"
     }
 
 }

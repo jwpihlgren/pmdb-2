@@ -7,12 +7,7 @@ import { Component, input, InputSignal } from '@angular/core';
   styleUrl: './chip-list.component.css'
 })
 export class ChipListComponent {
-
-    params: InputSignal<ChipListParams> = input.required()
+    
 }
 
 
-interface ChipListParams {
-    chips: string[] | number[]
-    removable: boolean
-}

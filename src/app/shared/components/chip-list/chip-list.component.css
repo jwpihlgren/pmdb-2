@@ -1,0 +1,9 @@
+:host {
+    display: contents;
+}
+
+ul {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap
+}
