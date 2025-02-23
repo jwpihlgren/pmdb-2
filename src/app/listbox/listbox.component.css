@@ -6,6 +6,8 @@
     padding-block: var(--spacing-medium, 1rem);
     background: var(--clr-surface-elevation-2, red);
     width: max-content;
+    max-height: 30vh;
+    overflow-y: auto;
 }
 
 .listbox--item {
