@@ -1,7 +1,7 @@
-import { Component, computed, inject, signal, Signal, } from '@angular/core';
+import { Component, inject, Signal, } from '@angular/core';
 import { DiscoverMoviesService } from '../../../../shared/services/discover-movies.service';
 import { ConfigService } from '../../../../shared/services/config.service';
-import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Genre } from '../../../../shared/models/interfaces/genre';
 import { MovieDiscoverFormValue } from '../../../../shared/models/interfaces/movie-discover-form-value';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -13,6 +13,7 @@ import { PeopleSearchService } from '../../../../shared/services/people-search.s
 import { ComboboxComponent } from '../../../../shared/components/combobox/combobox.component';
 import { ChipListComponent } from '../../../../shared/components/chip-list/chip-list.component';
 import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
+import { map } from 'rxjs';
 
 @Component({
     selector: 'app-discover-movies',
@@ -38,6 +39,11 @@ export class DiscoverMoviesComponent {
             }
         })
     }
+    yearOptions = {
+        list: this.generateNumberRange(new Date().getFullYear(), 1900).map(n => {
+            return { name: n + "", value: n }
+        })
+    }
 
     discoverForm = this.formBuilder.group({
         voteAverage: this.formBuilder.group({
@@ -45,8 +51,8 @@ export class DiscoverMoviesComponent {
             gte: this.formBuilder.control<number[]>([])
         }),
         releaseDate: this.formBuilder.group({
-            lte: this.formBuilder.control<number | null>(null),
-            gte: this.formBuilder.control<number | null>(null)
+            lte: this.formBuilder.control<number[]>([]),
+            gte: this.formBuilder.control<number[]>([])
         }),
         include: this.formBuilder.group({
             adult: this.formBuilder.control(false),
@@ -55,15 +61,39 @@ export class DiscoverMoviesComponent {
         genres: this.formBuilder.control<number[] | string[]>([]),
     });
 
+    voteAverageSignal: Signal<{ lte: number | string, gte: number | string }>
+    releaseDateSignal: Signal<{ lte: number | string, gte: number | string }>
+
     constructor() {
         this.genres = this.configService.movieGenres
         this.listboxParams = { list: this.genres.map(g => { return { name: g.name, value: g.id } }) }
+        this.voteAverageSignal = toSignal(this.voteAverage.valueChanges.pipe(
+            map(data => {
+                return {lte: data.lte[0] || "", gte: data.gte[0] || ""}
+            })
+        ), { initialValue: {lte: "", gte: ""} })
+
+        this.releaseDateSignal = toSignal(this.releaseDate.valueChanges.pipe(
+            map(data => {
+                return { lte: data.lte[0], gte: data.gte[0] }
+            })
+        ), { initialValue: { lte: "", gte: "" } })
+
         //this.peopleSearchSevice.results$.subscribe(data => console.log(data))
+
         //this.peopleSearchSevice.search("jason")
     }
 
     get selectedGenres() {
         return this.discoverForm.get('genres') as FormControl
+    }
+
+    get voteAverage() {
+        return this.discoverForm.get('voteAverage') as FormGroup
+    }
+
+    get releaseDate() {
+        return this.discoverForm.get('releaseDate') as FormGroup
     }
 
     onSubmit(): void {
@@ -80,7 +110,7 @@ export class DiscoverMoviesComponent {
     parseGenre(id: string | number): string | undefined {
         return this.genres.find(g => g.id === id)?.name
     }
-    
+
     generateNumberRange(start: number, end: number, step: number = 1): number[] {
 
         const reverse: boolean = start > end
