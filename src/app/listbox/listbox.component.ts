@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, input, InputSignal } from '@angular/core';
+import { Component, Input, input, InputSignal, output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -18,6 +18,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class ListboxComponent implements ControlValueAccessor {
     selected: number[] = []
     params: InputSignal<ListboxParams> = input.required()
+    multi: InputSignal<boolean> = input(true)
 
     onChange = (selected: any) => { }
 
@@ -29,25 +30,30 @@ export class ListboxComponent implements ControlValueAccessor {
 
     onToggle(event: any) {
         const target = event.target as HTMLElement
-        if(target.tagName !== "LI") return
+        if (target.tagName !== "LI") return
         const value: string = target.getAttribute("data-value") || ""
         this.markAsTouched()
         if (this.disabled) return
-        const indexOfValue = this.params().list.findIndex(item =>  {
+        const indexOfValue = this.params().list.findIndex(item => {
             return item.value.toString() === value.toString()
         })
-        if (this.selected.includes(indexOfValue)) {
-            this.selected = [...this.selected].filter(elem => elem !== indexOfValue)
-        } else if(indexOfValue >= 0) {
-            this.selected.push(indexOfValue)
+        if (this.multi()) {
+            if (this.selected.includes(indexOfValue)) {
+                this.selected = [...this.selected].filter(elem => elem !== indexOfValue)
+            } else if (indexOfValue >= 0) {
+                this.selected.push(indexOfValue)
+            }
+        } else {
+            this.selected = [indexOfValue]
         }
+
         this.onChange(this.selected.map(index => this.params().list[index].value))
     }
 
     handleKeyup(event: KeyboardEvent): void {
         const target = event.target as HTMLElement
-        if(target.tagName !== "LI") return
-        if(event.key === " " || event.key === "Spacebar") {
+        if (target.tagName !== "LI") return
+        if (event.key === " " || event.key === "Spacebar") {
             event.preventDefault()
             this.onToggle(event)
         }
@@ -75,8 +81,6 @@ export class ListboxComponent implements ControlValueAccessor {
     setDisabledState(isDisabled: boolean): void {
         this.disabled = isDisabled
     }
-
-
 }
 
 

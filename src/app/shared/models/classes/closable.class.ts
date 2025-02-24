@@ -16,10 +16,17 @@ export abstract class Closable {
         }
     }
 
-
     handleKeyUp(event: KeyboardEvent): void {
         if (event.code === "Escape") {
             this.open = false
         }
+    }
+
+    handleClickOutside(event: Event): void {
+        this.open = false
+    }
+
+    handleFocusLost(event: Event): void {
+        this.open = false
     }
 }

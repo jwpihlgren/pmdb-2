@@ -17,14 +17,14 @@
             At least
             <app-combobox [title]="voteAverageSignal().gte">
                 <app-listbox class="list" id="vote-average-gte" formControlName="gte"
-                    [params]="voteAverageOptions"></app-listbox>
+                    [params]="voteAverageOptions" [multi]="false"></app-listbox>
             </app-combobox>
         </label>
         <label for="vote-average-lte">
             At most
             <app-combobox [title]="voteAverageSignal().lte">
                 <app-listbox class="list" id="vote-average-lte" formControlName="lte"
-                    [params]="voteAverageOptions"></app-listbox>
+                    [params]="voteAverageOptions" [multi]="false"></app-listbox>
             </app-combobox>
         </label>
     </fieldset>
@@ -34,14 +34,14 @@
             At least
             <app-combobox [title]="releaseDateSignal().gte">
                 <app-listbox class="list" id="release-date-gte" formControlName="gte"
-                    [params]="yearOptions"></app-listbox>
+                    [params]="yearOptions" [multi]="false"></app-listbox>
             </app-combobox>
         </label>
         <label for="release-date-lte">
             At most
             <app-combobox [title]="releaseDateSignal().lte">
                 <app-listbox class="list" id="release-date-lte" formControlName="lte"
-                    [params]="yearOptions"></app-listbox>
+                    [params]="yearOptions" [multi]="false"></app-listbox>
             </app-combobox>
         </label>
     </fieldset>
