@@ -6,6 +6,8 @@
     padding: var(--spacing-md, 1rem);
     position: relative;
     cursor: pointer;
+    height: 2rem;
+    min-width: 5rem;
 }
 
 .combobox--toggle:hover {
