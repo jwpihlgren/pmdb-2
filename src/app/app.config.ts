@@ -20,7 +20,9 @@ export const IMAGE_CONFIG = new InjectionToken<ImageConfig>('app.config image')
 function customImageLoaderFactory(): ImageLoader {
     const imageService = inject(ImageService)
     return (config: ImageLoaderConfig): string => {
-        return imageService.getUrl(config.src, config.width, config.loaderParams!['type'])
+        const loaderParams = config.loaderParams
+        const type: string | undefined = loaderParams ? loaderParams['type'] : undefined
+        return imageService.getUrl(config.src, config.width, type)
     }
 }
 

@@ -1,5 +1,8 @@
-@defer (when movieDetails() != undefined ){
+@defer (when movieDetails() !== undefined ){
+<div class="container">
+    <img ngSrc="{{movieDetails()!.backdropImagePath}}" priority fill alt="" [loaderParams]="{type: 'backdrop'}">
     <span>{{movieDetails()!.title}}</span>
+</div>
 } @placeholder {
-    <span>Loading</span>
+<span>Loading</span>
 }

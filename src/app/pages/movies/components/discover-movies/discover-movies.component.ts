@@ -16,7 +16,6 @@ import { ChipComponent } from '../../../../shared/components/chip-list/component
 import { map } from 'rxjs';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { Pagination } from '../../../../shared/models/interfaces/pagination';
-import { PlaceholderPagination } from '../../../../shared/models/classes/placeholder-pagination';
 
 @Component({
     selector: 'app-discover-movies',
@@ -35,7 +34,7 @@ export class DiscoverMoviesComponent {
     listboxParams!: { list: { name: string, value: string | number }[] }
     years: number[] = this.generateNumberRange(new Date().getFullYear(), 1900)
     results = toSignal(this.discoverService.results$)
-    pagination: Signal<Pagination> = toSignal(this.discoverService.pagination, {initialValue: new PlaceholderPagination()} )
+    pagination: Signal<Pagination> = toSignal(this.discoverService.pagination, {requireSync: true} )
     voteAverageOptions = {
         list: this.generateNumberRange(1, 10).map(n => {
             return {

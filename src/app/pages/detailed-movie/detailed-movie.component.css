@@ -1,0 +1,9 @@
+:host {
+    display: contents
+}
+
+.container {
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%;
+}

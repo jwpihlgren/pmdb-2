@@ -123,6 +123,10 @@ html {
     line-height: calc(var(--fs-body-medium) * var(--body-line-height-multiplier));
 }
 
+body {
+    min-height: 100vh;
+}
+
 h1,
 h2,
 h3,

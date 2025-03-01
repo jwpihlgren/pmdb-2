@@ -3,9 +3,12 @@ import { TmdbConfig } from '../models/interfaces/tmdb/tmdb-config';
 import { StorageService } from './storage.service';
 import { environment } from '../../../environments/environment.development';
 
+type ImageType = "poster_sizes" | "backdrop_sizes" | "profile_sizes" | "logo_sizes" | "still_sizes" 
+
 @Injectable({
     providedIn: 'root'
 })
+
 
 export class ImageService {
     protected storage = inject(StorageService)
@@ -23,7 +26,7 @@ export class ImageService {
         })
     }
 
-    getUrl(image: string, size: number = 500, type: string | undefined): string {
+    getUrl(image: string, size: number = 500, type?: string): string {
 
         const types: any = {
             poster: "poster_sizes",
@@ -33,17 +36,11 @@ export class ImageService {
             still: "still_sizes"
         }
 
-        const queryType: "poster_sizes" | "backdrop_sizes" | "profile_sizes" | "logo_sizes" | "still_sizes" | undefined = 
-            type ? types[type] : undefined
+        const queryType: ImageType = type && types[type] || "poster_sizes"
 
-        let querySizes: any[] = []
-        if (queryType) {
-            querySizes = this.parseSizes(Object.values(this.config?.images[queryType] || []))
-        }
+        let querySizes: any[] = this.parseSizes(Object.values(this.config?.images[queryType] || []))
 
-        let closestSize: string | undefined = querySizes.find((querySize: string) => {
-            return +querySize.replace("w", "") > size
-        })
+        let closestSize = querySizes.find((querySize: string) => +querySize.replace("w", "") > size)
         if (!closestSize) closestSize = querySizes[querySizes.length - 1]
 
         return `${this.imageUrl}${closestSize}${image}`

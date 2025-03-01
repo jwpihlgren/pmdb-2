@@ -1,6 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
-import { PopularMovie } from '../../../../shared/models/interfaces/popular-movie';
-import { Pagination } from '../../../../shared/models/interfaces/pagination';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PopularMoviesService } from '../../../../shared/services/popular-movies.service';
@@ -17,16 +15,16 @@ import { ContentMovieComponent } from '../../../../shared/components/card/compon
     standalone: true
 })
 export class PopularMoviesComponent {
-    popoularMovies: Signal<PopularMovie[] | undefined>
-    paginationResult: Signal<Pagination>
+    popularMovies
+    paginationResult
     protected popularMoviesService: PopularMoviesService = inject(PopularMoviesService)
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     protected router: Router = inject(Router)
 
     constructor() {
         const page = this.activatedRoute.snapshot.queryParamMap.get("page")
-        if (!page) this.popoularMovies = toSignal(this.popularMoviesService.get())
-        else this.popoularMovies = toSignal(this.popularMoviesService.get(+page))
+        if (!page) this.popularMovies = toSignal(this.popularMoviesService.get())
+        else this.popularMovies = toSignal(this.popularMoviesService.get(+page))
         this.paginationResult = toSignal(this.popularMoviesService.getPaginationResults(), { requireSync: true })
     }
 

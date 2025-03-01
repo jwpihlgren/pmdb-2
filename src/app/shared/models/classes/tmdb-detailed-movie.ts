@@ -39,7 +39,7 @@ export class TmdbDetailedMovie implements DetailedMovie {
         this.originalTitle = details.original_title
         this.spokenLanguages = this.mapLanguages(details.spoken_languages)
         this.originalLanguage = details.original_language
-        this.backdropImagePath = details.poster_path
+        this.backdropImagePath = details.backdrop_path
         this.productionCompanies = this.mapCompanies(details.production_companies)
         this.productionCountries = this.mapCountries(details.production_countries)
     }

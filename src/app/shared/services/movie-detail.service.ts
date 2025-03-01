@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { DetailedMovie } from '../models/interfaces/detailed-movie';
 import { TmdbMovieDetails } from '../models/interfaces/tmdb/tmdb-movie-details';
 import { TmdbDetailedMovie } from '../models/classes/tmdb-detailed-movie';
+import SearchQueryBuilder from '../models/classes/movie-search-query-builder.class';
 
 @Injectable({
     providedIn: 'root'
@@ -12,9 +13,10 @@ import { TmdbDetailedMovie } from '../models/classes/tmdb-detailed-movie';
 export class MovieDetailService {
 
     api = environment.tmdbApiUrl
-    apiKey = environment.tmdbApiKey
 
-    constructor(private http: HttpClient) { }
+    protected queryBuilder = inject(SearchQueryBuilder)
+    protected http = inject(HttpClient)
+
 
     get(id: string): Observable<DetailedMovie> {
         return this.request(id)
@@ -22,7 +24,8 @@ export class MovieDetailService {
 
     private request(id: string): Observable<DetailedMovie> {
         const endpoint = `movie/${id}` 
-        const queryParams = `?api_key=${this.apiKey}`
+        this.queryBuilder.apiKey(environment.tmdbApiKey)
+        const queryParams = this.queryBuilder.getQuery()
         const url = `${this.api}${endpoint}${queryParams}`
         const options = {}
 
