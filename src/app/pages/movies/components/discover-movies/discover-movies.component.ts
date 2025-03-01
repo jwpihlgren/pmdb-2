@@ -14,10 +14,13 @@ import { ComboboxComponent } from '../../../../shared/components/combobox/combob
 import { ChipListComponent } from '../../../../shared/components/chip-list/chip-list.component';
 import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
 import { map } from 'rxjs';
+import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
+import { Pagination } from '../../../../shared/models/interfaces/pagination';
+import { PlaceholderPagination } from '../../../../shared/models/classes/placeholder-pagination';
 
 @Component({
     selector: 'app-discover-movies',
-    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ListboxComponent, ComboboxComponent, ChipListComponent, ChipComponent],
+    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ListboxComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent],
     templateUrl: './discover-movies.component.html',
     styleUrl: './discover-movies.component.css'
 })
@@ -32,6 +35,7 @@ export class DiscoverMoviesComponent {
     listboxParams!: { list: { name: string, value: string | number }[] }
     years: number[] = this.generateNumberRange(new Date().getFullYear(), 1900)
     results = toSignal(this.discoverService.results$)
+    pagination: Signal<Pagination> = toSignal(this.discoverService.pagination, {initialValue: new PlaceholderPagination()} )
     voteAverageOptions = {
         list: this.generateNumberRange(1, 10).map(n => {
             return {
@@ -79,6 +83,8 @@ export class DiscoverMoviesComponent {
             })
         ), { initialValue: { lte: "", gte: "" } })
 
+        console.log(this.results())
+
         //this.peopleSearchSevice.results$.subscribe(data => console.log(data))
 
         //this.peopleSearchSevice.search("jason")
@@ -101,6 +107,10 @@ export class DiscoverMoviesComponent {
         this.discoverService.discover(formValue)
     }
 
+    handlePageRequest(page: number) {
+        const formValue: MovieDiscoverFormValue = this.discoverForm.getRawValue()
+        this.discoverService.discover(formValue, page)
+    }
     onRemove(value: string): void {
         const selectedGenres = this.selectedGenres.getRawValue()
         const updatedGenres = selectedGenres.filter((genre: string | number) => genre.toString() !== value.toString())

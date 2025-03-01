@@ -15,11 +15,5 @@ export default class SearchQueryBuilder extends QueryBuilder<SearchQueryBuilder>
         if(!value) return ""
         return `${value}`
     })
-
-    page = this.paramFactory(this, "page", (value: number) => {
-        if(!value) return ""
-        return `${value}`
-    })
-
 }
     

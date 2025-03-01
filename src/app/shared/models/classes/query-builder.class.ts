@@ -9,6 +9,11 @@ abstract class QueryBuilder<Q> {
         return `${value}`
     })
 
+    page = this.paramFactory(this as any, "page", (value?: number) => {
+        if(!value) return ""
+        return `${value.toString()}`
+    })
+
     protected dropParam(name: string): void {
         this.query = [...this.query].filter(elem => !elem.includes(name))
     }

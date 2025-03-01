@@ -30,6 +30,7 @@ export default class MovieDiscoverQueryBuilder extends QueryBuilder<MovieDiscove
         if (value > max) return `${max}`
         if (value < min) return `${min}`
         return `${value}`
+
     })
 
     voteAverageGte = this.paramFactory<number>(this, "vote_average.gte", (value: number) => {
