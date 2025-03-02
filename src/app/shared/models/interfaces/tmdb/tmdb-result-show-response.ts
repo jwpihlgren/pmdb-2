@@ -1,6 +1,6 @@
 import { TmdbResponseWrapper } from "./tmdb-response-wrapper";
 
-export interface TmdbTrendingShows extends TmdbResponseWrapper {
+export interface TmdbResultShowResponse extends TmdbResponseWrapper {
     results: {
         adult: boolean
         backdrop_path: string

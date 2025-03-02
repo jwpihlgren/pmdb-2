@@ -1,7 +1,7 @@
-import { TmdbTrendingMovies } from "../interfaces/tmdb/tmdb-trending-movies";
-import { TrendingMovie } from "../interfaces/trending-movie";
+import { ResultMovie } from "../interfaces/result-movie";
+import { TmdbResultMovieResponse } from "../interfaces/tmdb/tmdb-result-movie-response";
 
-export class TmdbTrendingMovie implements TrendingMovie {
+export class TmdbResultMovie implements ResultMovie {
     adult: boolean
     backdropImagePath: string
     id: number
@@ -18,7 +18,7 @@ export class TmdbTrendingMovie implements TrendingMovie {
     voteAverage: number
     voteCount: number
 
-constructor(data: TmdbTrendingMovies["results"][0]) {
+constructor(data: TmdbResultMovieResponse["results"][0]) {
         this.adult = data.adult 
         this.backdropImagePath = data.backdrop_path
         this.id = data.id

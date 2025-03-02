@@ -1,13 +1,13 @@
-import { PeopleSearchResult } from "../interfaces/people-search-result";
-import { TMDBPeopleSearchResponse } from "../interfaces/tmdb/tmdbpeople-search-response";
+import { SearchPeopleResult } from "../interfaces/search-people-result";
+import { TmdbSearchPeopleResponse } from "../interfaces/tmdb/tmdb-search-people-response";
 
-export default class TMDBPeopleSearchResult implements PeopleSearchResult {
+export default class TMDBPeopleSearchResult implements SearchPeopleResult{
     id: number;
     name: string;
     popularity: number;
     profilePath: string;
     knownFor: { title: string; mediaType: string; id: number; }[];
-    constructor(result: TMDBPeopleSearchResponse['results'][0]) {
+    constructor(result: TmdbSearchPeopleResponse['results'][0]) {
         this.id = result.id
         this.name = result.name
         this.popularity = result.popularity

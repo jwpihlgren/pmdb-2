@@ -1,5 +1,6 @@
-export interface TMDBPeopleSearchResponse {
-    page: number
+import { TmdbResponseWrapper } from "./tmdb-response-wrapper"
+
+export interface TmdbSearchPeopleResponse extends TmdbResponseWrapper {
     results: {
         adult: boolean
         gender: number
@@ -27,6 +28,4 @@ export interface TMDBPeopleSearchResponse {
             vote_count: number
         }[]
     }[]
-    total_pages: number
-    total_results: number
 }

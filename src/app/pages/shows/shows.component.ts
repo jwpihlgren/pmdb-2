@@ -1,10 +1,10 @@
-import { Component, Signal } from '@angular/core';
-import { TrendingShowsService } from '../../shared/services/trending-shows.service';
-import { TrendingShow } from '../../shared/models/interfaces/trending-show';
+import { Component, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Pagination } from '../../shared/models/interfaces/pagination';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
+import { ResultShow } from '../../shared/models/interfaces/result-show';
+import { TrendingShowsService } from '../../shared/services/trending-shows.service';
 
 @Component({
     selector: 'app-shows',
@@ -15,13 +15,13 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
 })
 export class ShowsComponent {
 
-    trendingShows: Signal<TrendingShow[] | undefined>
+    trendingShows: Signal<ResultShow[] | undefined>
     paginationResults: Signal<Pagination>
+    protected trendingShowsService = inject(TrendingShowsService)
+    protected activatedRoute = inject(ActivatedRoute)
+    protected router = inject(Router)
 
-    constructor(
-        private trendingShowsService: TrendingShowsService,
-        private activatedRoute: ActivatedRoute,
-        private router: Router) {
+    constructor() {
         const page = this.activatedRoute.snapshot.queryParamMap.get("page")
         if (!page) this.trendingShows = toSignal(this.trendingShowsService.get())
         else this.trendingShows = toSignal(this.trendingShowsService.get(+page))

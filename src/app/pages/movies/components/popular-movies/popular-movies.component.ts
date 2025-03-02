@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { PopularMoviesService } from '../../../../shared/services/popular-movies.service';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
 import { CardComponent } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
+import { PopularMoviesService } from '../../../../shared/services/popular-movies.service';
 
 @Component({
     selector: 'app-popular-movies',

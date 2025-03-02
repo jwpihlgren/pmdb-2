@@ -1,5 +1,5 @@
 import { DetailedMovie } from "../interfaces/detailed-movie";
-import { TmdbMovieDetails } from "../interfaces/tmdb/tmdb-movie-details";
+import { TmdbDetailedMovieResponse } from "../interfaces/tmdb/tmdb-detailed-movie-response";
 
 export class TmdbDetailedMovie implements DetailedMovie {
     id: number;
@@ -21,8 +21,9 @@ export class TmdbDetailedMovie implements DetailedMovie {
     backdropImagePath: string;
     productionCompanies: { id: number, logoPath: string, name: string, originCountry: string }[];
     productionCountries: { iso31661: string, name: string}[];
+    tagline: string
 
-    constructor(details: TmdbMovieDetails) {
+    constructor(details: TmdbDetailedMovieResponse) {
         this.id = details.id
         this.title = details.title
         this.genres = details.genres
@@ -42,9 +43,10 @@ export class TmdbDetailedMovie implements DetailedMovie {
         this.backdropImagePath = details.backdrop_path
         this.productionCompanies = this.mapCompanies(details.production_companies)
         this.productionCountries = this.mapCountries(details.production_countries)
+        this.tagline = details.tagline
     }
 
-    private mapLanguages(raw: TmdbMovieDetails["spoken_languages"]): DetailedMovie["spokenLanguages"] {
+    private mapLanguages(raw: TmdbDetailedMovieResponse["spoken_languages"]): DetailedMovie["spokenLanguages"] {
         const result: DetailedMovie["spokenLanguages"] = raw.map(value => {
             return {
                 name: value.name,
@@ -55,7 +57,7 @@ export class TmdbDetailedMovie implements DetailedMovie {
         return result
     }
 
-    private mapCompanies(raw: TmdbMovieDetails["production_companies"]): DetailedMovie["productionCompanies"] {
+    private mapCompanies(raw: TmdbDetailedMovieResponse["production_companies"]): DetailedMovie["productionCompanies"] {
         const result: DetailedMovie["productionCompanies"] = raw.map(value => {
             return {
                 name: value.name,
@@ -67,7 +69,7 @@ export class TmdbDetailedMovie implements DetailedMovie {
         return result
     }
 
-    private mapCountries(raw: TmdbMovieDetails["production_countries"]): DetailedMovie["productionCountries"] {
+    private mapCountries(raw: TmdbDetailedMovieResponse["production_countries"]): DetailedMovie["productionCountries"] {
         const result: DetailedMovie["productionCountries"] = raw.map(value => {
             return {
                 name: value.name,

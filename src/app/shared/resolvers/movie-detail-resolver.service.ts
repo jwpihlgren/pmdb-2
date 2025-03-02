@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { EMPTY, Observable } from 'rxjs';
-import { MovieDetailService } from '../services/movie-detail.service';
-import { MovieDetails } from '../models/interfaces/movie-details';
+import { DetailedMovieService } from '../services/movie-detail.service';
+import { DetailedMovie } from '../models/interfaces/detailed-movie';
 
 @Injectable({
     providedIn: 'root'
 })
-export class MovieDetailResolverService implements Resolve<MovieDetails> {
+export class MovieDetailResolverService implements Resolve<DetailedMovie> {
 
-    constructor(private service: MovieDetailService) { }
+    constructor(private service: DetailedMovieService) { }
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<MovieDetails> {
         const id = route.queryParamMap.get("id")

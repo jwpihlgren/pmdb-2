@@ -1,8 +1,42 @@
 @defer (when movieDetails() !== undefined ){
-<div class="container">
-    <img ngSrc="{{movieDetails()!.backdropImagePath}}" priority fill alt="" [loaderParams]="{type: 'backdrop'}">
-    <span>{{movieDetails()!.title}}</span>
-</div>
+<main>
+    <div class="background-image">
+        <img ngSrc="{{movieDetails()!.backdropImagePath}}" priority fill alt="" [loaderParams]="{type: 'backdrop'}">
+    </div>
+    <div class="container">
+        <section class="hero">
+            <app-image [params]="posterParams"></app-image>
+            <div class="hero--about">
+                <div class="hero--header">
+                    <h1 [title]="'Original title: ' + movieDetails()!.originalTitle">{{movieDetails()!.title}}
+                        @if(movieDetails()!.status !== "released"){
+                        <h5>
+                            ({{movieDetails!()!.status}})
+                        </h5>
+                        }
+                    </h1>
+                    <h5 [title]="voteCount">{{movieDetails()!.voteAverage | number: '1.1-1'}} / 10</h5>
+                </div>
+                <div class="hero--meta">
+                    @for(data of metaData; track $index) {
+                    <span [title]="data.alt">{{data.value}} {{data.suffix}}</span>
+                    @if($index !== metaData.length - 1) {
+                    <span>|</span>
+                    }
+                    }
+                </div>
+                <p>{{movieDetails()!.overview}}</p>
+                <div class="hero--genres">
+                    @for(genre of movieDetails()!.genres; track $index) {
+                    <app-chip [value]="genre.name">{{genre.name}}</app-chip>
+                    }
+                </div>
+                <a [href]="imdbUrl" rel="noreferrer" target="_blank">View at imdb</a>
+            </div>
+
+        </section>
+    </div>
+</main>
 } @placeholder {
 <span>Loading</span>
 }

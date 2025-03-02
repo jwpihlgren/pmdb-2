@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { DetailedMovie } from '../models/interfaces/detailed-movie';
-import { TmdbMovieDetails } from '../models/interfaces/tmdb/tmdb-movie-details';
 import { TmdbDetailedMovie } from '../models/classes/tmdb-detailed-movie';
 import SearchQueryBuilder from '../models/classes/movie-search-query-builder.class';
+import { TmdbDetailedMovieResponse } from '../models/interfaces/tmdb/tmdb-detailed-movie-response';
 
 @Injectable({
     providedIn: 'root'
 })
-export class MovieDetailService {
+export class DetailedMovieService {
 
     api = environment.tmdbApiUrl
 
@@ -25,12 +25,14 @@ export class MovieDetailService {
     private request(id: string): Observable<DetailedMovie> {
         const endpoint = `movie/${id}` 
         this.queryBuilder.apiKey(environment.tmdbApiKey)
+        this.queryBuilder.appendToResponse(["credits", "images", "keywords", "recommendations", "reviews", "similar", "videos"])
         const queryParams = this.queryBuilder.getQuery()
         const url = `${this.api}${endpoint}${queryParams}`
         const options = {}
 
-        return this.http.get<TmdbMovieDetails>(url, options).pipe(
-            map(data => new TmdbDetailedMovie(data))
+        return this.http.get<TmdbDetailedMovieResponse>(url, options).pipe(
+            map(data => new TmdbDetailedMovie(data)),
+            tap(data => console.log(data))
         )
     }
 }

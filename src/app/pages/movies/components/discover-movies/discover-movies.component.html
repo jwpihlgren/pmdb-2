@@ -6,7 +6,7 @@
                 <app-listbox class="list" [params]="listboxParams" formControlName="genres"></app-listbox>
                 <app-chip-list class="selected">
                     @for(chip of discoverForm.value.genres; track $index) {
-                    <app-chip [value]="chip.toString()" (action)="onRemove($event)">{{parseGenre(chip)}}</app-chip>
+                    <app-chip [value]="chip.toString()" [action]="true" (clickRequest)="onRemove($event)">{{parseGenre(chip)}}</app-chip>
                     }
                 </app-chip-list>
             </app-combobox>

@@ -1,4 +1,4 @@
-export interface PeopleSearchResult {
+export interface SearchPeopleResult {
     id: number
     name: string
     popularity: number

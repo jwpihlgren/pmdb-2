@@ -8,11 +8,13 @@ import { Component, input, InputSignal, output } from '@angular/core';
 })
 export class ChipComponent {
     value: InputSignal<string> = input.required()
+    action: InputSignal<boolean> = input(false)
 
-    action = output<string>()
+
+    clickRequest = output<string>()
 
     onClick(value: string) {
-        this.action.emit(value)
+        this.clickRequest.emit(value)
     }
 
     handleKeyup(params: {value: string, event: KeyboardEvent}):void {

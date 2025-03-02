@@ -15,5 +15,9 @@ export default class SearchQueryBuilder extends QueryBuilder<SearchQueryBuilder>
         if(!value) return ""
         return `${value}`
     })
+
+    appendToResponse = this.paramFactory(this, "append_to_response", (value: string[]) => {
+        return value.join(",")
+    })
 }
     

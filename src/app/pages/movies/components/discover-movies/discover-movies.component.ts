@@ -3,19 +3,19 @@ import { DiscoverMoviesService } from '../../../../shared/services/discover-movi
 import { ConfigService } from '../../../../shared/services/config.service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Genre } from '../../../../shared/models/interfaces/genre';
-import { MovieDiscoverFormValue } from '../../../../shared/models/interfaces/movie-discover-form-value';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
 import { CardComponent } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
 import { ListboxComponent } from '../../../../listbox/listbox.component';
-import { PeopleSearchService } from '../../../../shared/services/people-search.service';
+import { SearchPeopleService } from '../../../../shared/services/search-people.service';
 import { ComboboxComponent } from '../../../../shared/components/combobox/combobox.component';
 import { ChipListComponent } from '../../../../shared/components/chip-list/chip-list.component';
 import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
 import { map } from 'rxjs';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { Pagination } from '../../../../shared/models/interfaces/pagination';
+import { DiscoverMovieFormValue } from '../../../../shared/models/interfaces/discover-movie-form-value';
 
 @Component({
     selector: 'app-discover-movies',
@@ -28,7 +28,7 @@ export class DiscoverMoviesComponent {
     protected formBuilder = inject(FormBuilder)
     protected discoverService: DiscoverMoviesService = inject(DiscoverMoviesService)
     protected configService: ConfigService = inject(ConfigService)
-    protected peopleSearchSevice: PeopleSearchService = inject(PeopleSearchService)
+    protected peopleSearchSevice: SearchPeopleService = inject(SearchPeopleService)
     genres!: Genre[]
 
     listboxParams!: { list: { name: string, value: string | number }[] }
@@ -102,12 +102,12 @@ export class DiscoverMoviesComponent {
     }
 
     onSubmit(): void {
-        const formValue: MovieDiscoverFormValue = this.discoverForm.getRawValue()
+        const formValue: DiscoverMovieFormValue = this.discoverForm.getRawValue()
         this.discoverService.discover(formValue)
     }
 
     handlePageRequest(page: number) {
-        const formValue: MovieDiscoverFormValue = this.discoverForm.getRawValue()
+        const formValue: DiscoverMovieFormValue = this.discoverForm.getRawValue()
         this.discoverService.discover(formValue, page)
     }
     onRemove(value: string): void {

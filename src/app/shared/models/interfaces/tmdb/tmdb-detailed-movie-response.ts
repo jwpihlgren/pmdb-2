@@ -1,4 +1,4 @@
-export interface TmdbMovieDetails {
+export interface TmdbDetailedMovieResponse {
     adult: boolean
     backdrop_path: string
     belongs_to_collection: string

@@ -4,13 +4,13 @@ import { BehaviorSubject, map, Observable, ReplaySubject, switchMap, } from 'rxj
 import { HttpClient } from '@angular/common/http';
 import MovieDiscoverQueryBuilder from '../models/classes/movie-discover-query-builder.class';
 import MovieFilters from '../models/interfaces/movie-filters';
-import { MovieDiscoverFormValue } from '../models/interfaces/movie-discover-form-value';
-import { TrendingMovie } from '../models/interfaces/trending-movie';
-import { TmdbTrendingMovie } from '../models/classes/tmdb-trending-movie';
-import { TmdbTrendingMovies } from '../models/interfaces/tmdb/tmdb-trending-movies';
 import { PlaceholderPagination } from '../models/classes/placeholder-pagination';
 import { Pagination } from '../models/interfaces/pagination';
 import { TmdbPagination } from '../models/classes/tmdb-pagination';
+import { DiscoverMovieFormValue } from '../models/interfaces/discover-movie-form-value';
+import { TmdbResultMovieResponse } from '../models/interfaces/tmdb/tmdb-result-movie-response';
+import { TmdbResultMovie } from '../models/classes/tmdb-result-movie';
+import { ResultMovie } from '../models/interfaces/result-movie';
 
 @Injectable({
     providedIn: 'root'
@@ -19,12 +19,11 @@ export class DiscoverMoviesService {
     protected http = inject(HttpClient)
 
     private api = environment.tmdbApiUrl
-    private apikey = environment.tmdbApiKey
 
     private movieQueryBuilder: MovieFilters = new MovieDiscoverQueryBuilder()
-    private query$: ReplaySubject<{query: MovieDiscoverFormValue, page?: number}> = new ReplaySubject()
+    private query$: ReplaySubject<{query: DiscoverMovieFormValue, page?: number}> = new ReplaySubject()
     private paginationResults$ = new BehaviorSubject<Pagination>(new PlaceholderPagination())
-    results$: Observable<TrendingMovie[]>
+    results$: Observable<ResultMovie[]>
 
     constructor() {
         this.results$ = this.query$.pipe(
@@ -34,7 +33,7 @@ export class DiscoverMoviesService {
         )
     }
 
-    discover(value: MovieDiscoverFormValue, page?: number): void {
+    discover(value: DiscoverMovieFormValue, page?: number): void {
         this.query$.next({query: value, page: page})
     }
 
@@ -42,7 +41,7 @@ export class DiscoverMoviesService {
         return this.paginationResults$.asObservable()
     }
 
-    private request(params: {query: MovieDiscoverFormValue, page?: number}): Observable<TrendingMovie[]> {
+    private request(params: {query: DiscoverMovieFormValue, page?: number}): Observable<ResultMovie[]> {
         const endpoint = `discover/movie`
         const value = params.query
         const page = params.page 
@@ -61,10 +60,10 @@ export class DiscoverMoviesService {
         const url = `${this.api}${endpoint}${queryParams}`
         const options = {}
 
-        return this.http.get<TmdbTrendingMovies>(url, options).pipe(
+        return this.http.get<TmdbResultMovieResponse>(url, options).pipe(
             map(data => {
                 this.paginationResults$.next(new TmdbPagination(data))
-                return data.results.map(datum => new TmdbTrendingMovie(datum))
+                return data.results.map(datum => new TmdbResultMovie(datum))
             }),
         )
     }

@@ -1,6 +1,7 @@
-import { TmdbTrendingShows } from "../interfaces/tmdb/tmdb-trending-shows"
+import { ResultShow } from "../interfaces/result-show"
+import { TmdbResultShowResponse } from "../interfaces/tmdb/tmdb-result-show-response"
 
-export class TmdbTrendingShow implements TmdbTrendingShow {
+export class TmdbResultShow implements ResultShow {
     adult: boolean
     backdropImageUrl: string
     id: number
@@ -18,7 +19,7 @@ export class TmdbTrendingShow implements TmdbTrendingShow {
     originCountries: string[]
 
 
-    constructor(data: TmdbTrendingShows["results"][0]) {
+    constructor(data: TmdbResultShowResponse["results"][0]) {
         this.adult = data.adult
         this.backdropImageUrl = data.backdrop_path
         this.id = data.id

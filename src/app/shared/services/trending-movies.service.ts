@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, Subject, switchMap, takeUntil } from 'rxjs';
+import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
-import { TrendingMovie } from '../models/interfaces/trending-movie';
-import { TmdbTrendingMovies } from '../models/interfaces/tmdb/tmdb-trending-movies';
-import { TmdbTrendingMovie } from '../models/classes/tmdb-trending-movie';
 import { Pagination } from '../models/interfaces/pagination';
 import { PlaceholderPagination } from '../models/classes/placeholder-pagination';
 import { TmdbPagination } from '../models/classes/tmdb-pagination';
 import { TmdbTimeWindow } from '../models/types/tmdb-time-window';
+import { TmdbResultMovie } from '../models/classes/tmdb-result-movie';
+import { TmdbResultMovieResponse } from '../models/interfaces/tmdb/tmdb-result-movie-response';
+import { ResultMovie } from '../models/interfaces/result-movie';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +18,7 @@ export class TrendingMoviesService {
     private api = environment.tmdbApiUrl
     private apikey = environment.tmdbApiKey
     private pageSubject$: BehaviorSubject<number> = new BehaviorSubject(1)
-    private trendingMovies$!: Observable<TrendingMovie[]>
+    private trendingMovies$!: Observable<ResultMovie[]>
     private paginationResults$: BehaviorSubject<Pagination> = new BehaviorSubject(new PlaceholderPagination())
     private callerTimeWindow?: TmdbTimeWindow
 
@@ -30,7 +30,7 @@ export class TrendingMoviesService {
         )
     }
 
-    get(page: number = 1, timeWindow?: TmdbTimeWindow): Observable<TrendingMovie[]> {
+    get(page: number = 1, timeWindow?: TmdbTimeWindow): Observable<ResultMovie[]> {
         if (timeWindow) {
             this.callerTimeWindow = timeWindow
         }
@@ -46,16 +46,16 @@ export class TrendingMoviesService {
         return this.paginationResults$.asObservable()
     }
 
-   private request(page: number = 1, timeWindow: TmdbTimeWindow = "day"): Observable<TrendingMovie[]> {
+    private request(page: number = 1, timeWindow: TmdbTimeWindow = "day"): Observable<ResultMovie[]> {
         const endpoint = `trending/movie/${timeWindow}`
         const queryParams = `?api_key=${this.apikey}&page=${page}`
         const url = `${this.api}${endpoint}${queryParams}`
         const options = {}
 
-        return this.http.get<TmdbTrendingMovies>(url, options).pipe(
+        return this.http.get<TmdbResultMovieResponse>(url, options).pipe(
             map(data => {
                 this.paginationResults$.next(new TmdbPagination(data))
-                return data.results.map(datum => new TmdbTrendingMovie(datum))
+                return data.results.map(datum => new TmdbResultMovie(datum))
             }),
         )
     }

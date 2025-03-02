@@ -1,6 +1,5 @@
 import { Component, inject, Signal } from '@angular/core';
 import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
-import { TrendingMovie } from '../../../../shared/models/interfaces/trending-movie';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { Pagination } from '../../../../shared/models/interfaces/pagination';
 import { TrendingMoviesService } from '../../../../shared/services/trending-movies.service';
@@ -8,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CardComponent } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
+import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 
 @Component({
     selector: 'app-trending-movies',
@@ -18,7 +18,7 @@ import { ContentMovieComponent } from '../../../../shared/components/card/compon
 })
 export class TrendingMoviesComponent {
 
-    trendingMovies: Signal<TrendingMovie[] | undefined>
+    trendingMovies: Signal<ResultMovie[] | undefined>
     paginationResult: Signal<Pagination>
     protected trendingMoviesService: TrendingMoviesService = inject(TrendingMoviesService)
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)

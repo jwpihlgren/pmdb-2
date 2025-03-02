@@ -1,7 +1,7 @@
 import { DetailedShow } from "../interfaces/detailed-show";
-import { TmdbShowDetails } from "../interfaces/tmdb/tmdb-show-details";
+import { TmdbDetailedShowResponse } from "../interfaces/tmdb/tmdb-detailed-show-response";
 
-export class TmdbDetailedShow implements DetailedShow {
+export class TmdbDetailedShow implements DetailedShow{
     adult: boolean
     backdropImageUrl: string
     createdBy: {
@@ -83,7 +83,7 @@ export class TmdbDetailedShow implements DetailedShow {
     voteAverage: number
     voteCount: number
 
-    constructor(data: TmdbShowDetails) {
+    constructor(data: TmdbDetailedShowResponse) {
         this.adult = data.adult
         this.backdropImageUrl = data.backdrop_path
         this.createdBy = this.mapCreatedBy(data.created_by)
@@ -119,7 +119,7 @@ export class TmdbDetailedShow implements DetailedShow {
 
     }
 
-    mapCreatedBy(data: TmdbShowDetails["created_by"]): DetailedShow["createdBy"] {
+    mapCreatedBy(data: TmdbDetailedShowResponse["created_by"]): TmdbDetailedShow["createdBy"] {
         return data.map(datum => {
             return {
                 id: datum.id,
@@ -131,7 +131,7 @@ export class TmdbDetailedShow implements DetailedShow {
         })
     }
 
-    mapGenres(data: TmdbShowDetails["genres"]): DetailedShow["genres"] {
+    mapGenres(data: TmdbDetailedShowResponse["genres"]): TmdbDetailedShow["genres"] {
         return data.map(datum => {
             return {
                 id: datum.id,
@@ -140,7 +140,7 @@ export class TmdbDetailedShow implements DetailedShow {
         })
     }
 
-    mapLastEpisode(data: TmdbShowDetails["last_episode_to_air"]): DetailedShow["lastEpisodeToAir"] {
+    mapLastEpisode(data: TmdbDetailedShowResponse["last_episode_to_air"]): TmdbDetailedShow["lastEpisodeToAir"] {
         return {
             id: data.id,
             name: data.name,
@@ -157,7 +157,7 @@ export class TmdbDetailedShow implements DetailedShow {
         }
     }
 
-    mapNetworks(data: TmdbShowDetails["networks"]): DetailedShow["networks"] {
+    mapNetworks(data: TmdbDetailedShowResponse["networks"]): TmdbDetailedShow["networks"] {
         return data.map(datum => {
             return {
                 id: datum.id,
@@ -168,7 +168,7 @@ export class TmdbDetailedShow implements DetailedShow {
         })
     }
 
-    mapProductionCompanies(data: TmdbShowDetails["production_companies"]): DetailedShow["productionCompanies"] {
+    mapProductionCompanies(data: TmdbDetailedShowResponse["production_companies"]): TmdbDetailedShow["productionCompanies"] {
         return data.map(datum => {
             return {
                 originCountry: datum.origin_country,
@@ -179,7 +179,7 @@ export class TmdbDetailedShow implements DetailedShow {
         })
     }
 
-    mapProductionCountries(data: TmdbShowDetails["production_countries"]): DetailedShow["productionCountries"] {
+    mapProductionCountries(data: TmdbDetailedShowResponse["production_countries"]): TmdbDetailedShow["productionCountries"] {
         return data.map(datum => {
             return {
                 name: datum.name,
@@ -188,7 +188,7 @@ export class TmdbDetailedShow implements DetailedShow {
         })
     }
 
-    mapSeasons(data: TmdbShowDetails["seasons"]): DetailedShow["seasons"] {
+    mapSeasons(data: TmdbDetailedShowResponse["seasons"]): TmdbDetailedShow["seasons"] {
         return data.map(datum => {
             return {
                 name: datum.name,
@@ -203,7 +203,7 @@ export class TmdbDetailedShow implements DetailedShow {
         })
     }
 
-    mapSpokenLanguages(data: TmdbShowDetails["spoken_languages"]): DetailedShow["spokenLanguages"] {
+    mapSpokenLanguages(data: TmdbDetailedShowResponse["spoken_languages"]): TmdbDetailedShow["spokenLanguages"] {
         return data.map(datum => {
             return {
                 name: datum.name,

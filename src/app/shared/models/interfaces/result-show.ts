@@ -1,17 +1,17 @@
-export interface TrendingMovie {
+export interface ResultShow {
     adult: boolean
-    backdropImagePath: string
+    backdropImageUrl: string
     id: number
-    title: string
+    name: string
     originalLanguage: string
-    originalTitle: string
+    originalName: string
     overview: string
-    posterImagePath: string
+    posterImageUrl: string
     mediaType: string
     genreIds: number[]
     popularity: number
-    releaseDate: string
-    hasVideo: boolean
+    firstairDAte: string
     voteAverage: number
     voteCount: number
+    originCountries: string[]
 }

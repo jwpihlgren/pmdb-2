@@ -1,4 +1,4 @@
-export interface TmdbShowDetails {
+export interface TmdbDetailedShowResponse {
     adult: boolean
     backdrop_path: string
     created_by: {
