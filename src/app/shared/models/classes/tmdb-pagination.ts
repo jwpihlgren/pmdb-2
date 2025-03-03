@@ -1,5 +1,5 @@
 import { Pagination } from "../interfaces/pagination"
-import { TmdbResponseWrapper } from "../interfaces/tmdb/tmdb-response-wrapper"
+import TmdbResponseWrapper from "../interfaces/tmdb/tmdb-response-wrapper"
 
 export class TmdbPagination implements Pagination {
 

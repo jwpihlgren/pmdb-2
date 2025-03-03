@@ -13,12 +13,17 @@ export class CardComponent {
 
     readonly params: InputSignal<CardParams> = input.required()
     maxCharacters = 140
+
+    get imageSrc(): string{
+        return this.params().imageSrc || ""
+    }
 }
 
 
 export interface CardParams {
     id?: number
-    src: string
+    imageSrc?: string
+    mediaType?: "person" | "movie" | "show"
 }
 
 

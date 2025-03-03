@@ -7,11 +7,12 @@ import { ImageComponent, ImageParams } from '../../shared/components/image/image
 import { ChipComponent } from '../../shared/components/chip-list/components/chip/chip.component';
 import { environment } from '../../../environments/environment.development';
 import { DetailedMovieService } from '../../shared/services/detailed-movie.service';
+import { CardComponent } from '../../shared/components/card/card.component';
 
 @Component({
     selector: 'app-detailed-movie',
     standalone: true,
-    imports: [ImageComponent, NgOptimizedImage, ChipComponent, DecimalPipe],
+    imports: [ImageComponent, NgOptimizedImage, ChipComponent, DecimalPipe, CardComponent],
     templateUrl: './detailed-movie.component.html',
     providers: [DetailedMovieService],
     styleUrl: './detailed-movie.component.css'
@@ -49,6 +50,11 @@ export class DetailedMovieComponent {
         metaData.push({value: spokenLanguages.map(l => l.iso6391).join(", "), alt: "Spoken languages"})
         metaData.push({value: productionCountries.map(l => l.iso31661).join(", "), alt: "Production countries"})
         return metaData
+    }
+
+    get topBilled() {
+        const top = this.movieDetails()!.credits.cast.slice(0, 10)
+        return top
     }
 
 }

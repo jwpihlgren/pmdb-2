@@ -1,7 +1,7 @@
 @defer(when trendingMovies() !== undefined) {
 <app-card-grid>
     @for( movie of trendingMovies(); track $index) {
-    <app-card [params]="{id: movie.id, src: movie.posterImagePath}">
+    <app-card [params]="{id: movie.id, imageSrc: movie.posterImagePath}">
         <app-content-movie [params]="movie"></app-content-movie>
     </app-card>
     }

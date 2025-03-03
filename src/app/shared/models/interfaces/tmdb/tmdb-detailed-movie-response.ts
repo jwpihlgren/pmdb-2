@@ -1,3 +1,10 @@
+import TmdbCreditResponse from "./tmdb-credit-response"
+import TmdbImageResponse from "./tmdb-image-response"
+import TmdbKeywordsResponse from "./tmdb-keywords-response"
+import TmdbRecommendationsMovieResponse from "./tmdb-recommendations-movie-response"
+import { TmdbResultMovieResponse } from "./tmdb-result-movie-response"
+import TmdbVideosResponse from "./tmdb-videos-response"
+
 export interface TmdbDetailedMovieResponse {
     adult: boolean
     backdrop_path: string
@@ -15,6 +22,7 @@ export interface TmdbDetailedMovieResponse {
     production_companies: { id: number, logo_path: string, name: string, origin_country: string }[]
     production_countries: { iso_3166_1: string, name: string }[]
     release_date: string
+    recommendations: TmdbRecommendationsMovieResponse
     revenue: number
     runtime: number
     spoken_languages: { english_name: string, iso_639_1: string, name: string }[]
@@ -24,5 +32,10 @@ export interface TmdbDetailedMovieResponse {
     video: boolean
     vote_average: number
     vote_count: number
+    images: TmdbImageResponse
+    credits: TmdbCreditResponse
+    keywords: TmdbKeywordsResponse
+    videos: TmdbVideosResponse
 }
+
 

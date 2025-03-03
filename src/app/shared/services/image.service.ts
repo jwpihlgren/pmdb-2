@@ -28,6 +28,7 @@ export class ImageService {
 
     getUrl(image: string, size: number = 500, type?: string): string {
 
+        if(image === "") return this.getPlaceholderUrl()
         const types: any = {
             poster: "poster_sizes",
             backdrop: "backdrop_sizes",

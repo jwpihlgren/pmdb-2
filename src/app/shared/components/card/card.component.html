@@ -1,4 +1,4 @@
 <a [routerLink]="['../', params().id || '']">
-    <app-image [params]="{src: params().src, type: 'poster'}"></app-image>
+    <app-image [params]="{src: imageSrc, type: 'poster'}"></app-image>
     <ng-content></ng-content>
 </a>

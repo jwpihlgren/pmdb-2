@@ -61,12 +61,12 @@
     --duration-long: 200ms;
 
 
-    --fs-display-large: 5rem;
-    --fs-display-medium: 4rem;
-    --fs-display-small: 3rem;
+    --fs-display-large: 4rem;
+    --fs-display-medium: 2.75rem;
+    --fs-display-small: 2.5rem;
 
-    --fs-headline-large: 2.5rem;
-    --fs-headline-medium: 2.0rem;
+    --fs-headline-large: 2.25rem;
+    --fs-headline-medium: 1.5rem;
     --fs-headline-small: 1rem;
 
     --fs-body-large: 1.20rem;
@@ -80,6 +80,15 @@
     --ff-heading: "Inter", serif;
     --ff-body: "Inter", serif;
 
+    --spacing-extra-small: 0.25rem;
+    --spacing-small: 0.5rem;
+    --spacing-medium: 1rem;
+    --spacing-large: 2rem;
+    --spacing-extra-large: 4rem;
+    --spacing-xx-large: 6rem;
+    --spacing-xxx-large: 8rem;
+
+    --radii-medium: 1rem;
 }
 
 
@@ -132,6 +141,36 @@ h2,
 h3,
 h4 {
     font-family: var(--ff-heading);
+}
+
+h1 {
+    font-size: var(--fs-display-large);
+    line-height: calc(var(--fs-display-large) * var(--heading-line-height-multiplier));
+    letter-spacing: 0.25px;
+}
+
+h2 {
+    font-size: var(--fs-display-medium);
+    line-height: calc(var(--fs-display-medium) * var(--heading-line-height-multiplier));
+    letter-spacing: 0.25px;
+}
+
+h3 {
+    font-size: var(--fs-display-small);
+    line-height: calc(var(--fs-display-small) * var(--heading-line-height-multiplier));
+    letter-spacing: 0.25px;
+}
+
+h4 {
+    font-size: var(--fs-headline-large);
+    line-height: calc(var(--fs-headline-large) * var(--heading-line-height-multiplier));
+    letter-spacing: 0.25px;
+}
+
+h1 {
+    font-size: var(--fs-display-large);
+    line-height: calc(var(--fs-display-large) * var(--heading-line-height-multiplier));
+    letter-spacing: 0.25px;
 }
 
 h5 {

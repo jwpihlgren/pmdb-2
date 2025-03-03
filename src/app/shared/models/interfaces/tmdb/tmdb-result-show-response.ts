@@ -1,4 +1,4 @@
-import { TmdbResponseWrapper } from "./tmdb-response-wrapper";
+import TmdbResponseWrapper from "./tmdb-response-wrapper"
 
 export interface TmdbResultShowResponse extends TmdbResponseWrapper {
     results: {

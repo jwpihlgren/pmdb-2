@@ -1,7 +1,7 @@
 .content {
-    padding: var(--spacing-md, 1rem);
+    padding: var(--spacing-medium, 1rem);
     display: grid;
-    gap: var(--spacing-sm, 0.5rem);
+    gap: var(--spacing-small, 0.5rem);
     color: var(--clr-on-surface, red);
     text-decoration: none;
 }
@@ -10,6 +10,11 @@
     color: var(--clr-on-surface-accent, red);
 }
 
+.content--header {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-small);
+}
 .content--overview {
     height: 4lh;
     display: -webkit-box;

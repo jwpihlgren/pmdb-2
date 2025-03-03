@@ -5,7 +5,8 @@
     </div>
     <div class="container">
         <section class="hero">
-            <app-image [params]="posterParams"></app-image>
+
+            <app-image class="hero--image" [params]="posterParams"></app-image>
             <div class="hero--about">
                 <div class="hero--header">
                     <h1 [title]="'Original title: ' + movieDetails()!.originalTitle">{{movieDetails()!.title}}
@@ -33,7 +34,48 @@
                 </div>
                 <a [href]="imdbUrl" rel="noreferrer" target="_blank">View at imdb</a>
             </div>
+        </section>
+        <section class="content">
+            <div class="main">
+                <div class="cast">
+                    <h2>Top billed cast</h2>
+                    <div class="cast--grid">
+                        @for(top of topBilled; track $index){
+                        <app-card class="cast--item" [params]="{imageSrc: top.profilePath}">
+                            <div class="cast--about">
+                                <h5 class="cast--about__accent">
+                                    {{top.character}}
+                                </h5>
+                                <span>{{top.name}}</span>
+                            </div>
+                        </app-card>
 
+                        }
+                    </div>
+                </div>
+                <h2>Recommendations</h2>
+                <div class="recommendations--grid">
+                    @for(rec of movieDetails()!.recommendations.results; track $index){
+                    <app-card class="recommendations--item" [params]="{imageSrc: rec.posterImagePath}">
+                        <div class="recommendations--about">
+                            <h5 class="recommendations--about__accent">
+                                {{rec.title}}
+                            </h5>
+                            <span>{{rec.releaseDate}}</span>
+                        </div>
+                    </app-card>
+
+                    }
+                </div>
+            </div>
+            <aside>
+                <h2>Keywords</h2>
+                <div class="meta--keywords">
+                    @for(keyword of movieDetails()!.keywords; track $index) {
+                    <app-chip [value]="keyword.name">{{keyword.name}}</app-chip>
+                    }
+                </div>
+            </aside>
         </section>
     </div>
 </main>

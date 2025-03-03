@@ -1,7 +1,8 @@
 <div class="content">
-    <h5 class="content--h5">{{params().title}}</h5>
-    <span>{{params().originalLanguage}}</span>
-    <span>{{params().popularity}}</span>
+    <div class="content--header">
+        <h5 class="content--h5">{{params().title}}</h5>
+        <span>{{params().voteAverage | number: "1.1-1"}}</span>
+    </div>
     <span>{{params().releaseDate}}</span>
     <p class="content--overview">{{params().overview}}</p>
 </div>

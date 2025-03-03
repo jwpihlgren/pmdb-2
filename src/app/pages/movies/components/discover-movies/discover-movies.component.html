@@ -70,7 +70,7 @@
     @defer(when results() !== undefined) {
     <app-card-grid>
         @for( movie of results(); track $index) {
-        <app-card [params]="{id: movie.id, src: movie.posterImagePath}">
+        <app-card [params]="{id: movie.id, imageSrc: movie.posterImagePath}">
             <app-content-movie [params]="movie"></app-content-movie>
         </app-card>
         }
