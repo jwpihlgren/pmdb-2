@@ -7,7 +7,8 @@ import { ImageComponent, ImageParams } from '../../shared/components/image/image
 import { ChipComponent } from '../../shared/components/chip-list/components/chip/chip.component';
 import { environment } from '../../../environments/environment.development';
 import { DetailedMovieService } from '../../shared/services/detailed-movie.service';
-import { CardComponent } from '../../shared/components/card/card.component';
+import { CardComponent, CardParams } from '../../shared/components/card/card.component';
+import { ResultMovie } from '../../shared/models/interfaces/result-movie';
 
 @Component({
     selector: 'app-detailed-movie',
@@ -45,10 +46,10 @@ export class DetailedMovieComponent {
     get metaData(): Metadata[] {
         const metaData: Metadata[] = []
         const { releaseDate, runtime, spokenLanguages, productionCountries } = this.movieDetails()!
-        metaData.push({value: releaseDate, alt: "Release date"})
-        metaData.push({value: runtime, alt: "Runtime", suffix: " min"})
-        metaData.push({value: spokenLanguages.map(l => l.iso6391).join(", "), alt: "Spoken languages"})
-        metaData.push({value: productionCountries.map(l => l.iso31661).join(", "), alt: "Production countries"})
+        metaData.push({ value: releaseDate, alt: "Release date" })
+        metaData.push({ value: runtime, alt: "Runtime", suffix: " min" })
+        metaData.push({ value: spokenLanguages.map(l => l.iso6391).join(", "), alt: "Spoken languages" })
+        metaData.push({ value: productionCountries.map(l => l.iso31661).join(", "), alt: "Production countries" })
         return metaData
     }
 
@@ -56,8 +57,33 @@ export class DetailedMovieComponent {
         const top = this.movieDetails()!.credits.cast.slice(0, 10)
         return top
     }
+    createTopCardParams(top: DetailedMovie["credits"]["cast"][0]): CardParams {
+        const params: CardParams = {
+            imageType: "profile",
+            direction: "vertical",
+            id: top.id,
+            mediaType: "person",
+            imageSrc: top.profilePath
+        }
+
+        return params
+    }
+
+    createRecommendationCardParams(rec: ResultMovie): CardParams {
+        const params: CardParams = {
+            imageType: "poster",
+            direction: "horizontal",
+            id: rec.id,
+            mediaType: "movie",
+            imageSrc: rec.posterImagePath
+        }
+
+        return params
+    }
 
 }
+
+
 interface Metadata {
     value: any,
     suffix?: any,

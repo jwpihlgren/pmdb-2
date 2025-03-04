@@ -5,7 +5,7 @@ import { Pagination } from '../../../../shared/models/interfaces/pagination';
 import { TrendingMoviesService } from '../../../../shared/services/trending-movies.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { CardComponent } from '../../../../shared/components/card/card.component';
+import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
 import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 
@@ -38,6 +38,18 @@ export class TrendingMoviesComponent {
             queryParamsHandling: "replace",
             queryParams: { page: page }
         })
+    }
+
+    createCardParams(movie: ResultMovie): CardParams {
+        const params: CardParams = {
+            imageType: "poster",
+            direction: "vertical",
+            id: movie.id,
+            mediaType: "movie",
+            imageSrc: movie.posterImagePath
+        }
+
+        return params
     }
 
 }

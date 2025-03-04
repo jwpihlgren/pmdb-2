@@ -1,4 +1,11 @@
-<a [routerLink]="['../', params().id || '']">
-    <app-image [params]="{src: imageSrc, type: 'poster'}"></app-image>
+@if(id !== undefined && mediaType !== undefined) {
+<a [routerLink]="['/', params().mediaType, params().id || '']">
+    <app-image [params]="{src: imageSrc, type: imageType}"></app-image>
     <ng-content></ng-content>
 </a>
+} @else {
+<div>
+    <app-image [params]="{src: imageSrc, type: imageType}"></app-image>
+</div>
+
+}

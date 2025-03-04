@@ -41,7 +41,7 @@
                     <h2>Top billed cast</h2>
                     <div class="cast--grid">
                         @for(top of topBilled; track $index){
-                        <app-card class="cast--item" [params]="{imageSrc: top.profilePath}">
+                        <app-card class="cast--item" [params]="createTopCardParams(top)">
                             <div class="cast--about">
                                 <h5 class="cast--about__accent">
                                     {{top.character}}
@@ -56,7 +56,7 @@
                 <h2>Recommendations</h2>
                 <div class="recommendations--grid">
                     @for(rec of movieDetails()!.recommendations.results; track $index){
-                    <app-card class="recommendations--item" [params]="{imageSrc: rec.posterImagePath}">
+                    <app-card class="recommendations--item" [params]="createRecommendationCardParams(rec)">
                         <div class="recommendations--about">
                             <h5 class="recommendations--about__accent">
                                 {{rec.title}}

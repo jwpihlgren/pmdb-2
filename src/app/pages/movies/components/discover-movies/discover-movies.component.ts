@@ -5,7 +5,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
 import { Genre } from '../../../../shared/models/interfaces/genre';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
-import { CardComponent } from '../../../../shared/components/card/card.component';
+import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
 import { ListboxComponent } from '../../../../listbox/listbox.component';
 import { SearchPeopleService } from '../../../../shared/services/search-people.service';
@@ -16,6 +16,7 @@ import { map } from 'rxjs';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { Pagination } from '../../../../shared/models/interfaces/pagination';
 import { DiscoverMovieFormValue } from '../../../../shared/models/interfaces/discover-movie-form-value';
+import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 
 @Component({
     selector: 'app-discover-movies',
@@ -128,6 +129,18 @@ export class DiscoverMoviesComponent {
             range.push(i)
         }
         return range
+    }
+
+createCardParams(movie: ResultMovie): CardParams {
+        const params: CardParams = {
+            imageType: "poster",
+            direction: "vertical",
+            id: movie.id,
+            mediaType: "movie",
+            imageSrc: movie.posterImagePath
+        }
+
+        return params
     }
 
 }

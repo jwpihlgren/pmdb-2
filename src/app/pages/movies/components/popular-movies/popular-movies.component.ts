@@ -3,9 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
-import { CardComponent } from '../../../../shared/components/card/card.component';
+import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
 import { PopularMoviesService } from '../../../../shared/services/popular-movies.service';
+import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 
 @Component({
     selector: 'app-popular-movies',
@@ -35,6 +36,18 @@ export class PopularMoviesComponent {
             queryParamsHandling: "replace",
             queryParams: { page: page }
         })
+    }
+
+    createCardParams(movie: ResultMovie): CardParams {
+        const params: CardParams = {
+            imageType: "poster",
+            direction: "vertical",
+            id: movie.id,
+            mediaType: "movie",
+            imageSrc: movie.posterImagePath
+        }
+
+        return params
     }
 
 
