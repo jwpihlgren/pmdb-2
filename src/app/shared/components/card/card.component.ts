@@ -1,6 +1,10 @@
-import { Component, input, InputSignal } from '@angular/core';
+import { Component, inject, input, InputSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ImageComponent } from '../image/image.component';
+import MediaType from '../../models/types/media.type';
+import ImageType from '../../models/types/image.type';
+import CardDirection from '../../models/types/card-direction.type';
+import { RoutingService } from '../../services/routing.service';
 
 @Component({
     selector: 'app-card',
@@ -11,6 +15,7 @@ import { ImageComponent } from '../image/image.component';
 })
 export class CardComponent {
 
+    protected routingService = inject(RoutingService)
     readonly params: InputSignal<CardParams> = input.required()
     maxCharacters = 140
 
@@ -32,9 +37,6 @@ export class CardComponent {
 }
 
 
-type MediaType = "person" | "movie" | "show"
-type ImageType =  "poster" | "backdrop" | "profile" | "logo"
-type CardDirection = "vertical" | "horizontal"
 
 
 export interface CardParams {
