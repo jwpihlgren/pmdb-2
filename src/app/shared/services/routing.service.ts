@@ -1,20 +1,15 @@
 import { Injectable } from '@angular/core';
-import MediaType from '../models/types/media.type';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class RoutingService {
 
-  constructor() { }
-    
-    private stubs = {
-        movie: "movies",
-        show: "shows",
-        person: "people"
-    }
+    constructor() { }
 
-    getStubByMediaType(type: MediaType): string{
-        return this.stubs[type]
+    stubs = {
+        MOVIE: "movies",
+        SHOW: "shows",
+        PERSON: "people"
     }
 }

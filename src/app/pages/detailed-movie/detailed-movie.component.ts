@@ -9,6 +9,7 @@ import { environment } from '../../../environments/environment.development';
 import { DetailedMovieService } from '../../shared/services/detailed-movie.service';
 import { CardComponent, CardParams } from '../../shared/components/card/card.component';
 import { ResultMovie } from '../../shared/models/interfaces/result-movie';
+import { RoutingService } from '../../shared/services/routing.service';
 
 @Component({
     selector: 'app-detailed-movie',
@@ -20,12 +21,14 @@ import { ResultMovie } from '../../shared/models/interfaces/result-movie';
 })
 export class DetailedMovieComponent {
 
+    protected routingService = inject(RoutingService)
     protected activatedRoute = inject(ActivatedRoute)
     protected detailedMovieService = inject(DetailedMovieService)
 
     movieDetails: Signal<DetailedMovie | undefined>
 
     constructor() {
+
         const id = this.activatedRoute.snapshot.paramMap.get("id")!
         this.movieDetails = toSignal(this.detailedMovieService.get(id))
     }
@@ -63,7 +66,8 @@ export class DetailedMovieComponent {
             direction: "vertical",
             id: top.id,
             mediaType: "person",
-            imageSrc: top.profilePath
+            imageSrc: top.profilePath,
+            href: ["/", this.routingService.stubs.PERSON, `${top.id}` ] 
         }
 
         return params
@@ -75,7 +79,8 @@ export class DetailedMovieComponent {
             direction: "horizontal",
             id: rec.id,
             mediaType: "movie",
-            imageSrc: rec.posterImagePath
+            imageSrc: rec.posterImagePath,
+            href: ["/", this.routingService.stubs.MOVIE, `${rec.id}`]
         }
 
         return params

@@ -7,6 +7,7 @@ import { CardComponent, CardParams } from '../../../../shared/components/card/ca
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
 import { PopularMoviesService } from '../../../../shared/services/popular-movies.service';
 import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
+import { RoutingService } from '../../../../shared/services/routing.service';
 
 @Component({
     selector: 'app-popular-movies',
@@ -21,6 +22,7 @@ export class PopularMoviesComponent {
     protected popularMoviesService: PopularMoviesService = inject(PopularMoviesService)
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     protected router: Router = inject(Router)
+    protected routingService: RoutingService = inject(RoutingService)
 
     constructor() {
         const page = this.activatedRoute.snapshot.queryParamMap.get("page")
@@ -44,7 +46,9 @@ export class PopularMoviesComponent {
             direction: "vertical",
             id: movie.id,
             mediaType: "movie",
-            imageSrc: movie.posterImagePath
+            imageSrc: movie.posterImagePath,
+            href: ["/", this.routingService.stubs.MOVIE, `${movie.id}`]
+            
         }
 
         return params

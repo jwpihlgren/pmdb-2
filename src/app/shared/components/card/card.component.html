@@ -1,5 +1,5 @@
-@if(id !== undefined && mediaType !== undefined) {
-<a [routerLink]="['/', routingService.getStubByMediaType(mediaType), id || '']">
+@if(href !== undefined) {
+<a [routerLink]="href">
     <app-image [params]="{src: imageSrc, type: imageType}"></app-image>
     <ng-content></ng-content>
 </a>
@@ -9,3 +9,4 @@
 </div>
 
 }
+

@@ -8,6 +8,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
 import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
+import { RoutingService } from '../../../../shared/services/routing.service';
 
 @Component({
     selector: 'app-trending-movies',
@@ -23,6 +24,7 @@ export class TrendingMoviesComponent {
     protected trendingMoviesService: TrendingMoviesService = inject(TrendingMoviesService)
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     protected router: Router = inject(Router)
+    protected routingService: RoutingService = inject(RoutingService)
 
     constructor() {
         const page = this.activatedRoute.snapshot.queryParamMap.get("page")
@@ -46,7 +48,8 @@ export class TrendingMoviesComponent {
             direction: "vertical",
             id: movie.id,
             mediaType: "movie",
-            imageSrc: movie.posterImagePath
+            imageSrc: movie.posterImagePath,
+            href: ["/", this.routingService.stubs.MOVIE, `${movie.id}`]
         }
 
         return params

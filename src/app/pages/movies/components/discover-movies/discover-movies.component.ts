@@ -17,6 +17,7 @@ import { PaginationComponent } from '../../../../shared/components/pagination/pa
 import { Pagination } from '../../../../shared/models/interfaces/pagination';
 import { DiscoverMovieFormValue } from '../../../../shared/models/interfaces/discover-movie-form-value';
 import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
+import { RoutingService } from '../../../../shared/services/routing.service';
 
 @Component({
     selector: 'app-discover-movies',
@@ -30,12 +31,13 @@ export class DiscoverMoviesComponent {
     protected discoverService: DiscoverMoviesService = inject(DiscoverMoviesService)
     protected configService: ConfigService = inject(ConfigService)
     protected peopleSearchSevice: SearchPeopleService = inject(SearchPeopleService)
+    protected routingService: RoutingService = inject(RoutingService)
     genres!: Genre[]
 
     listboxParams!: { list: { name: string, value: string | number }[] }
     years: number[] = this.generateNumberRange(new Date().getFullYear(), 1900)
     results = toSignal(this.discoverService.results$)
-    pagination: Signal<Pagination> = toSignal(this.discoverService.pagination, {requireSync: true} )
+    pagination: Signal<Pagination> = toSignal(this.discoverService.pagination, { requireSync: true })
     voteAverageOptions = {
         list: this.generateNumberRange(1, 10).map(n => {
             return {
@@ -73,9 +75,9 @@ export class DiscoverMoviesComponent {
         this.listboxParams = { list: this.genres.map(g => { return { name: g.name, value: g.id } }) }
         this.voteAverageSignal = toSignal(this.voteAverage.valueChanges.pipe(
             map(data => {
-                return {lte: data.lte[0] || "", gte: data.gte[0] || ""}
+                return { lte: data.lte[0] || "", gte: data.gte[0] || "" }
             })
-        ), { initialValue: {lte: "", gte: ""} })
+        ), { initialValue: { lte: "", gte: "" } })
 
         this.releaseDateSignal = toSignal(this.releaseDate.valueChanges.pipe(
             map(data => {
@@ -131,13 +133,14 @@ export class DiscoverMoviesComponent {
         return range
     }
 
-createCardParams(movie: ResultMovie): CardParams {
+    createCardParams(movie: ResultMovie): CardParams {
         const params: CardParams = {
             imageType: "poster",
             direction: "vertical",
             id: movie.id,
             mediaType: "movie",
-            imageSrc: movie.posterImagePath
+            imageSrc: movie.posterImagePath,
+            href: ["/", this.routingService.stubs.MOVIE, `${movie.id}`]
         }
 
         return params
