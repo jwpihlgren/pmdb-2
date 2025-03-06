@@ -10,6 +10,7 @@ import { DetailedMovieService } from '../../shared/services/detailed-movie.servi
 import { CardComponent, CardParams } from '../../shared/components/card/card.component';
 import { ResultMovie } from '../../shared/models/interfaces/result-movie';
 import { RoutingService } from '../../shared/services/routing.service';
+import { switchMap } from 'rxjs';
 
 @Component({
     selector: 'app-detailed-movie',
@@ -29,8 +30,9 @@ export class DetailedMovieComponent {
 
     constructor() {
 
-        const id = this.activatedRoute.snapshot.paramMap.get("id")!
-        this.movieDetails = toSignal(this.detailedMovieService.get(id))
+        this.movieDetails = toSignal(this.activatedRoute.paramMap.pipe(switchMap(data => {
+            return this.detailedMovieService.get(data.get("id")!)
+        })))
     }
 
     get posterParams(): ImageParams {
