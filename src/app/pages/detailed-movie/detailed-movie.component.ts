@@ -1,4 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, inject, numberAttribute, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { DetailedMovie } from '../../shared/models/interfaces/detailed-movie';
@@ -36,7 +36,7 @@ export class DetailedMovieComponent {
     }
 
     get posterParams(): ImageParams {
-        return { src: this.movieDetails()!.posterImagePath, type: "poster" }
+        return { src: this.movieDetails()!.posterImagePath, type: "poster", aspectRatio: {numerator: 3, denominator: 4} }
     }
 
     get imdbUrl(): string {
@@ -69,7 +69,8 @@ export class DetailedMovieComponent {
             id: top.id,
             mediaType: "person",
             imageSrc: top.profilePath,
-            href: ["/", this.routingService.stubs.PERSON, `${top.id}` ] 
+            href: ["/", this.routingService.stubs.PERSON, `${top.id}` ],
+            aspectRatio: {numerator: 3, denominator: 4}
         }
 
         return params
@@ -82,7 +83,8 @@ export class DetailedMovieComponent {
             id: rec.id,
             mediaType: "movie",
             imageSrc: rec.posterImagePath,
-            href: ["/", this.routingService.stubs.MOVIE, `${rec.id}`]
+            href: ["/", this.routingService.stubs.MOVIE, `${rec.id}`],
+            aspectRatio: {numerator: 12, denominator: 9}
         }
 
         return params

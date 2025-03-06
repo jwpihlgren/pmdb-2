@@ -140,7 +140,9 @@ export class DiscoverMoviesComponent {
             id: movie.id,
             mediaType: "movie",
             imageSrc: movie.posterImagePath,
-            href: ["/", this.routingService.stubs.MOVIE, `${movie.id}`]
+            href: ["/", this.routingService.stubs.MOVIE, `${movie.id}`],
+            aspectRatio: {numerator: 3, denominator: 4}
+
         }
 
         return params

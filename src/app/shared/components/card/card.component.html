@@ -1,11 +1,11 @@
 @if(href !== undefined) {
 <a [routerLink]="href">
-    <app-image [params]="{src: imageSrc, type: imageType}"></app-image>
+    <app-image [params]="imageParams"></app-image>
     <ng-content></ng-content>
 </a>
 } @else {
 <div>
-    <app-image [params]="{src: imageSrc, type: imageType}"></app-image>
+    <app-image [params]="imageParams"></app-image>
 </div>
 
 }
