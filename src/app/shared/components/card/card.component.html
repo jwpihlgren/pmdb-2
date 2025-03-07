@@ -1,12 +1,13 @@
-@if(href !== undefined) {
-<a [routerLink]="href">
-    <app-image [params]="imageParams"></app-image>
+@defer (when params() !== undefined) {
+@if(params().href !== undefined) {
+<a [routerLink]="params().href">
+    <app-image [params]="createImageParams()"></app-image>
     <ng-content></ng-content>
 </a>
 } @else {
 <div>
-    <app-image [params]="imageParams"></app-image>
+    <app-image [params]="createImageParams()"></app-image>
 </div>
 
 }
-
+}

@@ -1,1 +1,3 @@
-<img [ngStyle]="{'aspect-ratio': aspectRatio.numerator + '/' + aspectRatio.denominator}" [ngSrc]="src" fill placeholder [loaderParams]="{type: type}">
+@defer(when params() !== undefined) {
+    <img [ngSrc]="src" fill placeholder [loaderParams]="{type: type}">
+}

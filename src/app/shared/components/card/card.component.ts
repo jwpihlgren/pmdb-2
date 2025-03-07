@@ -1,4 +1,4 @@
-import { Component, input, InputSignal } from '@angular/core';
+import { Component, input, InputSignal, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ImageComponent, ImageParams } from '../image/image.component';
 import MediaType from '../../models/types/media.type';
@@ -17,34 +17,14 @@ export class CardComponent {
 
     readonly params: InputSignal<CardParams> = input.required()
     maxCharacters = 140
-    imageParams: ImageParams = {
-        type: this.imageType,
-        aspectRatio: this.aspectRatio,
-        src: this.imageSrc
-    }
+    imageParams!: ImageParams
 
-    get imageSrc(): string {
-        return this.params().imageSrc || ""
-    }
-
-    get mediaType(): "person" | "movie" | "show" | undefined {
-        return this.params().mediaType
-    }
-
-    get imageType(): ImageType {
-        return this.params().imageType
-    }
-
-    get id(): number | undefined {
-        return this.params().id
-    }
-
-    get href(): string[] | undefined {
-        return this.params().href
-    }
-
-    get aspectRatio(): AspectRatio {
-        return this.params().aspectRatio
+    createImageParams(): ImageParams {
+        return {
+            type: this.params().imageType,
+            aspectRatio: this.params().aspectRatio,
+            src: this.params().imageSrc || ""
+        }
     }
 }
 

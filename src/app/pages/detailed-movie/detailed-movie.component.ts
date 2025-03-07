@@ -36,7 +36,7 @@ export class DetailedMovieComponent {
     }
 
     get posterParams(): ImageParams {
-        return { src: this.movieDetails()!.posterImagePath, type: "poster", aspectRatio: {numerator: 3, denominator: 4} }
+        return { src: this.movieDetails()!.posterImagePath, type: "poster", aspectRatio: {numerator: 2, denominator: 3} }
     }
 
     get imdbUrl(): string {
@@ -70,7 +70,7 @@ export class DetailedMovieComponent {
             mediaType: "person",
             imageSrc: top.profilePath,
             href: ["/", this.routingService.stubs.PERSON, `${top.id}` ],
-            aspectRatio: {numerator: 3, denominator: 4}
+            aspectRatio: {numerator: 2, denominator: 3}
         }
 
         return params
@@ -82,9 +82,9 @@ export class DetailedMovieComponent {
             direction: "horizontal",
             id: rec.id,
             mediaType: "movie",
-            imageSrc: rec.posterImagePath,
+            imageSrc: rec.backdropImagePath,
             href: ["/", this.routingService.stubs.MOVIE, `${rec.id}`],
-            aspectRatio: {numerator: 12, denominator: 9}
+            aspectRatio: {numerator: 16, denominator: 9}
         }
 
         return params

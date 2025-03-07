@@ -1,14 +1,18 @@
-import { NgOptimizedImage, NgStyle } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import { Component, input } from '@angular/core';
 import ImageType from '../../models/types/image.type';
 import AspectRatio from '../../models/types/aspect-ratio.type';
 
 @Component({
     selector: 'app-image',
-    imports: [NgOptimizedImage, NgStyle],
+    imports: [NgOptimizedImage],
     templateUrl: './image.component.html',
     styleUrl: './image.component.css',
-    standalone: true
+    standalone: true,
+    host: {
+        '[style.aspect-ratio]': 'aspectRatio.numerator+"/"+aspectRatio.denominator'
+    }
+
 })
 export class ImageComponent {
     params = input.required<ImageParams>()
@@ -17,7 +21,7 @@ export class ImageComponent {
         return this.params().src
     }
 
-    get type(): ImageType | undefined  {
+    get type(): ImageType | undefined {
         return this.params().type
     }
 
@@ -25,8 +29,6 @@ export class ImageComponent {
         return this.params().aspectRatio
     }
 }
-
-
 
 export interface ImageParams {
     src: string,

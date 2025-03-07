@@ -138,7 +138,7 @@ main {
     position: relative;
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: minmax(150px, 200px);
+    grid-auto-columns: minmax(400px, 500px);
     gap: var(--spacing-medium);
 }
 
