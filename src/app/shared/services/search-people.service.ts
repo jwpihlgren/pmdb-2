@@ -7,8 +7,8 @@ import TMDBSearchPeopleResult from '../models/classes/tmdb-people-search-result.
 import { Pagination } from '../models/interfaces/pagination';
 import { PlaceholderPagination } from '../models/classes/placeholder-pagination';
 import { TmdbPagination } from '../models/classes/tmdb-pagination';
-import { SearchPeopleResult } from '../models/interfaces/search-people-result';
-import { TmdbSearchPeopleResponse } from '../models/interfaces/tmdb/tmdb-search-people-response';
+import { ResultPeople } from '../models/interfaces/search-people-result';
+import { TmdbResultPeopleResponse } from '../models/interfaces/tmdb/tmdb-search-people-response';
 
 @Injectable({
     providedIn: 'root'
@@ -20,7 +20,7 @@ export class SearchPeopleService {
     protected query$: Subject<{query: string, page: number}> = new Subject<{query: string, page: number}>
     protected paginationResults$: BehaviorSubject<Pagination> = new BehaviorSubject(new PlaceholderPagination())
     pagination$: Observable<Pagination> = this.paginationResults$.asObservable()
-    results$: Observable<SearchPeopleResult[]>
+    results$: Observable<ResultPeople[]>
 
     constructor() {
         this.results$ = this.query$.pipe(
@@ -34,7 +34,7 @@ export class SearchPeopleService {
         this.query$.next({query: query, page: page})
     }
 
-    private request(param: {query: string, page: number}): Observable<SearchPeopleResult[]> {
+    private request(param: {query: string, page: number}): Observable<ResultPeople[]> {
         this.queryBuilder.apiKey(environment.tmdbApiKey)
         this.queryBuilder.searchQuery(param.query)
         this.queryBuilder.page(param.page)
@@ -43,7 +43,7 @@ export class SearchPeopleService {
         const queryParams = this.queryBuilder.getQuery()
         const url = `${endpoint}${queryParams}`
 
-        return this.http.get<TmdbSearchPeopleResponse>(url).pipe(
+        return this.http.get<TmdbResultPeopleResponse>(url).pipe(
             map(data => {
                 console.log(data)
                 this.paginationResults$.next(new TmdbPagination(data))

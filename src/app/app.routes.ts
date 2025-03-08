@@ -8,18 +8,24 @@ import { ColorComponent } from './shared/components/color/color.component';
 import { TrendingMoviesComponent } from './pages/movies/components/trending-movies/trending-movies.component';
 import { PopularMoviesComponent } from './pages/movies/components/popular-movies/popular-movies.component';
 import { DiscoverMoviesComponent } from './pages/movies/components/discover-movies/discover-movies.component';
+import { DetailedPeopleComponent } from './pages/detailed-people/detailed-people.component';
+import { PeopleComponent } from './pages/people/people.component';
 
 export const routes: Routes = [
     { path: "", pathMatch: "full", component: HomeComponent },
-    { path: "movies", component: MoviesComponent, children: [
-        {path: "", redirectTo:"trending", pathMatch:"full"},
-        {path: "trending", component: TrendingMoviesComponent},
-        {path: "popular", component: PopularMoviesComponent},
-        {path: "discover", component: DiscoverMoviesComponent},
-    ] },
-    { path: "shows", pathMatch: "full", component: ShowsComponent },
+    {
+        path: "movies", component: MoviesComponent, children: [
+            { path: "", redirectTo: "trending", pathMatch: "full" },
+            { path: "trending", component: TrendingMoviesComponent },
+            { path: "popular", component: PopularMoviesComponent },
+            { path: "discover", component: DiscoverMoviesComponent },
+        ]
+    },
     { path: "movies/:id", component: DetailedMovieComponent },
+    { path: "shows", pathMatch: "full", component: ShowsComponent },
     { path: "shows/:id", pathMatch: "full", component: DetailedShowComponent },
-    { path: "test", pathMatch: "full", component: ColorComponent},
+    { path: "people/", pathMatch: "full", component: PeopleComponent },
+    { path: "people/:id", pathMatch: "full", component: DetailedPeopleComponent },
+    { path: "test", pathMatch: "full", component: ColorComponent },
     { path: "*", redirectTo: "" }
 ];

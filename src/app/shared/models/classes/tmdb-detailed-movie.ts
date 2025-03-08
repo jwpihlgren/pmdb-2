@@ -1,6 +1,6 @@
 import Credits from "../interfaces/credits";
 import { DetailedMovie } from "../interfaces/detailed-movie";
-import { Image } from "../interfaces/images";
+import { Image } from "../interfaces/image";
 import Keyword from "../interfaces/keywords";
 import Recommendations from "../interfaces/recommendations";
 import { ResultMovie } from "../interfaces/result-movie";
@@ -105,7 +105,11 @@ export class TmdbDetailedMovie implements DetailedMovie {
     }
 
     private mapImages(raw: TmdbDetailedMovieResponse["images"]): DetailedMovie["images"] {
-        return new TmdbImages(raw)
+        return {
+            posters: raw.posters.map(image => new TmdbImages(image)),
+            logos: raw.logos.map(image => new TmdbImages(image)),
+            backdrops: raw.backdrops.map(image => new TmdbImages(image)),
+        }
     }
 
     private mapCredits(raw: TmdbDetailedMovieResponse["credits"]): DetailedMovie["credits"] {

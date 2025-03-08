@@ -8,10 +8,3 @@ export interface Image {
     width: number
 }
 
-export default interface Images {
-    backdrops: Image[],
-    logos: Image[]
-    posters: Image[],
-}
-
-

@@ -1,6 +1,6 @@
 import TmdbResponseWrapper from "./tmdb-response-wrapper"
 
-export interface TmdbSearchPeopleResponse extends TmdbResponseWrapper {
+export interface TmdbResultPeopleResponse extends TmdbResponseWrapper {
     results: {
         adult: boolean
         gender: number
@@ -8,6 +8,7 @@ export interface TmdbSearchPeopleResponse extends TmdbResponseWrapper {
         known_for_department: string
         name: string
         original_name: string
+        media_type?: string
         popularity: number
         profile_path: string
         known_for: {

@@ -1,0 +1,23 @@
+import { Gender } from "../types/gender"
+import Credits from "./credits"
+import { Image } from "./images"
+
+export default interface DetailedPeople {
+    adult: boolean
+    alsoKnownAs: string[]
+    biography: string
+    birthday: string
+    deathday?: string
+    gender: Gender
+    homepage: string
+    id: number
+    images: Image[] 
+    imdbId: string
+    knownForDepartment: string
+    movieCredits: Credits
+    name: string
+    placeOfBirth: string
+    popularity: number
+    profilePath: string
+    showCredits: Credits
+}

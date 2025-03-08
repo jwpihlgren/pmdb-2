@@ -1,5 +1,5 @@
 import Credits from "./credits"
-import Images from "./images"
+import { Image } from "./image"
 import Keyword from "./keywords"
 import Recommendations from "./recommendations"
 import Trailer from "./trailer"
@@ -13,7 +13,11 @@ export interface DetailedMovie {
     hasVideo: boolean
     //homepage: string
     id: number
-    images: Images
+    images: {
+        backdrops: Image[]
+        logos: Image[]
+        posters: Image[]
+    }
     imdbId: string
     keywords: Keyword[]
     originalLanguage: string

@@ -35,7 +35,7 @@ export class TmdbDetailedShow implements DetailedShow{
         seasonNumber: number
         showId: number
         stillPath: string
-    }
+   }
     name: string
     nextEpisodeToAir: string | "null"
     networks: {

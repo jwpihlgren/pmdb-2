@@ -1,8 +1,7 @@
 import TmdbCreditResponse from "./tmdb-credit-response"
-import TmdbImageResponse from "./tmdb-image-response"
+import TmdbImage from "./tmdb-image"
 import TmdbKeywordsResponse from "./tmdb-keywords-response"
 import TmdbRecommendationsMovieResponse from "./tmdb-recommendations-movie-response"
-import { TmdbResultMovieResponse } from "./tmdb-result-movie-response"
 import TmdbVideosResponse from "./tmdb-videos-response"
 
 export interface TmdbDetailedMovieResponse {
@@ -32,7 +31,11 @@ export interface TmdbDetailedMovieResponse {
     video: boolean
     vote_average: number
     vote_count: number
-    images: TmdbImageResponse
+    images: {
+        posters: TmdbImage[],
+        logos: TmdbImage[],
+        backdrops: TmdbImage[]
+    }
     credits: TmdbCreditResponse
     keywords: TmdbKeywordsResponse
     videos: TmdbVideosResponse
