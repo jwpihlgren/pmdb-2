@@ -1,6 +1,6 @@
 import { Gender } from "../types/gender"
 import Credits from "./credits"
-import { Image } from "./images"
+import { Image } from "./image"
 
 export default interface DetailedPeople {
     adult: boolean

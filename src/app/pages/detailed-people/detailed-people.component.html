@@ -1,1 +1,38 @@
-<p>detailed-people works!</p>
+@defer(when detailedPeople() !== undefined) {
+<main>
+    <div class="container">
+        <section class="hero">
+            <app-image class="hero--image" [params]="posterParams"></app-image>
+            <div class="hero--about">
+                <div class="hero--header">
+                    <h1 [title]="'Original title: ' + people.alsoKnownAs.join(',\n')">{{people.name}}
+                    </h1>
+                    <h5 [title]="'Popularity'">{{people.popularity| number: '1.1-1'}}</h5>
+                </div>
+                <p>{{people.biography}}</p>
+                <a [href]="imdbUrl" rel="noreferrer" target="_blank">View at imdb</a>
+            </div>
+        </section>
+        <section class="content">
+            <div class="main">
+                <div class="cast">
+                    <h2>Top billed cast</h2>
+                    <div class="cast--grid"></div>
+                </div>
+                <h2>Recommendations</h2>
+                <div class="recommendations--grid">
+                </div>
+            </div>
+            <aside>
+                <h2>Keywords</h2>
+                <div class="meta--keywords">
+                </div>
+            </aside>
+        </section>
+    </div>
+</main>
+
+}
+@placeholder {
+Loading...
+}

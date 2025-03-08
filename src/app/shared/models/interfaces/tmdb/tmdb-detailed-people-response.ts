@@ -19,6 +19,6 @@ export default interface TmdbDetailedPeopleResponse {
     images: {
         profiles: TmdbImage[]
     }
-    movieCredits: TmdbCreditResponse
-    showCredits: TmdbCreditResponse
+    movie_credits: TmdbCreditResponse
+    tv_credits: TmdbCreditResponse
 }
