@@ -5,10 +5,19 @@
             <app-image class="hero--image" [params]="posterParams"></app-image>
             <div class="hero--about">
                 <div class="hero--header">
-                    <h1 [title]="'Original title: ' + people.alsoKnownAs.join(',\n')">{{people.name}}
+                    <h1 [title]="'Also known as: \n' + people.alsoKnownAs.join(',\n')">
+                        {{people.name}}
                     </h1>
-                    <h5 [title]="'Popularity'">{{people.popularity| number: '1.1-1'}}</h5>
                 </div>
+                <div class="hero--meta">
+                        @for(data of metadata; track $index){
+                            <span>{{data.value}}</span>
+                            @if($index !== metadata.length - 1) {
+                            <span> | </span>
+                            }
+                        }
+                </div>
+
                 <p>{{people.biography}}</p>
                 <a [href]="imdbUrl" rel="noreferrer" target="_blank">View at imdb</a>
             </div>
@@ -16,8 +25,12 @@
         <section class="content">
             <div class="main">
                 <div class="cast">
-                    <h2>Top billed cast</h2>
-                    <div class="cast--grid"></div>
+                    <h2>Images</h2>
+                    <div class="cast--grid">
+                        @for(image of people.images; track $index) {
+                        <app-card [params]="getPeopleCardParams(image)"></app-card>
+                        }
+                    </div>
                 </div>
                 <h2>Recommendations</h2>
                 <div class="recommendations--grid">

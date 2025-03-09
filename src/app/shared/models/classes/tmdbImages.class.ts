@@ -1,8 +1,10 @@
+import AspectRatioFunctions from "../../utils/aspect-ratio.class"
 import { Image } from "../interfaces/image"
 import TmdbImage from "../interfaces/tmdb/tmdb-image"
+import AspectRatio from "../types/aspect-ratio.type"
 
 export class TmdbImages implements Image {
-    aspectRatio: number
+    aspectRatio: AspectRatio
     filePath: string
     height: number
     iso6391?: string | undefined
@@ -11,7 +13,9 @@ export class TmdbImages implements Image {
     width: number
 
     constructor(image: TmdbImage) {
-        this.aspectRatio = image.aspect_ratio
+        this.aspectRatio = {
+            numerator: AspectRatioFunctions.getNumerator(image.width, image.height),
+            denominator: AspectRatioFunctions.getDenominator(image.width, image.height)}
         this.filePath = image.file_path
         this.height = image.height
         this.iso6391 = image.iso_639_1
@@ -21,6 +25,3 @@ export class TmdbImages implements Image {
     }
 
 }
-
-
-

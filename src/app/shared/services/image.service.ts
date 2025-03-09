@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment.development';
 import AspectRatio from '../models/types/aspect-ratio.type';
 import { ColorComponent } from '../components/color/color.component';
 
-type ImageType = "poster_sizes" | "backdrop_sizes" | "profile_sizes" | "logo_sizes" | "still_sizes" 
+type ImageType = "poster_sizes" | "backdrop_sizes" | "profile_sizes" | "logo_sizes" | "still_sizes"
 
 @Injectable({
     providedIn: 'root'
@@ -30,7 +30,7 @@ export class ImageService {
 
     getUrl(image: string, size: number = 500, type?: string): string {
 
-        if(image === "") return this.getPlaceholderUrl()
+        if (image === "") return this.getPlaceholderUrl()
         const types: any = {
             poster: "poster_sizes",
             backdrop: "backdrop_sizes",
@@ -54,15 +54,36 @@ export class ImageService {
         const background = "101a21"
         const foreground = "d26b42"
         const width = options?.width || 400
-        const height = this.getHeightFromAspectRatio(width, options?.aspectRatio || {numerator: 2, denominator: 3})
+        const height = this.getHeightFromAspectRatio(width, options?.aspectRatio || { numerator: 2, denominator: 3 })
         const fileFormat = options?.fileFormat || "png"
         const text = encodeURIComponent((options?.text || "no image"))
 
-        return`${environment.dummyImageApiUrl}/${width}x${height}/${background}/${foreground}.${fileFormat}&text=${text}`
-        
+        return `${environment.dummyImageApiUrl}/${width}x${height}/${background}/${foreground}.${fileFormat}&text=${text}`
+
     }
     getHeightFromAspectRatio(width: number, aspectRatio: AspectRatio): number {
         return width * aspectRatio.denominator / aspectRatio.numerator
+    }
+
+    getWidthFromAspectRatio(height: number, aspectRatio: AspectRatio): number {
+        return height * (aspectRatio.denominator / aspectRatio.denominator)
+    }
+
+    getAspectRatioFromSize(width: number, height: number): AspectRatio {
+
+        return { numerator: this.getNumerator(width, height)  , denominator: this.getDenominator(width, height) }
+    }
+
+    private getNumerator(width: number, height: number): number {
+        return width / this.gcd(width, height)
+    }
+
+    private getDenominator(width: number, height: number): number {
+        return height / this.gcd(width, height)
+    }
+
+    private gcd(a: number, b: number): number {
+        return b === 0 ? a : this.gcd(b, a % b)
     }
 }
 

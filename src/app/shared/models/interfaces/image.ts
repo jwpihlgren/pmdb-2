@@ -1,5 +1,7 @@
+import AspectRatio from "../types/aspect-ratio.type"
+
 export interface Image {
-    aspectRatio: number
+    aspectRatio: AspectRatio
     filePath: string
     height: number
     iso6391?: string

@@ -88,7 +88,7 @@ main {
     flex-direction: column;
     gap: var(--spacing-large, 2rem);
     width: 100%;
-    overflow-x: hidden;
+    overflow: hidden;
 
 }
 

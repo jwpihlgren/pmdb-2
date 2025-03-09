@@ -11,6 +11,7 @@ import { CardComponent, CardParams } from '../../shared/components/card/card.com
 import { ResultMovie } from '../../shared/models/interfaces/result-movie';
 import { RoutingService } from '../../shared/services/routing.service';
 import { switchMap } from 'rxjs';
+import Metadata from '../../shared/models/interfaces/meta-data.interface';
 
 @Component({
     selector: 'app-detailed-movie',
@@ -36,7 +37,7 @@ export class DetailedMovieComponent {
     }
 
     get posterParams(): ImageParams {
-        return { src: this.movieDetails()!.posterImagePath, type: "poster", aspectRatio: {numerator: 2, denominator: 3} }
+        return { src: this.movieDetails()!.posterImagePath, type: "poster", aspectRatio: { numerator: 2, denominator: 3 } }
     }
 
     get imdbUrl(): string {
@@ -69,8 +70,8 @@ export class DetailedMovieComponent {
             id: top.id,
             mediaType: "person",
             imageSrc: top.profilePath,
-            href: ["/", this.routingService.stubs.PERSON, `${top.id}` ],
-            aspectRatio: {numerator: 2, denominator: 3}
+            href: ["/", this.routingService.stubs.PERSON, `${top.id}`],
+            aspectRatio: { numerator: 2, denominator: 3 }
         }
 
         return params
@@ -84,7 +85,7 @@ export class DetailedMovieComponent {
             mediaType: "movie",
             imageSrc: rec.backdropImagePath,
             href: ["/", this.routingService.stubs.MOVIE, `${rec.id}`],
-            aspectRatio: {numerator: 16, denominator: 9}
+            aspectRatio: { numerator: 16, denominator: 9 }
         }
 
         return params
@@ -93,9 +94,4 @@ export class DetailedMovieComponent {
 }
 
 
-interface Metadata {
-    value: any,
-    suffix?: any,
-    alt?: any
-}
 
