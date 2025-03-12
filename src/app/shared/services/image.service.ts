@@ -69,23 +69,7 @@ export class ImageService {
         return height * (aspectRatio.denominator / aspectRatio.denominator)
     }
 
-    getAspectRatioFromSize(width: number, height: number): AspectRatio {
-
-        return { numerator: this.getNumerator(width, height)  , denominator: this.getDenominator(width, height) }
-    }
-
-    private getNumerator(width: number, height: number): number {
-        return width / this.gcd(width, height)
-    }
-
-    private getDenominator(width: number, height: number): number {
-        return height / this.gcd(width, height)
-    }
-
-    private gcd(a: number, b: number): number {
-        return b === 0 ? a : this.gcd(b, a % b)
-    }
-}
+ }
 
 interface PlaceholderOptions {
     width: number

@@ -5,16 +5,17 @@ export default interface Filmography {
     countShows: number
     countShowsCrew: number
     countShowsActor: number
-    countPerDepartment: { department: string, count: number }[]
+    countShowsPerDepartment: { department: string, count: number }[]
+    countMoviesPerDepartment: { department: string, count: number }[]
     top10LatestMovies: CreditedMovie[]
     allMovies: {actor: CreditedMovieActor[], crew: CreditedMovieCrew[]}
     top10LatestShows: CreditedShow[]
     allShows: {actor: CreditedShowActor[], crew: CreditedShowCrew[]}
 }
 
-type CreditedMovie = CreditedMovieActor | CreditedMovieCrew
+export type CreditedMovie = CreditedMovieActor | CreditedMovieCrew
 
-interface CreditedMovieActor {
+export interface CreditedMovieActor {
     backdropImagePath: string
     id: number
     overview: string
@@ -25,7 +26,7 @@ interface CreditedMovieActor {
     character: string
 }
 
-interface CreditedMovieCrew {
+export interface CreditedMovieCrew {
     backdropImagePath: string
     id: number
     overview: string
@@ -36,9 +37,9 @@ interface CreditedMovieCrew {
     job: string
 }
 
-type CreditedShow = CreditedShowActor | CreditedShowCrew
+export type CreditedShow = CreditedShowActor | CreditedShowCrew
 
-interface CreditedShowActor {
+export interface CreditedShowActor {
     backdropImagePath: string
     countEpisodes: number
     firstAirDate: string
@@ -50,7 +51,7 @@ interface CreditedShowActor {
     character: string
 }
 
-interface CreditedShowCrew {
+export interface CreditedShowCrew {
     backdropImagePath: string
     countEpisodes: number
     firstAirDate: string

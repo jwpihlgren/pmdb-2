@@ -1,5 +1,6 @@
 import Credits from "../interfaces/credits";
 import DetailedPeople from "../interfaces/detailed-people";
+import Filmography from "../interfaces/filmography.interface";
 import { Image } from "../interfaces/image";
 import TmdbDetailedPeopleResponse from "../interfaces/tmdb/tmdb-detailed-people-response";
 import { Gender } from "../types/gender";
@@ -19,7 +20,7 @@ export default class TmdbDetailedPeople implements DetailedPeople {
     images: Image[];
     imdbId: string;
     knownForDepartment: string;
-    movieCredits: Credits;
+    filmography: Filmography
     name: string;
     placeOfBirth: string;
     popularity: number;
@@ -39,7 +40,7 @@ export default class TmdbDetailedPeople implements DetailedPeople {
         this.images = this.mapImages(tmdbDetailedPeople.images)
         this.imdbId = tmdbDetailedPeople.imdb_id
         this.knownForDepartment = tmdbDetailedPeople.known_for_department
-        this.movieCredits = this.mapCredits(tmdbDetailedPeople.movie_credits)
+        this.filmography = this.createFilmography(tmdbDetailedPeople.movie_credits)
         this.name = tmdbDetailedPeople.name
         this.placeOfBirth = tmdbDetailedPeople.place_of_birth
         this.profilePath = tmdbDetailedPeople.profile_path
@@ -51,8 +52,8 @@ export default class TmdbDetailedPeople implements DetailedPeople {
         return raw.profiles.map(image => new TmdbImages(image))
     }
 
-    mapCredits(raw: TmdbDetailedPeopleResponse["movie_credits" | "tv_credits"]): Credits {
-        return new TmdbCredits(raw)
+    createFilmography(raw: TmdbDetailedPeopleResponse["movie_credits" | "tv_credits"]): Filmography {
+        return new TmdbFilmography(raw)
     }
 }
 
