@@ -1,41 +1,42 @@
-export default interface TmdbMovieCreditResponse {
+export default interface TmdbShowCreditResponse {
     id: number
     cast: {
         adult: boolean
         backdrop_path: string
-        character: string
-        credit_id: string
         genre_ids: number[]
         id: number
-        order: number
+        origin_country: string[]
         original_language: string
-        original_title: string
+        original_name: string
         overview: string
         popularity: number
         poster_path: string
-        release_date: string
-        title: string
-        video: boolean
+        first_air_date: string
+        name: string
         vote_average: number
         vote_count: number
+        character: string
+        credit_id: string
+        episode_count: number
     }[]
     crew: {
         adult: boolean
         backdrop_path: string
-        credit_id: string
-        department: string
         genre_ids: number[]
         id: number
-        job: string
+        origin_country: string[]
         original_language: string
-        original_title: string
+        original_name: string
         overview: string
         popularity: number
         poster_path: string
-        release_date: string
-        title: string
-        video: boolean
+        first_air_date: string
+        name: string
         vote_average: number
         vote_count: number
+        credit_id: string
+        department: string
+        episode_count: number
+        job: string
     }[]
 }

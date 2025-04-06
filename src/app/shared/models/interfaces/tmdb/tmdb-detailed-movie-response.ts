@@ -1,4 +1,4 @@
-import TmdbCreditResponse from "./tmdb-credit-response"
+import TmdbMovieCreditResponse from "./tmdb-credit-response"
 import TmdbImage from "./tmdb-image"
 import TmdbKeywordsResponse from "./tmdb-keywords-response"
 import TmdbRecommendationsMovieResponse from "./tmdb-recommendations-movie-response"
@@ -36,7 +36,7 @@ export interface TmdbDetailedMovieResponse {
         logos: TmdbImage[],
         backdrops: TmdbImage[]
     }
-    credits: TmdbCreditResponse
+    credits: TmdbMovieCreditResponse
     keywords: TmdbKeywordsResponse
     videos: TmdbVideosResponse
 }

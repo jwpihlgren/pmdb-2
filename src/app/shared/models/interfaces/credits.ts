@@ -5,9 +5,8 @@ export default interface Credits {
         adult: boolean,
         character: string,
         creditId: string,
-        gender: Gender 
+        gender?: Gender 
         id: number
-        knownForDepartment: string
         name: string
         order: number
         originalName: string
@@ -18,7 +17,7 @@ export default interface Credits {
         adult: boolean
         creditId: string
         department: string
-        gender: Gender
+        gender?: Gender
         id: number
         job: string
         knownForDepartment: string

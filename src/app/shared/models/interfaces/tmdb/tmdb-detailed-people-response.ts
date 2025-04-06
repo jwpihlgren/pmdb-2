@@ -1,4 +1,4 @@
-import TmdbCreditResponse from "./tmdb-credit-response"
+import TmdbMovieCreditResponse from "./tmdb-credit-response"
 import TmdbImage from "./tmdb-image"
 
 export default interface TmdbDetailedPeopleResponse {
@@ -19,6 +19,6 @@ export default interface TmdbDetailedPeopleResponse {
     images: {
         profiles: TmdbImage[]
     }
-    movie_credits: TmdbCreditResponse
-    tv_credits: TmdbCreditResponse
+    movie_credits: TmdbMovieCreditResponse
+    tv_redits: TmdbMovieCreditResponse
 }

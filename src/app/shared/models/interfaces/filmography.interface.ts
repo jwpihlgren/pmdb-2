@@ -8,9 +8,9 @@ export default interface Filmography {
     countShowsPerDepartment: { department: string, count: number }[]
     countMoviesPerDepartment: { department: string, count: number }[]
     top10LatestMovies: CreditedMovie[]
-    allMovies: {actor: CreditedMovieActor[], crew: CreditedMovieCrew[]}
+    allMovies: {cast: CreditedMovieActor[], crew: CreditedMovieCrew[]}
     top10LatestShows: CreditedShow[]
-    allShows: {actor: CreditedShowActor[], crew: CreditedShowCrew[]}
+    allShows: {cast: CreditedShowActor[], crew: CreditedShowCrew[]}
 }
 
 export type CreditedMovie = CreditedMovieActor | CreditedMovieCrew

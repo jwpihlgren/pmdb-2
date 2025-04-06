@@ -32,7 +32,7 @@ export default interface TmdbMovieCreditResponse {
         overview: string
         popularity: number
         poster_path: string
-        release_date: string
+        release_dat: string
         title: string
         video: boolean
         vote_average: number

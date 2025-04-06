@@ -15,11 +15,11 @@ export default interface DetailedPeople {
     images: Image[] 
     imdbId: string
     knownForDepartment: string
-    movieCredits: Credits
+    //movieCredits: Credits
     filmography: Filmography
     name: string
     placeOfBirth: string
     popularity: number
     profilePath: string
-    showCredits: Credits
+    //showCredits: Credits
 }
