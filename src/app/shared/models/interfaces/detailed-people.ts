@@ -1,5 +1,4 @@
-import { Gender } from "../types/gender"
-import Credits from "./credits"
+import Gender from "../types/gender"
 import Filmography from "./filmography.interface"
 import { Image } from "./image"
 
@@ -12,7 +11,7 @@ export default interface DetailedPeople {
     gender: Gender
     homepage: string
     id: number
-    images: Image[] 
+    images: Image[]
     imdbId: string
     knownForDepartment: string
     //movieCredits: Credits

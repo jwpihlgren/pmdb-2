@@ -1,24 +1,30 @@
-export default interface Credits {
+import Gender from '../types/gender'
+export default interface DetailedMovieCredits {
     cast: {
         adult: boolean,
-        character: string,
-        creditId: string,
+        castId: number
+        character: string
+        creditId: string
+        gender: Gender
         id: number
+        knowForDepartment: string
         name: string
+        order: number
         originalName: string
         popularity: number
-        posterPath: string
+        profilePath: string
     }[]
     crew: {
         adult: boolean
         creditId: string
         department: string
+        gender: Gender
         id: number
         job: string
-        knownForDepartment: string
+        knowForDepartment: string
         name: string
         originalName: string
         popularity: number
-        posterPath: string
+        profilePath: string
     }[]
 }

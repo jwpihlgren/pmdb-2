@@ -23,7 +23,7 @@ export class DetailedMovieService {
     }
 
     private request(id: string): Observable<DetailedMovie> {
-        const endpoint = `movie/${id}` 
+        const endpoint = `movie/${id}`
         this.queryBuilder.apiKey(environment.tmdbApiKey)
         this.queryBuilder.appendToResponse(["credits", "images", "keywords", "recommendations", "reviews", "similar", "videos"])
         const queryParams = this.queryBuilder.getQuery()

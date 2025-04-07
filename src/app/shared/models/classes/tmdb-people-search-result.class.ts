@@ -1,6 +1,6 @@
 import { ResultPeople } from "../interfaces/search-people-result";
 import { TmdbResultPeopleResponse } from "../interfaces/tmdb/tmdb-search-people-response";
-import { Gender } from "../types/gender";
+import Gender from "../types/gender";
 import TmdbGenderFactory from "./tmdbGenderFactory.class";
 
 export default class TMDBResultPeople implements ResultPeople {

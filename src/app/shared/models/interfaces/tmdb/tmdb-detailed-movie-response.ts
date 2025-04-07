@@ -1,7 +1,7 @@
-import TmdbMovieCreditResponse from "./tmdb-credit-response"
+import TmdbDetailedMovieCreditResponse from "./tmdb-detailed-movie-credit-response"
+import TmdbDetailedMovieRecommendationResponse from "./tmdb-detailed-movie-recommendation-response"
 import TmdbImage from "./tmdb-image"
 import TmdbKeywordsResponse from "./tmdb-keywords-response"
-import TmdbRecommendationsMovieResponse from "./tmdb-recommendations-movie-response"
 import TmdbVideosResponse from "./tmdb-videos-response"
 
 export interface TmdbDetailedMovieResponse {
@@ -21,7 +21,7 @@ export interface TmdbDetailedMovieResponse {
     production_companies: { id: number, logo_path: string, name: string, origin_country: string }[]
     production_countries: { iso_3166_1: string, name: string }[]
     release_date: string
-    recommendations: TmdbRecommendationsMovieResponse
+    recommendations: TmdbDetailedMovieRecommendationResponse
     revenue: number
     runtime: number
     spoken_languages: { english_name: string, iso_639_1: string, name: string }[]
@@ -36,7 +36,7 @@ export interface TmdbDetailedMovieResponse {
         logos: TmdbImage[],
         backdrops: TmdbImage[]
     }
-    credits: TmdbMovieCreditResponse
+    credits: TmdbDetailedMovieCreditResponse
     keywords: TmdbKeywordsResponse
     videos: TmdbVideosResponse
 }

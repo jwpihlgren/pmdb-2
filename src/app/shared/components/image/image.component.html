@@ -1,3 +1,4 @@
-@defer(when params() !== undefined) {
-    <img [ngSrc]="src" fill placeholder [loaderParams]="{type: type}">
+@defer(when params() !== undefined && params().src !== "") {
+@let p = params()!;
+<img [ngSrc]="p.src" fill placeholder [loaderParams]="{type: p.type}">
 }

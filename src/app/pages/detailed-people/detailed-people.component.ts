@@ -5,16 +5,14 @@ import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ImageComponent, ImageParams } from '../../shared/components/image/image.component';
-import { DecimalPipe } from '@angular/common';
 import { environment } from '../../../environments/environment.development';
 import { ImageService } from '../../shared/services/image.service';
 import { CardComponent, CardParams } from '../../shared/components/card/card.component';
-import { MetadataOverride } from '@angular/core/testing';
 import Metadata from '../../shared/models/interfaces/meta-data.interface';
 
 @Component({
     selector: 'app-detailed-people',
-    imports: [ImageComponent, DecimalPipe, CardComponent],
+    imports: [ImageComponent, CardComponent],
     templateUrl: './detailed-people.component.html',
     styleUrl: './detailed-people.component.css'
 })

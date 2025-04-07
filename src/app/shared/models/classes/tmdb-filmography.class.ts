@@ -1,6 +1,7 @@
 import Filmography, { CreditedMovie, CreditedMovieActor, CreditedMovieCrew, CreditedShow, CreditedShowActor, CreditedShowCrew } from "../interfaces/filmography.interface";
-import TmdbMovieCreditResponse from "../interfaces/tmdb/tmdb-credit-response";
-import TmdbShowCreditResponse from "../interfaces/tmdb/tmdb-show-credit-response";
+import TmdbDetailedMovieCreditResponse from "../interfaces/tmdb/tmdb-detailed-movie-credit-response";
+import TmdbDetailedPeopleMovieCreditResponse from "../interfaces/tmdb/tmdb-detailed-people-movie-credits-response";
+import TmdbShowCreditResponse from "../interfaces/tmdb/tmdb-detailed-show-credit-response";
 
 interface GroupByDepartment { department: string, count: number }
 export default class TmdbFilmography implements Filmography {
@@ -17,7 +18,7 @@ export default class TmdbFilmography implements Filmography {
     top10LatestShows: CreditedShow[];
     top10LatestMovies: CreditedMovie[];
 
-    constructor(credits: { tv_credits: TmdbShowCreditResponse, movie_credits: TmdbMovieCreditResponse }) {
+    constructor(credits: { tv_credits: TmdbShowCreditResponse, movie_credits: TmdbDetailedPeopleMovieCreditResponse }) {
         this.countShowsActor = credits.tv_credits.cast.length
         this.countShowsCrew = credits.tv_credits.crew.length
         this.countShows = this.countShowsActor + this.countShowsCrew
@@ -32,7 +33,7 @@ export default class TmdbFilmography implements Filmography {
         this.top10LatestShows = this.getTop10Shows()
     }
 
-    mapDepartment(credits: TmdbMovieCreditResponse | TmdbShowCreditResponse): GroupByDepartment[] {
+    mapDepartment(credits: TmdbDetailedPeopleMovieCreditResponse| TmdbShowCreditResponse): GroupByDepartment[] {
         const grouped: { [key: string]: number } = credits.crew.reduce((acc, cur) => {
             acc[cur.department] ? acc[cur.department]++ : acc[cur.department] = 1
             return acc
@@ -72,7 +73,7 @@ export default class TmdbFilmography implements Filmography {
         return shows
     }
 
-    mapMovies(credits: TmdbMovieCreditResponse): { cast: CreditedMovieActor[], crew: CreditedMovieCrew[] } {
+    mapMovies(credits: TmdbDetailedPeopleMovieCreditResponse): { cast: CreditedMovieActor[], crew: CreditedMovieCrew[] } {
         const movies: { cast: CreditedMovieActor[], crew: CreditedMovieCrew[] } = { cast: [], crew: [] }
         credits.crew.forEach(c => {
             movies.crew.push({

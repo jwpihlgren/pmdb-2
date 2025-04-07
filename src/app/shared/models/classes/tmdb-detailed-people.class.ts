@@ -2,7 +2,7 @@ import DetailedPeople from "../interfaces/detailed-people";
 import Filmography from "../interfaces/filmography.interface";
 import { Image } from "../interfaces/image";
 import TmdbDetailedPeopleResponse from "../interfaces/tmdb/tmdb-detailed-people-response";
-import { Gender } from "../types/gender";
+import Gender from "../types/gender";
 import TmdbFilmography from "./tmdb-filmography.class";
 import TmdbGenderFactory from "./tmdbGenderFactory.class";
 import { TmdbImages } from "./tmdbImages.class";
@@ -27,7 +27,7 @@ export default class TmdbDetailedPeople implements DetailedPeople {
 
 
 
-    constructor(tmdbDetailedPeople: TmdbDetailedPeopleResponse){
+    constructor(tmdbDetailedPeople: TmdbDetailedPeopleResponse) {
         this.adult = tmdbDetailedPeople.adult
         this.alsoKnownAs = tmdbDetailedPeople.also_known_as
         this.biography = tmdbDetailedPeople.biography
@@ -51,7 +51,7 @@ export default class TmdbDetailedPeople implements DetailedPeople {
     }
 
     createFilmography(raw: TmdbDetailedPeopleResponse): Filmography {
-        return new TmdbFilmography(raw)
+        return new TmdbFilmography({ tv_credits: raw.tv_redits, movie_credits: raw.movie_credits })
     }
 }
 

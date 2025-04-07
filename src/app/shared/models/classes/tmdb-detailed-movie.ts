@@ -1,16 +1,14 @@
-import Credits from "../interfaces/credits";
 import { DetailedMovie } from "../interfaces/detailed-movie";
+import DetailedMovieCredits from "../interfaces/detailed-movie-credits";
 import { Image } from "../interfaces/image";
 import Keyword from "../interfaces/keywords";
 import Recommendations from "../interfaces/recommendations";
 import { ResultMovie } from "../interfaces/result-movie";
+import TmdbDetailedMovieCreditResponse from "../interfaces/tmdb/tmdb-detailed-movie-credit-response";
+import TmdbDetailedMovieRecommendationResponse from "../interfaces/tmdb/tmdb-detailed-movie-recommendation-response";
 import { TmdbDetailedMovieResponse } from "../interfaces/tmdb/tmdb-detailed-movie-response";
-import TmdbMovieCreditResponse from "../interfaces/tmdb/tmdb-movie-credit-response";
-import TmdbRecommendationsMovieResponse from "../interfaces/tmdb/tmdb-recommendations-movie-response";
-import TmdbShowCreditResponse from "../interfaces/tmdb/tmdb-show-credit-response";
 import Trailer from "../interfaces/trailer";
-import { Gender } from "../types/gender";
-import TmdbFilmography from "./tmdb-filmography.class";
+import Gender from "../types/gender";
 import { TmdbResultMovie } from "./tmdb-result-movie";
 import TmdbTrailer from "./tmdb-trailer.class";
 import TmdbGenderFactory from "./tmdbGenderFactory.class";
@@ -19,7 +17,7 @@ import { TmdbKeywordsFactory } from "./tmdbKeywordsFactory.class";
 
 export class TmdbDetailedMovie implements DetailedMovie {
     backdropImagePath: string;
-    credits: Credits
+    credits: DetailedMovieCredits
     genres: { id: number; name: string; }[];
     hasVideo: boolean
     id: number;
@@ -117,7 +115,7 @@ export class TmdbDetailedMovie implements DetailedMovie {
     }
 
     private mapCredits(raw: TmdbDetailedMovieResponse["credits"]): DetailedMovie["credits"] {
-        return new TmdbCredit
+        return new TmdbDetailedMovieCredits(raw)
     }
 
     private mapTrailers(raw: TmdbDetailedMovieResponse["videos"]): DetailedMovie["trailers"] {
@@ -132,85 +130,89 @@ class TmdbRecommendations implements Recommendations {
     resultCount: number
     results: ResultMovie[]
 
-    constructor(tmdbRecommendation: TmdbRecommendationsMovieResponse) {
+    constructor(tmdbRecommendation: TmdbDetailedMovieRecommendationResponse) {
         this.page = tmdbRecommendation.page
         this.pageCount = tmdbRecommendation.total_pages
         this.resultCount = tmdbRecommendation.total_results
         this.results = this.mapRecommendations(tmdbRecommendation.results)
     }
 
-    private mapRecommendations(raw: TmdbRecommendationsMovieResponse["results"]): Recommendations["results"] {
+    private mapRecommendations(raw: TmdbDetailedMovieRecommendationResponse["results"]): Recommendations["results"] {
         return raw.map(recommendation => new TmdbResultMovie(recommendation))
     }
 }
 
-class TmdbCredits implements Credits {
+class TmdbDetailedMovieCredits implements DetailedMovieCredits {
+
     crew: {
         adult: boolean;
         creditId: string;
         department: string;
+        gender: Gender;
         id: number;
         job: string;
-        knownForDepartment:
-        string; name:
-        string;
+        knowForDepartment: string;
+        name: string;
         originalName: string;
-        profilePath?: string;
+        popularity: number;
+        profilePath: string;
     }[];
     cast: {
         adult: boolean;
+        castId: number;
         character: string;
         creditId: string;
+        gender: Gender;
         id: number;
+        knowForDepartment: string;
         name: string;
         order: number;
         originalName: string;
-        profilePath?: string;
+        popularity: number;
+        profilePath: string;
     }[];
 
-    constructor(tmdbCredits: TmdbMovieCreditResponse) {
+    constructor(tmdbCredits: TmdbDetailedMovieCreditResponse) {
         this.crew = this.mapCrew(tmdbCredits.crew)
-        this.cast = this.mapCrew(tmdbCredits.cast)
+        this.cast = this.mapCast(tmdbCredits.cast)
     }
 
-    mapCrew(crew: TmdbMovieCreditResponse["crew"]): Credits["crew"] {
-        const parsed: Credits["crew"] = crew.map(c => {
+    mapCrew(crew: TmdbDetailedMovieCreditResponse["crew"]): DetailedMovieCredits["crew"] {
+        const parsed: DetailedMovieCredits["crew"] = crew.map(c => {
             return {
+                profilePath: c.profile_path,
                 adult: c.adult,
                 creditId: c.credit_id,
+                id: c.id,
+                name: c.name,
                 department: c.department,
-                id: c.id,
+                gender: TmdbGenderFactory.create(c.gender),
                 job: c.job,
-                knownForDepartment: c.department,
-                name: c.title,
-                originalName: c.original_title,
-                profilePath: c.poster_path,
-                gender: TmdbGenderFactory.create(0) //Weird
+                knowForDepartment: c.known_for_department,
+                originalName: c.original_name,
+                popularity: c.popularity
             }
         })
         return parsed
     }
-    mapCast(cast: TmdbMovieCreditResponse["cast"]): Credits["cast"] {
-        const parsed: Credits["cast"] = cast.map(c => {
+    mapCast(cast: TmdbDetailedMovieCreditResponse["cast"]): DetailedMovieCredits["cast"] {
+        const parsed: DetailedMovieCredits["cast"] = cast.map(c => {
             return {
                 adult: c.adult,
-                creditId: c.credit_id,
-                id: c.id,
-                name: c.title,
-                originalName: c.original_title,
-                profilePath: c.poster_path,
-                gender: TmdbGenderFactory.create(0), //Weird
+                castId: c.cast_id,
                 character: c.character,
+                creditId: c.credit_id,
+                gender: TmdbGenderFactory.create(c.gender),
+                id: c.id,
+                knowForDepartment: c.known_for_department,
+                name: c.name,
                 order: c.order,
+                originalName: c.original_name,
+                popularity: c.popularity,
+                profilePath: c.profile_path,
             }
         })
         return parsed
-
     }
 }
-
-
-
-
-
 

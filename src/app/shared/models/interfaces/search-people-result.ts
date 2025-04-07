@@ -1,4 +1,4 @@
-import { Gender } from "../types/gender"
+import Gender from "../types/gender"
 
 export interface ResultPeople {
     adult: boolean

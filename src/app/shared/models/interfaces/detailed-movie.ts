@@ -1,4 +1,5 @@
 import Credits from "./credits"
+import DetailedMovieCredits from "./detailed-movie-credits"
 import { Image } from "./image"
 import Keyword from "./keywords"
 import Recommendations from "./recommendations"
@@ -8,7 +9,7 @@ export interface DetailedMovie {
     backdropImagePath: string
     //belongs_to_collection: string
     //budget: number
-    credits: Credits
+    credits: DetailedMovieCredits
     genres: { id: number, name: string }[]
     hasVideo: boolean
     //homepage: string

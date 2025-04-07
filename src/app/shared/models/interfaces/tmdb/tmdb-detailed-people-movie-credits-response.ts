@@ -1,5 +1,4 @@
-export default interface TmdbMovieCreditResponse {
-    id: number
+export default interface TmdbDetailedPeopleMovieCreditResponse {
     cast: {
         adult: boolean
         backdrop_path: string
@@ -32,10 +31,11 @@ export default interface TmdbMovieCreditResponse {
         overview: string
         popularity: number
         poster_path: string
-        release_dat: string
+        release_date: string
         title: string
         video: boolean
         vote_average: number
         vote_count: number
     }[]
+    id: number
 }
