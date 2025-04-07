@@ -26,11 +26,12 @@ export class DetailedPeopleService {
         const queryParams = this.queryBuilder.getQuery()
         const url = `${environment.tmdbApiUrl}${endpoint}${queryParams}`
         const options = {}
-        console.log(url)
         return this.http.get<TmdbDetailedPeopleResponse>(url, options).pipe(
             map(data => {
                 console.log(data)
-                return new TmdbDetailedPeople(data)
+                const newData = new TmdbDetailedPeople(data)
+                console.log(newData)
+                return newData
             })
         )
     }

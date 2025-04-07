@@ -92,8 +92,7 @@ main {
 
 }
 
-.cast {
-}
+.cast {}
 
 .cast--grid {
     position: relative;
@@ -127,10 +126,14 @@ main {
     color: var(--clr-accent);
 }
 
+.meta {
+    display: grid;
+    gap: var(--spacing-large);
+}
 
-.meta--keywords {
-    display: flex;
-    flex-wrap: wrap;
+.meta--credits {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: var(--spacing-small);
 }
 
@@ -138,7 +141,7 @@ main {
     position: relative;
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: minmax(400px, 500px);
+    grid-auto-columns: minmax(200px, 300px);
     gap: var(--spacing-medium);
 }
 

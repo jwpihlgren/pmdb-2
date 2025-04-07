@@ -51,7 +51,7 @@ export default class TmdbDetailedPeople implements DetailedPeople {
     }
 
     createFilmography(raw: TmdbDetailedPeopleResponse): Filmography {
-        return new TmdbFilmography({ tv_credits: raw.tv_redits, movie_credits: raw.movie_credits })
+        return new TmdbFilmography({ tv_credits: raw.tv_credits, movie_credits: raw.movie_credits })
     }
 }
 

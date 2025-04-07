@@ -1,4 +1,6 @@
 @defer(when detailedPeople() !== undefined) {
+@let p = detailedPeople()!;
+@let f = p.filmography;
 <main>
     <div class="container">
         <section class="hero">
@@ -10,12 +12,12 @@
                     </h1>
                 </div>
                 <div class="hero--meta">
-                        @for(data of metadata; track $index){
-                            <span>{{data.value}}</span>
-                            @if($index !== metadata.length - 1) {
-                            <span> | </span>
-                            }
-                        }
+                    @for(data of metadata; track $index){
+                    <span>{{data.value}}</span>
+                    @if($index !== metadata.length - 1) {
+                    <span> | </span>
+                    }
+                    }
                 </div>
 
                 <p>{{people.biography}}</p>
@@ -34,11 +36,59 @@
                 </div>
                 <h2>Recommendations</h2>
                 <div class="recommendations--grid">
+                    @for(m of f.top10LatestMovies; track $index){
+                    <app-card class="recommendations--item" [params]="createRecommendationCardParams(m)">
+                        <div class="recommendations--about">
+                            <h5 class="recommendations--about__accent">
+                                {{m.title}}
+                            </h5>
+                            <span>{{m.releaseDate}}</span>
+                        </div>
+                    </app-card>
+
+                    }
                 </div>
             </div>
             <aside>
-                <h2>Keywords</h2>
-                <div class="meta--keywords">
+                <h2>Metadata</h2>
+                <div class="meta">
+                    <div class="meta--credits">
+                        <h5>Commitments:</h5>
+                        <span>{{f.countMovies + f.countShows}}</span>
+
+                        <h5>Movies:</h5>
+                        <span>{{f.countMovies}}</span>
+                        <h5>Shows:</h5>
+                        <span>{{f.countShows}}</span>
+                    </div>
+                    <div class="meta--credits">
+                        <h5>Actor:</h5>
+                        <span>{{f.countMovieActor + f.countShowsActor}}</span>
+                        <h5>Crew:</h5>
+                        <span>{{f.countMovieCrew + f.countShowsCrew}}</span>
+                    </div>
+                    <div class="meta--credits">
+
+                        @if(f.countMoviesPerDepartment) {
+                        <h5>Movie crew:</h5>
+                        <span>{{f.countMovieCrew}}</span>
+                        @for(d of f.countMoviesPerDepartment; track $index) {
+                        <h5>{{d.department}}:</h5>
+                        <span>{{d.count}}</span>
+                        }
+                        }
+                    </div>
+                    <div class="meta--credits">
+
+                        @if(f.countShowsPerDepartment.length > 0) {
+                        <h5>Shows crew:</h5>
+                        <span>{{f.countShowsCrew}}</span>
+                        @for(d of f.countShowsPerDepartment; track $index) {
+                        <h5>{{d.department}}:</h5>
+                        <span>{{d.count}}</span>
+                        }
+                        }
+                    </div>
                 </div>
             </aside>
         </section>

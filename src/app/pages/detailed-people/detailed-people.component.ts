@@ -26,7 +26,6 @@ export class DetailedPeopleComponent {
         this.detailedPeople = toSignal(
             this.activatedRoute.paramMap.pipe(
                 switchMap(data => {
-                    console.log(data)
                     const id = parseInt(data.get("id")!)
                     return this.detailedPeopleService.get(id)
                 })
@@ -56,6 +55,15 @@ export class DetailedPeopleComponent {
             direction: "vertical",
             imageType: "profile",
             imageSrc: image.filePath
+        }
+    }
+
+    createRecommendationCardParams(movie: DetailedPeople["filmography"]["top10LatestMovies"][0]): CardParams{
+        return {
+            imageType: "poster",
+            direction: 'vertical',
+            imageSrc: movie.posterImagePath,
+            aspectRatio: {numerator: 2, denominator: 3} 
         }
     }
 

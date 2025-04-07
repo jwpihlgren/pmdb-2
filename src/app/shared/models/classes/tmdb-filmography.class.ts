@@ -1,5 +1,4 @@
 import Filmography, { CreditedMovie, CreditedMovieActor, CreditedMovieCrew, CreditedShow, CreditedShowActor, CreditedShowCrew } from "../interfaces/filmography.interface";
-import TmdbDetailedMovieCreditResponse from "../interfaces/tmdb/tmdb-detailed-movie-credit-response";
 import TmdbDetailedPeopleMovieCreditResponse from "../interfaces/tmdb/tmdb-detailed-people-movie-credits-response";
 import TmdbShowCreditResponse from "../interfaces/tmdb/tmdb-detailed-show-credit-response";
 
