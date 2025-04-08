@@ -73,6 +73,10 @@
     --fs-body-medium: 1.0rem;
     --fs-body-small: 0.80rem;
 
+    --fs-label-medium: 0.9rem;
+
+    --fw-label-medium: 600;
+
     --heading-line-height-multiplier: 1.2;
     --body-line-height-multiplier: 1.5;
 
@@ -186,4 +190,30 @@ img {
     width: 100%;
     height: auto;
     object-fit: cover;
+}
+
+
+.button {
+    height: var(--button-height, 2.5rem);
+    min-width: 8rem;
+    border-radius: var(--button-radii, 9999px);
+    cursor: pointer;
+    padding-inline: var(--spacing-medium);
+    font-size: var(--fs-label-medium);
+    font-weight: var(--fw-label-medium);
+    font-family: var(--ff-body);
+    letter-spacing: 0.1rem
+}
+
+.button--primary {
+    background: var(--clr-accent);
+    color: var(--clr-on-accent);
+    border: none;
+}
+
+.button--secondary {
+    background: none;
+    color: var(--clr-accent);
+    border: 2px solid var(--clr-accent);
+    
 }
