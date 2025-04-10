@@ -44,6 +44,7 @@ section {
 .search__result-anchor {
     display: flex;
     gap: var(--spacing-medium);
+    text-decoration: none;
 }
 
 .search__result-image {
