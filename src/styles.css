@@ -75,7 +75,20 @@
 
     --fs-label-medium: 0.9rem;
 
+    --fw-body-small: 400;
     --fw-label-medium: 600;
+
+    --letter-spacing-display-large: 0.25rem;
+    --letter-spacing-display-medium: 0.25rem;
+    --letter-spacing-display-small: 0.25rem;
+    --letter-spacing-headline-large: 0.25rem;
+    --letter-spacing-headline-medium: 0.25rem;
+    --letter-spacing-headline-small: 0.25rem;
+    --letter-spacing-body-large: 0.25rem;
+    --letter-spacing-body-medium: 0.25rem;
+    --letter-spacing-body-small: 0.25rem;
+    --letter-spacing-label-medium: 0.1rem;
+
 
     --heading-line-height-multiplier: 1.2;
     --body-line-height-multiplier: 1.5;
@@ -92,7 +105,9 @@
     --spacing-xx-large: 6rem;
     --spacing-xxx-large: 8rem;
 
+    --radii-small: 0.25rem;
     --radii-medium: 1rem;
+    --radii-full: 9999px;
 }
 
 
@@ -202,7 +217,7 @@ img {
     font-size: var(--fs-label-medium);
     font-weight: var(--fw-label-medium);
     font-family: var(--ff-body);
-    letter-spacing: 0.1rem
+    letter-spacing: var(--letter-spacing-label-medium);
 }
 
 .button--primary {

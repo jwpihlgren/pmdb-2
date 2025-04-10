@@ -1,15 +1,28 @@
-<app-hero-search (search)="search($event)"></app-hero-search>
-@defer(when searchResults() !== undefined) {
-<ul>
-    @for(result of searchResults()?.results || []; track $index) {
-    <li>{{result.id}}</li>
+<div class="search">
+    <app-hero-search class="search__bar" (search)="search($event)"></app-hero-search>
+    @defer(when searchResults() !== undefined) {
+    <div class="search__result-list-wrapper">
+        <ul class="search__result-list">
+            @for(result of searchResults()! || []; track $index) {
+            <li class="search__result">
+                <a class="search__result-anchor" [routerLink]="[result.id]">
+                    <app-image class="search__result-image" [params]=createImageParams(result)></app-image>
+                    <span class="search__result-data">{{result.title}}
+                        <span class="search__result-data-inner">({{result.releaseDate}})</span>
+                    </span>
+                </a>
+            </li>
+            }
+        </ul>
+    </div>
     }
-</ul>
-}
+</div>
 <section>
-    <nav>
-        <ul>@for(tab of tabs; track $index){
-            <li><a [routerLink]="[tab.href]">{{tab.name}}</a></li>
+    <nav class="movies-navigation">
+        <ul class="movies-navigation__list">@for(tab of tabs; track $index){
+            <li class="movies-navigation__listitem" [routerLinkActive]="'movies-navigation__listitem--active'">
+                <a class="movies-navigation__anchor" [routerLink]="[tab.href]">{{tab.name}}</a>
+            </li>
             }
         </ul>
     </nav>

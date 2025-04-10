@@ -14,7 +14,6 @@ export class HeaderComponent {
       {name: "Home", href: "", exact: true},
       {name: "Movies", href: "movies", exact: false},
       {name: "Shows", href: "shows", exact: false},
-      {name: "test", href: "test", exact: true},
   ]
 }
 

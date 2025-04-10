@@ -1,5 +1,110 @@
+:host {
+    --searchbar-max-width: 800px;
+    --search-result-image-width: 80px;
+    --max-count-result: 10;
+}
+
+.search {
+    margin-block: var(--spacing-medium);
+}
+
+.search__bar {
+    display: block;
+    margin: 0 auto;
+    width: min(100%, var(--searchbar-max-width));
+    max-width: var(--searchbar-max-width)
+}
+
 section {
     padding: var(--spacing-xxl, 2rem);
 }
 
+.search__result-list-wrapper {
+    position: absolute;
+    transform: translate(0, var(--spacing-medium));
+    z-index: 9999;
+    background-color: var(--clr-surface-elevation-3);
+    padding-block: var(--spacing-medium);
+    padding-inline-end: var(--spacing-medium);
+    border-radius: var(--radii-medium);
+    width: min(100%, var(--searchbar-max-width));
+    left: calc(50% - (min(100%, var(--searchbar-max-width)) / 2));
+}
 
+.search__result-list {
+    display: grid;
+    max-height: calc(var(--search-result-image-width) * var(--max-count-result));
+    overflow-y: auto;
+}
+
+.search__result {
+    list-style: none;
+}
+
+.search__result-anchor {
+    display: flex;
+    gap: var(--spacing-medium);
+}
+
+.search__result-image {
+    width: var(--search-result-image-width, 80px);
+}
+
+.search__result-data {
+    color: var(--clr-accent);
+    font-size: var(--fs-label-medium);
+    font-weight: var(--fw-label-medium);
+    letter-spacing: var (--letter-spacing-label-medium);
+}
+
+.search__result-data-inner {
+    color: var(--clr-on-surface);
+    font-size: var(--fs-body-small);
+    font-weight: var(--fw-body-small);
+
+}
+
+.movies-navigation {
+    margin-block-end: var(--spacing-medium);
+    border-bottom: 2px solid var(--clr-surface-elevation-2);
+}
+
+.movies-navigation__list {
+    display: flex;
+    gap: var(--spacing-medium);
+    list-style: none;
+    height: var(--movies-navigation-height, 48px);
+}
+
+.movies-navigation__listitem {
+    color: var(--clr-accent);
+    text-decoration: none;
+    display: flex;
+    cursor: pointer;
+}
+
+.movies-navigation__listitem:hover {
+    border-bottom: 2px solid var(--clr-surface-elevation-3);
+}
+
+.movies-navigation__listitem:active {
+    border-bottom: 2px solid var(--clr-surface-elevation-1);
+}
+
+.movies-navigation__listitem--active {
+    border-bottom: 2px solid var(--clr-accent);
+}
+
+.movies-navigation__anchor {
+    text-decoration: none;
+    font-size: var(--fs-label-medium);
+    font-size: var(--fw-label-medium);
+    letter-spacing: var(--letter-spacing-label-medium);
+    height: 100%;
+    width: 100%;
+    flex-grow: 1;
+    color: inherit;
+    position: relative;
+    top: 25%;
+    bottom: 25%;
+}
