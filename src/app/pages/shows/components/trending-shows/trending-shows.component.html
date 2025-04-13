@@ -1,0 +1,14 @@
+@defer(when trendingShows() !== undefined) {
+<app-card-grid>
+    @for( show of trendingShows(); track $index) {
+    <app-card [params]="createCardParams(show)">
+        <app-content-show [params]="show"></app-content-show>
+    </app-card>
+    }
+</app-card-grid>
+<app-pagination (pageRequest)="paginate($event)" [pagination]=paginationResult()></app-pagination>
+}
+
+@placeholder(minimum 100ms) {
+<span>Loading</span>
+}

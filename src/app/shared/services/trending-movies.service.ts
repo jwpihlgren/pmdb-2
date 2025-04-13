@@ -9,14 +9,13 @@ import { TmdbTimeWindow } from '../models/types/tmdb-time-window';
 import { TmdbResultMovie } from '../models/classes/tmdb-result-movie';
 import { TmdbResultMovieResponse } from '../models/interfaces/tmdb/tmdb-result-movie-response';
 import { ResultMovie } from '../models/interfaces/result-movie';
+import SearchQueryBuilder from '../models/classes/movie-search-query-builder.class';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TrendingMoviesService {
 
-    private api = environment.tmdbApiUrl
-    private apikey = environment.tmdbApiKey
     private pageSubject$: BehaviorSubject<number> = new BehaviorSubject(1)
     private trendingMovies$!: Observable<ResultMovie[]>
     private paginationResults$: BehaviorSubject<Pagination> = new BehaviorSubject(new PlaceholderPagination())
@@ -47,12 +46,14 @@ export class TrendingMoviesService {
     }
 
     private request(page: number = 1, timeWindow: TmdbTimeWindow = "day"): Observable<ResultMovie[]> {
-        const endpoint = `trending/movie/${timeWindow}`
-        const queryParams = `?api_key=${this.apikey}&page=${page}`
-        const url = `${this.api}${endpoint}${queryParams}`
+        const queryBuilder = new SearchQueryBuilder(environment.tmdbApiUrl, `trending/movie/${timeWindow}`)
+        queryBuilder
+            .apiKey(environment.tmdbApiKey)
+            .page(page)
         const options = {}
 
-        return this.http.get<TmdbResultMovieResponse>(url, options).pipe(
+
+        return this.http.get<TmdbResultMovieResponse>(queryBuilder.url, options).pipe(
             map(data => {
                 this.paginationResults$.next(new TmdbPagination(data))
                 return data.results.map(datum => new TmdbResultMovie(datum))

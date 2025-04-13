@@ -10,6 +10,9 @@ import { PopularMoviesComponent } from './pages/movies/components/popular-movies
 import { DiscoverMoviesComponent } from './pages/movies/components/discover-movies/discover-movies.component';
 import { DetailedPeopleComponent } from './pages/detailed-people/detailed-people.component';
 import { PeopleComponent } from './pages/people/people.component';
+import { TrendingShowsComponent } from './pages/shows/components/trending-shows/trending-shows.component';
+import { PopularShowsComponent } from './pages/shows/components/popular-shows/popular-shows.component';
+import { DiscoverShowsComponent } from './pages/shows/components/discover-shows/discover-shows.component';
 
 export const routes: Routes = [
     { path: "", pathMatch: "full", component: HomeComponent },
@@ -22,7 +25,15 @@ export const routes: Routes = [
         ]
     },
     { path: "movies/:id", component: DetailedMovieComponent },
-    { path: "shows", pathMatch: "full", component: ShowsComponent },
+    {
+        path: "shows", component: ShowsComponent, children: [
+            { path: "", redirectTo: "trending", pathMatch: "full" },
+            { path: "trending", component: TrendingShowsComponent },
+            { path: "popular", component: PopularShowsComponent  },
+            { path: "discover", component: DiscoverShowsComponent },
+
+        ]
+    },
     { path: "shows/:id", pathMatch: "full", component: DetailedShowComponent },
     { path: "people/", pathMatch: "full", component: PeopleComponent },
     { path: "people/:id", pathMatch: "full", component: DetailedPeopleComponent },

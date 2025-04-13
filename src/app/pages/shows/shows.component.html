@@ -1,12 +1,4 @@
-@defer(when trendingShows() !== undefined){
-    <ul>
-        @for(show of trendingShows(); track $index) {
-            <li>
-                <a [routerLink]=[show.id]>{{show.name}}</a>
-            </li>
-        }
-    </ul>
-    <app-pagination (pageRequest)="paginate($event)"[pagination]=paginationResults()></app-pagination>
-} @placeholder {
-    <span>Loading...</span>
-}
+<section>
+    <app-tabbed-menu [params]="{tabs: tabs}"></app-tabbed-menu>
+    <router-outlet></router-outlet>
+</section>

@@ -1,0 +1,29 @@
+.content {
+    padding: var(--spacing-medium, 1rem);
+    display: grid;
+    gap: var(--spacing-small, 0.5rem);
+    color: var(--clr-on-surface, red);
+    text-decoration: none;
+}
+
+.content--h5 {
+    color: var(--clr-on-surface-accent, red);
+}
+
+.content--header {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-small);
+}
+.content--overview {
+    height: 4lh;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+
+

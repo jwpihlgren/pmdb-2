@@ -13,7 +13,7 @@ export class TmdbResultShow implements ResultShow {
     mediaType: string
     genreIds: number[]
     popularity: number
-    firstairDAte: string
+    firstairDate: string
     voteAverage: number
     voteCount: number
     originCountries: string[]
@@ -31,7 +31,7 @@ export class TmdbResultShow implements ResultShow {
         this.mediaType = data.media_type
         this.genreIds = data.genre_ids
         this.popularity = data.popularity
-        this.firstairDAte = data.first_air_date
+        this.firstairDate = data.first_air_date
         this.voteAverage = data.vote_average
         this.voteCount = data.vote_count
         this.originCountries = data.origin_country

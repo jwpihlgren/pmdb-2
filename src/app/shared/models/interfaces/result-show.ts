@@ -10,7 +10,7 @@ export interface ResultShow {
     mediaType: string
     genreIds: number[]
     popularity: number
-    firstairDAte: string
+    firstairDate: string
     voteAverage: number
     voteCount: number
     originCountries: string[]
