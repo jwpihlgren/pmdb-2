@@ -9,10 +9,11 @@ import { CardComponent, CardParams } from '../../../../shared/components/card/ca
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
 import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { RoutingService } from '../../../../shared/services/routing.service';
+import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 
 @Component({
     selector: 'app-trending-movies',
-    imports: [CardGridComponent, PaginationComponent, CardComponent, ContentMovieComponent],
+    imports: [CardGridComponent, PaginationComponent, CardComponent, ContentMovieComponent, CardLoadingComponent],
     templateUrl: './trending-movies.component.html',
     styleUrl: './trending-movies.component.css',
     standalone: true

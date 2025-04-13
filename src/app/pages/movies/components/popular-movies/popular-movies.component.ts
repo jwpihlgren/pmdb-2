@@ -8,10 +8,11 @@ import { ContentMovieComponent } from '../../../../shared/components/card/compon
 import { PopularMoviesService } from '../../../../shared/services/popular-movies.service';
 import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { RoutingService } from '../../../../shared/services/routing.service';
+import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 
 @Component({
     selector: 'app-popular-movies',
-    imports: [PaginationComponent, CardComponent, ContentMovieComponent, CardGridComponent],
+    imports: [PaginationComponent, CardComponent, ContentMovieComponent, CardGridComponent, CardLoadingComponent],
     templateUrl: './popular-movies.component.html',
     styleUrl: './popular-movies.component.css',
     standalone: true

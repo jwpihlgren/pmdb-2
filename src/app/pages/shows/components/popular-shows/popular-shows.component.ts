@@ -8,10 +8,11 @@ import { PopularShowsService } from '../../../../shared/services/popular-shows.s
 import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
 import { ContentShowComponent } from '../../../../shared/components/card/components/content-show/content-show.component';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
+import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 
 @Component({
     selector: 'app-popular-shows',
-    imports: [CardGridComponent, CardComponent, ContentShowComponent, PaginationComponent],
+    imports: [CardGridComponent, CardComponent, ContentShowComponent, PaginationComponent, CardLoadingComponent],
     templateUrl: './popular-shows.component.html',
     styleUrl: './popular-shows.component.css'
 })

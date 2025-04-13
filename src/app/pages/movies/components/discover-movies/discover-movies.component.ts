@@ -18,10 +18,11 @@ import { Pagination } from '../../../../shared/models/interfaces/pagination';
 import { DiscoverMovieFormValue } from '../../../../shared/models/interfaces/discover-movie-form-value';
 import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { RoutingService } from '../../../../shared/services/routing.service';
+import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 
 @Component({
     selector: 'app-discover-movies',
-    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ListboxComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent],
+    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ListboxComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent, CardLoadingComponent],
     templateUrl: './discover-movies.component.html',
     styleUrl: './discover-movies.component.css'
 })
@@ -141,7 +142,7 @@ export class DiscoverMoviesComponent {
             mediaType: "movie",
             imageSrc: movie.posterImagePath,
             href: ["/", this.routingService.stubs.MOVIE, `${movie.id}`],
-            aspectRatio: {numerator: 2, denominator: 3}
+            aspectRatio: { numerator: 2, denominator: 3 }
 
         }
 

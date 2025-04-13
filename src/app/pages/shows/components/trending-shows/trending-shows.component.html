@@ -8,7 +8,20 @@
 </app-card-grid>
 <app-pagination (pageRequest)="paginate($event)" [pagination]=paginationResult()></app-pagination>
 }
-
 @loading() {
-<span>Loading</span>
+<app-card-grid>
+    @for(card of [].constructor(20); track $index){
+    <app-card-loading></app-card-loading>
+    }
+</app-card-grid>
 }
+
+@placeholder {
+<app-card-grid>
+    @for(card of [].constructor(20); track $index){
+    <app-card-loading></app-card-loading>
+    }
+</app-card-grid>
+
+}
+

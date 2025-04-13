@@ -6,7 +6,8 @@
                 <app-listbox class="list" [params]="listboxParams" formControlName="genres"></app-listbox>
                 <app-chip-list class="selected">
                     @for(chip of discoverForm.value.genres; track $index) {
-                    <app-chip [value]="chip.toString()" [action]="true" (clickRequest)="onRemove($event)">{{parseGenre(chip)}}</app-chip>
+                    <app-chip [value]="chip.toString()" [action]="true"
+                        (clickRequest)="onRemove($event)">{{parseGenre(chip)}}</app-chip>
                     }
                 </app-chip-list>
             </app-combobox>
@@ -76,5 +77,21 @@
         }
     </app-card-grid>
     <app-pagination (pageRequest)=handlePageRequest($event) [pagination]="pagination()"></app-pagination>
+    }
+    @loading() {
+    <app-card-grid>
+        @for(card of [].constructor(20); track $index){
+        <app-card-loading></app-card-loading>
+        }
+    </app-card-grid>
+    }
+
+    @placeholder {
+    <app-card-grid>
+        @for(card of [].constructor(20); track $index){
+        <app-card-loading></app-card-loading>
+        }
+    </app-card-grid>
+
     }
 </main>

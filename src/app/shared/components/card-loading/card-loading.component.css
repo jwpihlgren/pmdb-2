@@ -1,0 +1,6 @@
+:host {
+    background: var(--clr-surface-elevation-1, gray);
+    border-radius: var(--radii-md, 1rem);
+    overflow: hidden;
+    aspect-ratio: 1/2;
+}
