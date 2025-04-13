@@ -1,5 +1,6 @@
 export default interface MovieFilters {
-    getQuery(): string
+    url: string
+    query: string
     page(value?: number): MovieFilters
     apiKey(value: string): MovieFilters
     includeAdult(value: boolean): MovieFilters

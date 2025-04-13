@@ -1,14 +1,9 @@
-import { Injectable } from "@angular/core"
 import QueryBuilder from "./query-builder.class"
-
-@Injectable({
-    providedIn: 'root'
-})
 
 export default class SearchQueryBuilder extends QueryBuilder<SearchQueryBuilder> {
 
-    constructor() {
-        super()
+    constructor(endpoint: string, api: string) {
+        super(endpoint, api)
     }
 
     searchQuery = this.paramFactory(this, "query", (value?: string) => {

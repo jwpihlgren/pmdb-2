@@ -5,8 +5,8 @@ type Operator = "or" | "and"
 
 export default class MovieDiscoverQueryBuilder extends QueryBuilder<MovieDiscoverQueryBuilder> implements MovieFilters {
 
-    constructor() {
-        super()
+    constructor(api: string, endpoint: string) {
+        super(api, endpoint)
     }
 
     includeAdult = this.paramFactory<boolean>(this, "include_adult", (value: boolean) => {

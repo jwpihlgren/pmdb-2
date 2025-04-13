@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import SearchQueryBuilderl from '../models/classes/movie-search-query-builder.class';
 import { HttpClient } from '@angular/common/http';
 import { debounceTime, map, Observable, Subject, switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { TmdbResultMovieResponse } from '../models/interfaces/tmdb/tmdb-result-movie-response';
 import { ResultMovie } from '../models/interfaces/result-movie';
+import SearchQueryBuilder from '../models/classes/movie-search-query-builder.class';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +14,6 @@ export class SearchMoviesService {
     private api = environment.tmdbApiUrl
     private apikey = environment.tmdbApiKey
 
-    protected queryBuilder: SearchQueryBuilderl = inject(SearchQueryBuilderl)
     protected querySubject$: Subject<string> = new Subject()
     searchResults$: Observable<any>
 
@@ -32,14 +31,12 @@ export class SearchMoviesService {
     }
 
     private request(query: string): Observable<ResultMovie[]> {
-        const endpoint = "search/movie"
-        this.queryBuilder
+        const queryBuilder = new SearchQueryBuilder(environment.tmdbApiUrl, "search/movie")
+        queryBuilder
             .apiKey(this.apikey)
             .searchQuery(query)
-        const queryParams = this.queryBuilder.getQuery()
-        const url = `${this.api}${endpoint}${queryParams}`
 
-        return this.http.get<TmdbResultMovieResponse>(url).pipe(
+        return this.http.get<TmdbResultMovieResponse>(queryBuilder.url).pipe(
             debounceTime(200),
             map(data => {
                 return data.results.map(data => {

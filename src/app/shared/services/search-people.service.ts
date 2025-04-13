@@ -9,6 +9,8 @@ import { PlaceholderPagination } from '../models/classes/placeholder-pagination'
 import { TmdbPagination } from '../models/classes/tmdb-pagination';
 import { ResultPeople } from '../models/interfaces/search-people-result';
 import { TmdbResultPeopleResponse } from '../models/interfaces/tmdb/tmdb-search-people-response';
+import QueryBuilder from '../models/classes/query-builder.class';
+import SearchQueryBuilder from '../models/classes/movie-search-query-builder.class';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +18,6 @@ import { TmdbResultPeopleResponse } from '../models/interfaces/tmdb/tmdb-search-
 export class SearchPeopleService {
 
     protected http: HttpClient = inject(HttpClient)
-    protected queryBuilder = inject(SearchQueryBuilderl)
     protected query$: Subject<{query: string, page: number}> = new Subject<{query: string, page: number}>
     protected paginationResults$: BehaviorSubject<Pagination> = new BehaviorSubject(new PlaceholderPagination())
     pagination$: Observable<Pagination> = this.paginationResults$.asObservable()
@@ -35,15 +36,12 @@ export class SearchPeopleService {
     }
 
     private request(param: {query: string, page: number}): Observable<ResultPeople[]> {
-        this.queryBuilder.apiKey(environment.tmdbApiKey)
-        this.queryBuilder.searchQuery(param.query)
-        this.queryBuilder.page(param.page)
+        const queryBuilder = new SearchQueryBuilder(environment.tmdbApiUrl, "search/person")
+        queryBuilder.apiKey(environment.tmdbApiKey)
+        queryBuilder.searchQuery(param.query)
+        queryBuilder.page(param.page)
 
-        const endpoint = `${environment.tmdbApiUrl}search/person`
-        const queryParams = this.queryBuilder.getQuery()
-        const url = `${endpoint}${queryParams}`
-
-        return this.http.get<TmdbResultPeopleResponse>(url).pipe(
+        return this.http.get<TmdbResultPeopleResponse>(queryBuilder.url).pipe(
             map(data => {
                 console.log(data)
                 this.paginationResults$.next(new TmdbPagination(data))

@@ -20,7 +20,6 @@ export class DiscoverMoviesService {
 
     private api = environment.tmdbApiUrl
 
-    private movieQueryBuilder: MovieFilters = new MovieDiscoverQueryBuilder()
     private query$: ReplaySubject<{query: DiscoverMovieFormValue, page?: number}> = new ReplaySubject()
     private paginationResults$ = new BehaviorSubject<Pagination>(new PlaceholderPagination())
     results$: Observable<ResultMovie[]>
@@ -42,25 +41,23 @@ export class DiscoverMoviesService {
     }
 
     private request(params: {query: DiscoverMovieFormValue, page?: number}): Observable<ResultMovie[]> {
-        const endpoint = `discover/movie`
         const value = params.query
         const page = params.page 
         const genres: string[] = value.genres?.map( value => value.toString()) || []
-        this.movieQueryBuilder.apiKey(environment.tmdbApiKey)
-        this.movieQueryBuilder.withGenres(genres)
-        if (value.include.adult !== null) this.movieQueryBuilder.includeAdult(value.include.adult)
-        if (value.include.video !== null) this.movieQueryBuilder.includeVideo(value.include.video)
-        if (value.voteAverage.lte && value.voteAverage.lte.length > 0) this.movieQueryBuilder.voteAverageLte(value.voteAverage.lte[0])
-        if (value.voteAverage.gte && value.voteAverage.gte.length > 0) this.movieQueryBuilder.voteAverageGte(value.voteAverage.gte[0])
-        if (value.releaseDate.lte) this.movieQueryBuilder.releaseDateLte([+value.releaseDate.lte, 12, 31])
-        if (value.releaseDate.gte) this.movieQueryBuilder.releaseDateGte([+value.releaseDate.gte, 1, 1])
-        this.movieQueryBuilder.page(page)
-        let queryParams = this.movieQueryBuilder.getQuery()
-        console.log(queryParams)
-        const url = `${this.api}${endpoint}${queryParams}`
+        const queryBuilder = new MovieDiscoverQueryBuilder(environment.tmdbApiUrl, "discover/movie")
+        queryBuilder
+            .apiKey(environment.tmdbApiKey)
+            .withGenres(genres)
+        if (value.include.adult !== null) queryBuilder.includeAdult(value.include.adult)
+        if (value.include.video !== null) queryBuilder.includeVideo(value.include.video)
+        if (value.voteAverage.lte && value.voteAverage.lte.length > 0) queryBuilder.voteAverageLte(value.voteAverage.lte[0])
+        if (value.voteAverage.gte && value.voteAverage.gte.length > 0) queryBuilder.voteAverageGte(value.voteAverage.gte[0])
+        if (value.releaseDate.lte) queryBuilder.releaseDateLte([+value.releaseDate.lte, 12, 31])
+        if (value.releaseDate.gte) queryBuilder.releaseDateGte([+value.releaseDate.gte, 1, 1])
+        queryBuilder.page(page)
         const options = {}
 
-        return this.http.get<TmdbResultMovieResponse>(url, options).pipe(
+        return this.http.get<TmdbResultMovieResponse>(queryBuilder.url, options).pipe(
             map(data => {
                 this.paginationResults$.next(new TmdbPagination(data))
                 return data.results.map(datum => new TmdbResultMovie(datum))

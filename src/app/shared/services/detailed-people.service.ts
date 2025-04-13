@@ -13,20 +13,17 @@ import TmdbDetailedPeople from '../models/classes/tmdb-detailed-people.class';
 export class DetailedPeopleService {
 
     protected http = inject(HttpClient)
-    protected queryBuilder = inject(SearchQueryBuilder)
 
     get(id: number): Observable<DetailedPeople> {
         return this.request(id)
     }
 
     private request(id: number): Observable<DetailedPeople> {
-        const endpoint = `person/${id}`
-        this.queryBuilder.apiKey(environment.tmdbApiKey)
-        this.queryBuilder.appendToResponse(["images", "movie_credits", "tv_credits"])
-        const queryParams = this.queryBuilder.getQuery()
-        const url = `${environment.tmdbApiUrl}${endpoint}${queryParams}`
+        const queryBuilder = new SearchQueryBuilder(environment.tmdbApiUrl, `person/${id}`)
+        queryBuilder.apiKey(environment.tmdbApiKey)
+        queryBuilder.appendToResponse(["images", "movie_credits", "tv_credits"])
         const options = {}
-        return this.http.get<TmdbDetailedPeopleResponse>(url, options).pipe(
+        return this.http.get<TmdbDetailedPeopleResponse>(queryBuilder.url, options).pipe(
             map(data => {
                 console.log(data)
                 const newData = new TmdbDetailedPeople(data)

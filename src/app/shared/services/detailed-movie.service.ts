@@ -14,7 +14,6 @@ export class DetailedMovieService {
 
     api = environment.tmdbApiUrl
 
-    protected queryBuilder = inject(SearchQueryBuilder)
     protected http = inject(HttpClient)
 
 
@@ -23,16 +22,14 @@ export class DetailedMovieService {
     }
 
     private request(id: string): Observable<DetailedMovie> {
-        const endpoint = `movie/${id}`
-        this.queryBuilder.apiKey(environment.tmdbApiKey)
-        this.queryBuilder.appendToResponse(["credits", "images", "keywords", "recommendations", "reviews", "similar", "videos"])
-        const queryParams = this.queryBuilder.getQuery()
-        const url = `${this.api}${endpoint}${queryParams}`
+        const queryBuilder = new SearchQueryBuilder(environment.tmdbApiUrl, `movie/${id}`)
+        queryBuilder
+            .apiKey(environment.tmdbApiKey)
+            .appendToResponse(["credits", "images", "keywords", "recommendations", "reviews", "similar", "videos"])
         const options = {}
 
-        return this.http.get<TmdbDetailedMovieResponse>(url, options).pipe(
+        return this.http.get<TmdbDetailedMovieResponse>(queryBuilder.url, options).pipe(
             map(data => new TmdbDetailedMovie(data)),
-            tap(data => console.log(data))
         )
     }
 }
