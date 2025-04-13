@@ -9,6 +9,6 @@
 <app-pagination (pageRequest)="paginate($event)" [pagination]=paginationResult()></app-pagination>
 }
 
-@placeholder(minimum 100ms) {
+@loading() {
 <span>Loading</span>
 }

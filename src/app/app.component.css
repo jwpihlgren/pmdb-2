@@ -1,5 +1,22 @@
 :host {
-    height: 100lvh;
+    height: calc(100lvh - var(--app-header-height));
     display: grid;
     grid-template-rows: auto 0 1fr;
+    position: relative;
+    margin-block-start: var(--app-header-height);
 }
+
+app-header {
+    position: absolute;
+    z-index: 9999;
+    top: calc(var(--app-header-height) * -1);
+    width: 100vw;
+}
+
+.container {
+    overflow: auto;
+    scrollbar-gutter: stable;
+    padding-inline: var(--app-container-padding);
+}
+
+

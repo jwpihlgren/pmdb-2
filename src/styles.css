@@ -108,6 +108,22 @@
     --radii-small: 0.25rem;
     --radii-medium: 1rem;
     --radii-full: 9999px;
+
+
+    --app-header-height: 5rem;
+    --app-container-padding: 10rem;
+}
+
+@media screen and (max-width: 768px) {
+    :root {
+        --app-container-padding: 1rem;
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    :root {
+        --app-container-padding: 2rem;
+    }
 }
 
 
@@ -151,9 +167,7 @@ html {
     line-height: calc(var(--fs-body-medium) * var(--body-line-height-multiplier));
 }
 
-body {
-    min-height: 100vh;
-}
+body {}
 
 h1,
 h2,
@@ -230,5 +244,5 @@ img {
     background: none;
     color: var(--clr-accent);
     border: 2px solid var(--clr-accent);
-    
+
 }
