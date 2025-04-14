@@ -246,3 +246,7 @@ img {
     border: 2px solid var(--clr-accent);
 
 }
+
+a {
+    color: var(--clr-on-surface-accent);
+}

@@ -44,7 +44,7 @@ export class PopularShowsComponent {
             aspectRatio: { numerator: 2, denominator: 3 },
             direction: "vertical",
             imageType: "poster",
-            href: [`${result.id}`],
+            href: ["/", "shows", `${result.id}`],
             id: result.id,
             imageSrc: result.posterImageUrl,
             mediaType: "show"

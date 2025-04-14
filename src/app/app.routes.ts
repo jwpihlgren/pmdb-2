@@ -13,6 +13,9 @@ import { PeopleComponent } from './pages/people/people.component';
 import { TrendingShowsComponent } from './pages/shows/components/trending-shows/trending-shows.component';
 import { PopularShowsComponent } from './pages/shows/components/popular-shows/popular-shows.component';
 import { DiscoverShowsComponent } from './pages/shows/components/discover-shows/discover-shows.component';
+import { DetailedMovieOverviewComponent } from './pages/detailed-movie/components/detailed-movie-overview/detailed-movie-overview.component';
+import { DetailedMovieCastComponent } from './pages/detailed-movie/components/detailed-movie-cast/detailed-movie-cast.component';
+import { DetailedMovieRecommendationsComponent } from './pages/detailed-movie/components/detailed-movie-recommendations/detailed-movie-recommendations.component';
 
 export const routes: Routes = [
     { path: "", pathMatch: "full", component: HomeComponent },
@@ -24,7 +27,11 @@ export const routes: Routes = [
             { path: "discover", component: DiscoverMoviesComponent },
         ]
     },
-    { path: "movies/:id", component: DetailedMovieComponent },
+    { path: "movies/:id", component: DetailedMovieComponent, children: [
+        {path: "", component: DetailedMovieOverviewComponent, pathMatch: "full"},
+        {path: "cast", component: DetailedMovieCastComponent, pathMatch: "full"},
+        {path: "recommendations", component: DetailedMovieRecommendationsComponent, pathMatch: "full"},
+    ] },
     {
         path: "shows", component: ShowsComponent, children: [
             { path: "", redirectTo: "trending", pathMatch: "full" },

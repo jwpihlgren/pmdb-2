@@ -1,84 +1,11 @@
 @defer (when movieDetails() !== undefined ){
 @let m = movieDetails()!;
 <main>
-    <div class="background-image">
+    <div *ngIf="m.backdropImagePath" class="background-image">
         <img [ngSrc]="m.backdropImagePath" priority fill alt="" [loaderParams]="{type: 'backdrop'}">
     </div>
-    <div class="container">
-        <section class="hero">
-
-            <app-image class="hero--image" [params]="posterParams(m)"></app-image>
-            <div class="hero--about">
-                <div class="hero--header">
-                    <h1 [title]="'Original title: ' + m.originalTitle">{{movieDetails()!.title}}
-                        @if(m.status !== "released"){
-                        <h5>
-                            ({{movieDetails!()!.status}})
-                        </h5>
-                        }
-                    </h1>
-                    <h5 [title]="m.voteCount">{{m.voteAverage | number: '1.1-1'}} / 10</h5>
-                </div>
-                <div class="hero--meta">
-                    @for(data of metaData(m); track $index) {
-                    <span [title]="data.alt">{{data.value}} {{data.suffix}}</span>
-                    @if($index !== metaData.length - 1) {
-                    <span>|</span>
-                    }
-                    }
-                </div>
-                <p>{{m.overview}}</p>
-                <div class="hero--genres">
-                    @for(genre of m.genres; track $index) {
-                    <app-chip [value]="genre.name">{{genre.name}}</app-chip>
-                    }
-                </div>
-                <a [href]="imdbUrl(m)" rel="noreferrer" target="_blank">View at imdb</a>
-            </div>
-        </section>
-        <section class="content">
-            <div class="main">
-                <div class="cast">
-                    <h2>Top billed cast</h2>
-                    <div class="cast--grid">
-                        @for(top of topBilled(m); track $index){
-                        <app-card class="cast--item" [params]="createTopCardParams(top)">
-                            <div class="cast--about">
-                                <h5 class="cast--about__accent">
-                                    {{top.character}}
-                                </h5>
-                                <span>{{top.name}}</span>
-                            </div>
-                        </app-card>
-
-                        }
-                    </div>
-                </div>
-                <h2>Recommendations</h2>
-                <div class="recommendations--grid">
-                    @for(rec of m.recommendations.results; track $index){
-                    <app-card class="recommendations--item" [params]="createRecommendationCardParams(rec)">
-                        <div class="recommendations--about">
-                            <h5 class="recommendations--about__accent">
-                                {{rec.title}}
-                            </h5>
-                            <span>{{rec.releaseDate}}</span>
-                        </div>
-                    </app-card>
-
-                    }
-                </div>
-            </div>
-            <aside>
-                <h2>Keywords</h2>
-                <div class="meta--keywords">
-                    @for(keyword of m.keywords; track $index) {
-                    <app-chip [value]="keyword.name">{{keyword.name}}</app-chip>
-                    }
-                </div>
-            </aside>
-        </section>
-    </div>
+    <div class="background-blur"></div>
+    <router-outlet></router-outlet>
 </main>
 } @placeholder {
 <span>Loading</span>

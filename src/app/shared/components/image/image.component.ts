@@ -15,6 +15,11 @@ import AspectRatio from '../../models/types/aspect-ratio.type';
 })
 export class ImageComponent {
     params = input.required<ImageParams>()
+
+    sanitizeUrl(url: string): string {
+        if (url === "") return "1"
+        return url
+    }
 }
 
 export interface ImageParams {
