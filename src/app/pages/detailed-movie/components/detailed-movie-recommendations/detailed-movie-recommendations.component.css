@@ -5,7 +5,6 @@
 .list {
     display: grid;
     list-style: none;
-    gap: var(--spacing-medium);
     background: var(--clr-surface-elevation-1);
     border-radius: var(--radii-medium);
     padding: var(--spacing-large);
@@ -13,8 +12,21 @@
 
 .list__item {
     display: flex;
+    padding: var(--spacing-small);
     gap: var(--spacing-medium);
+    border-radius: var(--radii-small);
+    cursor: pointer;
 }
+
+.list__item-anchor {
+    all: unset;
+    display: contents;
+}
+
+.list__item:hover {
+    background: var(--clr-surface-elevation-2);
+}
+
 
 .list__item-image {
     width: var(--list__item-image-width, 80px);
