@@ -10,6 +10,9 @@ import { ContentMovieComponent } from '../../../../shared/components/card/compon
 import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { RoutingService } from '../../../../shared/services/routing.service';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
+import { DetailedMovieService } from '../../../../shared/services/detailed-movie.service';
+import { first, map } from 'rxjs';
+import { PrefetchService } from '../../../../shared/services/prefetch.service';
 
 @Component({
     selector: 'app-trending-movies',
@@ -20,14 +23,25 @@ import { CardLoadingComponent } from '../../../../shared/components/card-loading
 })
 export class TrendingMoviesComponent {
 
-    trendingMovies: Signal<ResultMovie[] | undefined>
-    paginationResult: Signal<Pagination>
     protected trendingMoviesService: TrendingMoviesService = inject(TrendingMoviesService)
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     protected router: Router = inject(Router)
     protected routingService: RoutingService = inject(RoutingService)
+    protected detailedMovieServie: DetailedMovieService = inject(DetailedMovieService)
+    protected prefetchService: PrefetchService<number> = inject(PrefetchService)
+
+    trendingMovies: Signal<ResultMovie[] | undefined>
+    paginationResult: Signal<Pagination>
+    prefetch: Signal<number | undefined>
+
 
     constructor() {
+        this.prefetch = toSignal(this.prefetchService.prefetch$.pipe(
+            map(id => {
+                this.detailedMovieServie.get(`${id}`).pipe(first()).subscribe()
+                return id
+            })
+        ))
         const page = this.activatedRoute.snapshot.queryParamMap.get("page")
         if (!page) this.trendingMovies = toSignal(this.trendingMoviesService.get())
         else this.trendingMovies = toSignal(this.trendingMoviesService.get(+page))
@@ -51,10 +65,9 @@ export class TrendingMoviesComponent {
             mediaType: "movie",
             imageSrc: movie.posterImagePath,
             href: ["/", this.routingService.stubs.MOVIE, `${movie.id}`],
-            aspectRatio: {numerator: 2, denominator: 3}
+            aspectRatio: { numerator: 2, denominator: 3 }
         }
 
         return params
     }
-
 }

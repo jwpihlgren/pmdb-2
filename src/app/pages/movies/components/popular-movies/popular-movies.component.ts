@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
@@ -9,6 +9,10 @@ import { PopularMoviesService } from '../../../../shared/services/popular-movies
 import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { RoutingService } from '../../../../shared/services/routing.service';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
+import { PrefetchService } from '../../../../shared/services/prefetch.service';
+import { first, map, switchMap } from 'rxjs';
+import { DetailedMovieService } from '../../../../shared/services/detailed-movie.service';
+import { DetailedMovie } from '../../../../shared/models/interfaces/detailed-movie';
 
 @Component({
     selector: 'app-popular-movies',
@@ -18,14 +22,23 @@ import { CardLoadingComponent } from '../../../../shared/components/card-loading
     standalone: true
 })
 export class PopularMoviesComponent {
-    popularMovies
-    paginationResult
     protected popularMoviesService: PopularMoviesService = inject(PopularMoviesService)
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     protected router: Router = inject(Router)
     protected routingService: RoutingService = inject(RoutingService)
+    protected detailedMovieService: DetailedMovieService = inject(DetailedMovieService)
+    protected prefetchService: PrefetchService<number> = inject(PrefetchService)
+
+    popularMovies
+    paginationResult
+    prefetch: Signal<DetailedMovie | undefined>
 
     constructor() {
+        this.prefetch = toSignal(this.prefetchService.prefetch$.pipe(
+            switchMap(id => {
+              return this.detailedMovieService.get(`${id}`)
+            } )
+        ))
         const page = this.activatedRoute.snapshot.queryParamMap.get("page")
         if (!page) this.popularMovies = toSignal(this.popularMoviesService.get())
         else this.popularMovies = toSignal(this.popularMoviesService.get(+page))

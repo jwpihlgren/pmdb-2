@@ -1,7 +1,7 @@
 @defer(when trendingMovies() !== undefined) {
 <app-card-grid>
     @for( movie of trendingMovies(); track $index) {
-    <app-card [params]="createCardParams(movie)">
+    <app-card (mouseenter)="prefetchService.startIntent(movie.id)" (mouseleave)="prefetchService.clearIntent()"  [params]="createCardParams(movie)">
         <app-content-movie [params]="movie"></app-content-movie>
     </app-card>
     }

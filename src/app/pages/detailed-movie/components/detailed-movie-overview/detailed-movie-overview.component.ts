@@ -24,9 +24,7 @@ export class DetailedMovieOverviewComponent {
 
     constructor(){
         this.detailedMovie = toSignal(this.activatedRoute.parent!.data.pipe(map(data => {
-            console.log(this.activatedRoute.parent)
-            console.log(data)
-            return data as DetailedMovie})), {requireSync: true})
+            return data["movie"] as DetailedMovie})), {requireSync: true})
     }
 
     posterParams(detailedMovie: DetailedMovie): ImageParams {
