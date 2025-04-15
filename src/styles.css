@@ -114,6 +114,14 @@
     --app-container-padding: 10rem;
 }
 
+
+.label-medium {
+    font-size: var(--fs-label-medium);
+    font-weight: var(--fw-label-medium);
+    letter-spacing: var(--letter-spacing-label-medium);
+    font-family: var(--ff-body)
+}
+
 @media screen and (max-width: 768px) {
     :root {
         --app-container-padding: 1rem;
