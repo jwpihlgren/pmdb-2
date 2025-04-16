@@ -30,7 +30,7 @@ export const routes: Routes = [
     },
     { path: "movies/:id", component: DetailedMovieComponent, resolve: {movie: MovieDetailResolverService},  children: [
         {path: "", component: DetailedMovieOverviewComponent, pathMatch: "full"},
-        {path: "cast", component: DetailedMovieCastComponent, pathMatch: "full"},
+        {path: "cast-and-crew", component: DetailedMovieCastComponent, pathMatch: "full"},
         {path: "recommendations", component: DetailedMovieRecommendationsComponent, pathMatch: "full"},
     ] },
     {

@@ -8,6 +8,7 @@ import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
 import { Genre } from '../../../../shared/models/interfaces/genre';
 import { ConfigService } from '../../../../shared/services/config.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-detailed-movie-recommendations',
@@ -17,6 +18,7 @@ import { ConfigService } from '../../../../shared/services/config.service';
 })
 export class DetailedMovieRecommendationsComponent {
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
+    protected location: Location = inject(Location)
     protected configService: ConfigService = inject(ConfigService)
     movie: Signal<DetailedMovie>
 
@@ -37,5 +39,10 @@ export class DetailedMovieRecommendationsComponent {
          return this.configService.movieGenres.filter(genre => {
            return movie.genreIds.includes(genre.id)
         }) 
+    }
+
+    goBack(event: Event): void{
+        event.preventDefault()
+        this.location.back()
     }
 }

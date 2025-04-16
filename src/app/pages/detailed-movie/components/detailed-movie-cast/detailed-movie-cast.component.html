@@ -1,1 +1,42 @@
-<p>detailed-movie-cast works!</p>
+<a [routerLink]="['../']" (click)="goBack($event)">Back</a>
+<h1>Cast and crew</h1>
+
+<section class="">
+    <div>
+        <h2>cast</h2>
+        <ul class="list">
+            @for(c of movie().credits.cast; track $index) {
+            <li class="list__item">
+                <app-card [params]="createParams(c)">
+                    <div class="list--about">
+                        <h5 class="list--about__accent">
+                            {{c.character}}
+                        </h5>
+                        <span>{{c.name}}</span>
+                    </div>
+
+                </app-card>
+
+            </li>
+            }
+        </ul>
+    </div>
+    <div>
+        <h2>crew</h2>
+        <ul class="list">
+            @for(c of movie().credits.crew; track $index) {
+            <li class="list__item">
+                <app-card [params]="createParams(c)">
+                    <div class="list--about">
+                        <h5 class="list--about__accent">
+                            {{c.job}}
+                        </h5>
+                        <span>{{c.name}}</span>
+                    </div>
+                </app-card>
+            </li>
+            }
+        </ul>
+    </div>
+
+</section>

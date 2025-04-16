@@ -32,10 +32,10 @@
         </section>
         <section class="content">
             <div class="main">
-                <article class="article cast">
+                <article class="article cast-and-crew">
                     <div class="article__header">
                         <h2>Top billed cast</h2>
-                        <a [routerLink]="['recommendations']">Show all</a>
+                        <a [routerLink]="['cast-and-crew']">Show all</a>
                     </div>
                     <div class="article--grid">
                         @for(top of topBilled(m); track $index){
