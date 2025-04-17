@@ -1,6 +1,7 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import AspectRatio from '../../models/types/aspect-ratio.type';
+import { ImageService } from '../../services/image.service';
 
 @Component({
     selector: 'app-image',
@@ -15,10 +16,10 @@ import AspectRatio from '../../models/types/aspect-ratio.type';
 })
 export class ImageComponent {
     params = input.required<ImageParams>()
+    protected imageService: ImageService = inject(ImageService)
 
     sanitizeUrl(url: string): string {
-        if (url === "") return "1"
-        return url
+        return this.imageService.sanitizeImageUrl(url)
     }
 }
 

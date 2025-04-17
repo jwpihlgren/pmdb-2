@@ -18,6 +18,8 @@ export class ImageService {
 
     imageUrl: string = this.config?.images.secure_base_url || ""
 
+    private PLACEHOLDER_IMAGE_CONSTANT = "_LoAdiNg_"
+
     parseSizes(sizes: string[]): string[] {
         return sizes.sort((a, b) => {
             a.replace("w", "")
@@ -28,9 +30,15 @@ export class ImageService {
         })
     }
 
+    sanitizeImageUrl(url: string): string {
+        if (url === "") return this.PLACEHOLDER_IMAGE_CONSTANT
+        return url
+    }
+
     getUrl(image: string, size: number = 500, type?: string): string {
 
         if (image === "") return this.getPlaceholderUrl()
+        if (image === this.PLACEHOLDER_IMAGE_CONSTANT) return this.getPlaceholderUrl({ width: size })
         const types: any = {
             poster: "poster_sizes",
             backdrop: "backdrop_sizes",
@@ -61,6 +69,7 @@ export class ImageService {
         return `${environment.dummyImageApiUrl}/${width}x${height}/${background}/${foreground}.${fileFormat}&text=${text}`
 
     }
+
     getHeightFromAspectRatio(width: number, aspectRatio: AspectRatio): number {
         return width * aspectRatio.denominator / aspectRatio.numerator
     }
@@ -69,7 +78,7 @@ export class ImageService {
         return height * (aspectRatio.denominator / aspectRatio.denominator)
     }
 
- }
+}
 
 interface PlaceholderOptions {
     width: number

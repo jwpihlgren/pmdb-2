@@ -1,3 +1,4 @@
+import { ImageService } from "../../services/image.service"
 import AspectRatioFunctions from "../../utils/aspect-ratio.class"
 import { Image } from "../interfaces/image"
 import TmdbImage from "../interfaces/tmdb/tmdb-image"
@@ -15,7 +16,8 @@ export class TmdbImages implements Image {
     constructor(image: TmdbImage) {
         this.aspectRatio = {
             numerator: AspectRatioFunctions.getNumerator(image.width, image.height),
-            denominator: AspectRatioFunctions.getDenominator(image.width, image.height)}
+            denominator: AspectRatioFunctions.getDenominator(image.width, image.height)
+        }
         this.filePath = image.file_path
         this.height = image.height
         this.iso6391 = image.iso_639_1
@@ -23,5 +25,4 @@ export class TmdbImages implements Image {
         this.voteCount = image.vote_count
         this.width = image.width
     }
-
 }

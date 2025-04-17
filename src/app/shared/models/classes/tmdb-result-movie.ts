@@ -1,3 +1,4 @@
+import { ImageService } from "../../services/image.service";
 import { ResultMovie } from "../interfaces/result-movie";
 import { TmdbResultMovieResponse } from "../interfaces/tmdb/tmdb-result-movie-response";
 
@@ -18,8 +19,8 @@ export class TmdbResultMovie implements ResultMovie {
     voteAverage: number
     voteCount: number
 
-constructor(data: TmdbResultMovieResponse["results"][0]) {
-        this.adult = data.adult 
+    constructor(data: TmdbResultMovieResponse["results"][0]) {
+        this.adult = data.adult
         this.backdropImagePath = data.backdrop_path
         this.id = data.id
         this.title = data.title

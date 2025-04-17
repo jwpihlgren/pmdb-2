@@ -9,6 +9,7 @@ import { TmdbPagination } from '../models/classes/tmdb-pagination';
 import { ResultShow } from '../models/interfaces/result-show';
 import { TmdbResultShowResponse } from '../models/interfaces/tmdb/tmdb-result-show-response';
 import { TmdbResultShow } from '../models/classes/tmdb-result-show';
+import SearchQueryBuilder from '../models/classes/movie-search-query-builder.class';
 
 @Injectable({
     providedIn: 'root'
@@ -47,12 +48,14 @@ export class TrendingShowsService {
     }
 
     private request(page: number, timeWindow: TmdbTimeWindow = "day"): Observable<ResultShow[]> {
-        const endpoint = `trending/tv/${timeWindow}`
-        const queryParams = `?api_key=${this.apikey}&page=${page}`
-        const url = `${this.api}${endpoint}${queryParams}`
         const options = {}
 
-        return this.http.get<TmdbResultShowResponse>(url, options).pipe(
+        const queryBuilder = new SearchQueryBuilder(environment.tmdbApiUrl, `trending/tv/${timeWindow}`)
+        queryBuilder
+            .apiKey(environment.tmdbApiKey)
+            .page(page)
+
+        return this.http.get<TmdbResultShowResponse>(queryBuilder.url, options).pipe(
             map(data => {
                 this.paginationResults$.next(new TmdbPagination(data))
                 return data.results.map(datum => new TmdbResultShow(datum))

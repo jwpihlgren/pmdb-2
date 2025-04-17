@@ -2,7 +2,7 @@
 @let m = movieDetails()!;
 <main>
     <div *ngIf="m.backdropImagePath" class="background-image">
-        <img [ngSrc]="m.backdropImagePath" priority fill alt="" [loaderParams]="{type: 'backdrop'}">
+        <img [ngSrc]="sanitizeUrl(m.backdropImagePath)" priority fill alt="" [loaderParams]="{type: 'backdrop'}">
     </div>
     <div class="background-blur"></div>
     <router-outlet></router-outlet>

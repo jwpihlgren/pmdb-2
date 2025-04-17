@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import DetailedPeople from '../models/interfaces/detailed-people';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import SearchQueryBuilder from '../models/classes/movie-search-query-builder.class';
 import { environment } from '../../../environments/environment.development';
 import TmdbDetailedPeopleResponse from '../models/interfaces/tmdb/tmdb-detailed-people-response';
@@ -25,11 +25,9 @@ export class DetailedPeopleService {
         const options = {}
         return this.http.get<TmdbDetailedPeopleResponse>(queryBuilder.url, options).pipe(
             map(data => {
-                console.log(data)
-                const newData = new TmdbDetailedPeople(data)
-                console.log(newData)
-                return newData
-            })
+                return new TmdbDetailedPeople(data)
+            }),
+            tap(data => console.log(data))
         )
     }
 }

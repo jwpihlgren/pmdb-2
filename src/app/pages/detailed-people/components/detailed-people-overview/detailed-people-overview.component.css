@@ -9,6 +9,23 @@ main {
     margin: 0 auto;
 }
 
+.background-image {
+    position: absolute;
+    inset: 0;
+    min-height: 100%;
+    z-index: -2;
+}
+
+.background-blur {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, .55);
+    backdrop-filter: blur(50px);
+    z-index: -1;
+    overflow: hidden;
+
+}
+
 .container {
     min-height: calc(100vh - var(--app-header-height));
     display: grid;
@@ -84,6 +101,7 @@ main {
     align-items: center;
 
 }
+
 
 .article--grid {
     position: relative;

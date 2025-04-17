@@ -43,7 +43,6 @@ export class SearchPeopleService {
 
         return this.http.get<TmdbResultPeopleResponse>(queryBuilder.url).pipe(
             map(data => {
-                console.log(data)
                 this.paginationResults$.next(new TmdbPagination(data))
                 return data.results
                     .map(result => new TMDBSearchPeopleResult(result))

@@ -1,3 +1,4 @@
+import { ImageService } from "../../services/image.service";
 import { DetailedMovie } from "../interfaces/detailed-movie";
 import DetailedMovieCredits from "../interfaces/detailed-movie-credits";
 import { Image } from "../interfaces/image";
@@ -43,7 +44,7 @@ export class TmdbDetailedMovie implements DetailedMovie {
     voteCount: number
 
     constructor(details: TmdbDetailedMovieResponse) {
-        this.backdropImagePath = details.backdrop_path
+        this.backdropImagePath = details.backdrop_path 
         this.credits = this.mapCredits(details.credits)
         this.genres = details.genres
         this.hasVideo = details.video

@@ -37,7 +37,7 @@
                         <h2>Top billed cast</h2>
                         <a [routerLink]="['cast-and-crew']">Show all</a>
                     </div>
-                    <div class="article--grid">
+                    <ul class="article--grid">
                         @for(top of topBilled(m); track $index){
                         <app-card class="article--item" [params]="createTopCardParams(top)">
                             <div class="article--about">
@@ -49,7 +49,7 @@
                         </app-card>
 
                         }
-                    </div>
+                    </ul>
                 </article>
 
                 <article class="article recommendations">
@@ -57,7 +57,7 @@
                         <h2>Recommendations</h2>
                         <a [routerLink]="['recommendations']">Show all</a>
                     </div>
-                    <div class="article--grid">
+                    <ul class="article--grid">
                         @for(rec of m.recommendations.results; track $index){
                         <app-card class="article--item" [params]="createRecommendationCardParams(rec)">
                             <div class="article--about">
@@ -69,7 +69,7 @@
                         </app-card>
 
                         }
-                    </div>
+                    </ul>
                 </article>
             </div>
             <aside class="content__aside">

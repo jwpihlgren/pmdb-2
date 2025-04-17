@@ -1,3 +1,4 @@
+import { ImageService } from "../../services/image.service"
 import { ResultShow } from "../interfaces/result-show"
 import { TmdbResultShowResponse } from "../interfaces/tmdb/tmdb-result-show-response"
 
@@ -27,7 +28,7 @@ export class TmdbResultShow implements ResultShow {
         this.originalLanguage = data.original_language
         this.originalName = data.original_name
         this.overview = data.overview
-        this.posterImageUrl = data.poster_path
+        this.posterImageUrl = data.poster_path 
         this.mediaType = data.media_type
         this.genreIds = data.genre_ids
         this.popularity = data.popularity

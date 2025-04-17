@@ -42,7 +42,6 @@ export class SearchMultiService {
 
         return this.http.get<TmdbResultMultiResponse>(queryBuilder.url, options).pipe(
             map(data => {
-                console.log(data)
                 return data.results.map(result => new TmdbResultMulti(result))
             })
         )

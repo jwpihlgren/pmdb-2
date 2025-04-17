@@ -1,7 +1,8 @@
+import { ImageService } from "../../services/image.service";
 import { DetailedShow } from "../interfaces/detailed-show";
 import { TmdbDetailedShowResponse } from "../interfaces/tmdb/tmdb-detailed-show-response";
 
-export class TmdbDetailedShow implements DetailedShow{
+export class TmdbDetailedShow implements DetailedShow {
     adult: boolean
     backdropImageUrl: string
     createdBy: {
@@ -35,7 +36,7 @@ export class TmdbDetailedShow implements DetailedShow{
         seasonNumber: number
         showId: number
         stillPath: string
-   }
+    }
     name: string
     nextEpisodeToAir: string | "null"
     networks: {
@@ -106,7 +107,7 @@ export class TmdbDetailedShow implements DetailedShow{
         this.originalName = data.original_name
         this.overview = data.overview
         this.popularity = data.popularity
-        this.posterPath = data.poster_path
+        this.posterPath = data.poster_path 
         this.productionCompanies = this.mapProductionCompanies(data.production_companies)
         this.productionCountries = this.mapProductionCountries(data.production_countries)
         this.seasons = this.mapSeasons(data.seasons)
@@ -162,7 +163,7 @@ export class TmdbDetailedShow implements DetailedShow{
             return {
                 id: datum.id,
                 name: datum.name,
-                logoImagePath: datum.logo_path,
+                logoImagePath: datum.logo_path, 
                 originCountry: datum.origin_country
             }
         })
@@ -198,7 +199,7 @@ export class TmdbDetailedShow implements DetailedShow{
                 overview: datum.overview,
                 airDate: datum.air_date,
                 episodeCount: datum.episode_count,
-                posterImagePath: datum.poster_path
+                posterImagePath: datum.poster_path 
             }
         })
     }

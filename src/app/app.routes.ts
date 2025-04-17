@@ -16,10 +16,18 @@ import { DiscoverShowsComponent } from './pages/shows/components/discover-shows/
 import { DetailedMovieOverviewComponent } from './pages/detailed-movie/components/detailed-movie-overview/detailed-movie-overview.component';
 import { DetailedMovieCastComponent } from './pages/detailed-movie/components/detailed-movie-cast/detailed-movie-cast.component';
 import { DetailedMovieRecommendationsComponent } from './pages/detailed-movie/components/detailed-movie-recommendations/detailed-movie-recommendations.component';
-import { MovieDetailResolverService } from './shared/resolvers/movie-detail-resolver.service';
+import { detailedMovieResolver } from './shared/resolvers/detailed-movie.resolver';
+import { detailedShowResolver } from './shared/resolvers/detailed-show.resolver';
+import { DetailedShowOverviewComponent } from './pages/detailed-show/components/detailed-show-overview/detailed-show-overview.component';
+import { DetailedShowCastComponent } from './pages/detailed-show/components/detailed-show-cast/detailed-show-cast.component';
+import { DetailedShowRecommendationsComponent } from './pages/detailed-show/components/detailed-show-recommendations/detailed-show-recommendations.component';
+import { detailedPeopleResolver } from './shared/resolvers/detailed-people.resolver';
+import { DetailedPeopleRecommendationsComponent } from './pages/detailed-people/components/detailed-people-recommendations/detailed-people-recommendations.component';
+import { DetailedPeopleOverviewComponent } from './pages/detailed-people/components/detailed-people-overview/detailed-people-overview.component';
 
 export const routes: Routes = [
     { path: "", pathMatch: "full", component: HomeComponent },
+    //Movies
     {
         path: "movies", component: MoviesComponent, children: [
             { path: "", redirectTo: "trending", pathMatch: "full" },
@@ -28,23 +36,40 @@ export const routes: Routes = [
             { path: "discover", component: DiscoverMoviesComponent },
         ]
     },
-    { path: "movies/:id", component: DetailedMovieComponent, resolve: {movie: MovieDetailResolverService},  children: [
-        {path: "", component: DetailedMovieOverviewComponent, pathMatch: "full"},
-        {path: "cast-and-crew", component: DetailedMovieCastComponent, pathMatch: "full"},
-        {path: "recommendations", component: DetailedMovieRecommendationsComponent, pathMatch: "full"},
-    ] },
     {
-        path: "shows", component: ShowsComponent, children: [
-            { path: "", redirectTo: "trending", pathMatch: "full" },
-            { path: "trending", component: TrendingShowsComponent },
-            { path: "popular", component: PopularShowsComponent  },
-            { path: "discover", component: DiscoverShowsComponent },
-
+        path: "movies/:id", component: DetailedMovieComponent, resolve: { movie: detailedMovieResolver }, children: [
+            { path: "", component: DetailedMovieOverviewComponent, pathMatch: "full" },
+            { path: "cast-and-crew", component: DetailedMovieCastComponent, pathMatch: "full" },
+            { path: "recommendations", component: DetailedMovieRecommendationsComponent, pathMatch: "full" },
         ]
     },
-    { path: "shows/:id", pathMatch: "full", component: DetailedShowComponent },
+    //Shows
+    {
+        path: "shows", component: ShowsComponent, children: [
+            { path: "", redirectTo: "overview", pathMatch: "full" },
+            { path: "overview", component: TrendingShowsComponent },
+            { path: "popular", component: PopularShowsComponent },
+            { path: "discover", component: DiscoverShowsComponent },
+        ]
+    },
+    {
+        path: "shows/:id", component: DetailedShowComponent, resolve: {
+            shows: detailedShowResolver, children: [
+                { path: "", rediretTo: "trending", pathMatch: "full" },
+                { path: "trending", component: DetailedShowOverviewComponent },
+                { path: "cast-and-crew", component: DetailedShowCastComponent },
+                { path: "recommendations", component: DetailedShowRecommendationsComponent },
+            ]
+        },
+    },
+    //People
     { path: "people/", pathMatch: "full", component: PeopleComponent },
-    { path: "people/:id", pathMatch: "full", component: DetailedPeopleComponent },
+    {
+        path: "people/:id", pathMatch: "full", component: DetailedPeopleComponent, resolve: { people: detailedPeopleResolver }, children: [
+            { path: "", pathMatch: "full", component: DetailedPeopleOverviewComponent },
+            { path: "recommendations", pathMatch: "full", component: DetailedPeopleRecommendationsComponent },
+        ]
+    },
     { path: "test", pathMatch: "full", component: ColorComponent },
     { path: "*", redirectTo: "" }
 ];

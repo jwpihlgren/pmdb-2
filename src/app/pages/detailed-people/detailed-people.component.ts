@@ -1,7 +1,7 @@
 import { Component, inject, Signal } from '@angular/core';
 import { DetailedPeopleService } from '../../shared/services/detailed-people.service';
 import DetailedPeople from '../../shared/models/interfaces/detailed-people';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ImageComponent, ImageParams } from '../../shared/components/image/image.component';
@@ -12,68 +12,13 @@ import Metadata from '../../shared/models/interfaces/meta-data.interface';
 
 @Component({
     selector: 'app-detailed-people',
-    imports: [ImageComponent, CardComponent],
+    imports: [RouterOutlet],
     templateUrl: './detailed-people.component.html',
     styleUrl: './detailed-people.component.css'
 })
 export class DetailedPeopleComponent {
-    protected activatedRoute = inject(ActivatedRoute)
-    protected detailedPeopleService = inject(DetailedPeopleService)
-    protected imageService = inject(ImageService)
-    detailedPeople: Signal<DetailedPeople | undefined>
+    constructor() {}
 
-    constructor() {
-        this.detailedPeople = toSignal(
-            this.activatedRoute.paramMap.pipe(
-                switchMap(data => {
-                    const id = parseInt(data.get("id")!)
-                    return this.detailedPeopleService.get(id)
-                })
-            )
-        )
-    }
-
-    get people(): DetailedPeople {
-        return this.detailedPeople()!
-    }
-
-    get posterParams(): ImageParams {
-        return {
-            aspectRatio: {numerator: 2, denominator: 3},
-            src: this.people.profilePath,
-            type: "profile" 
-        }
-    }
-
-    get imdbUrl(): string {
-        return `${environment.imdbUrl}${this.people.imdbId}`
-    }
-
-    getPeopleCardParams(image: DetailedPeople["images"][0]): CardParams {
-        return{
-            aspectRatio: image.aspectRatio,
-            direction: "vertical",
-            imageType: "profile",
-            imageSrc: image.filePath
-        }
-    }
-
-    createRecommendationCardParams(movie: DetailedPeople["filmography"]["top10LatestMovies"][0]): CardParams{
-        return {
-            imageType: "poster",
-            direction: 'vertical',
-            imageSrc: movie.posterImagePath,
-            aspectRatio: {numerator: 2, denominator: 3} 
-        }
-    }
-
-    get metadata(): Metadata[] {
-        const metadata: Metadata[] = []
-        const birth: string = `${this.people.birthday}${this.people.deathday ? ' - ' + this.people.deathday : ""}`
-        metadata.push({value: birth})
-        metadata.push({value: this.people.placeOfBirth})
-        return metadata
-    }
 }
 
 

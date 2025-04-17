@@ -1,3 +1,4 @@
+import { ImageService } from "../../services/image.service";
 import Filmography, { CreditedMovie, CreditedMovieActor, CreditedMovieCrew, CreditedShow, CreditedShowActor, CreditedShowCrew } from "../interfaces/filmography.interface";
 import TmdbDetailedPeopleMovieCreditResponse from "../interfaces/tmdb/tmdb-detailed-people-movie-credits-response";
 import TmdbShowCreditResponse from "../interfaces/tmdb/tmdb-detailed-show-credit-response";
@@ -32,7 +33,7 @@ export default class TmdbFilmography implements Filmography {
         this.top10LatestShows = this.getTop10Shows()
     }
 
-    mapDepartment(credits: TmdbDetailedPeopleMovieCreditResponse| TmdbShowCreditResponse): GroupByDepartment[] {
+    mapDepartment(credits: TmdbDetailedPeopleMovieCreditResponse | TmdbShowCreditResponse): GroupByDepartment[] {
         const grouped: { [key: string]: number } = credits.crew.reduce((acc, cur) => {
             acc[cur.department] ? acc[cur.department]++ : acc[cur.department] = 1
             return acc
@@ -110,7 +111,5 @@ export default class TmdbFilmography implements Filmography {
         let shows = [...this.allShows.cast.slice(0, 10), ...this.allShows.crew.slice(0, 10)]
         shows = shows.sort((a, b) => a.firstAirDate < b.firstAirDate ? 1 : a.firstAirDate > b.firstAirDate ? -1 : 0)
         return shows.slice(0, 10)
-
     }
-
 }
