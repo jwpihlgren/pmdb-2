@@ -12,10 +12,7 @@ import { TmdbDetailedMovieResponse } from '../models/interfaces/tmdb/tmdb-detail
 })
 export class DetailedMovieService {
 
-    api = environment.tmdbApiUrl
-
     protected http = inject(HttpClient)
-
 
     get(id: string): Observable<DetailedMovie> {
         return this.request(id)

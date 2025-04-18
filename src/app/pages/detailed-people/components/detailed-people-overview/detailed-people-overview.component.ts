@@ -21,7 +21,6 @@ export class DetailedPeopleOverviewComponent {
     constructor() {
         this.detailedPeople = toSignal(this.activatedRoute.parent!.data.pipe(
             map(data => {
-                console.log(data)
                 return data["people"] as DetailedPeople
             })
         ), { requireSync: true })

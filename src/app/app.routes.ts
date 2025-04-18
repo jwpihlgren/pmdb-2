@@ -55,21 +55,21 @@ export const routes: Routes = [
     },
     {
         path: "shows/:id", component: DetailedShowComponent, resolve: {
-            shows: detailedShowResolver, children: [
-                { path: "", component: DetailedShowOverviewComponent },
-                { path: "cast-and-crew", component: DetailedShowCastComponent },
-                { path: "recommendations", component: DetailedShowRecommendationsComponent },
-            ]
-        },
-    },
-    //People
-    {
-        path: "people/:id", component: DetailedPeopleComponent, resolve: { people: detailedPeopleResolver }, children: [
-            { path: "", component: DetailedPeopleOverviewComponent },
-            { path: "images", component: DetailedPeopleImagesComponent },
-            { path: "recommendations", component: DetailedPeopleRecommendationsComponent },
+            shows: detailedShowResolver
+        }, children: [
+            { path: "", component: DetailedShowOverviewComponent, pathMatch: "full" },
+            { path: "cast-and-crew", component: DetailedShowCastComponent, pathMatch: "full" },
+            { path: "recommendations", component: DetailedShowRecommendationsComponent, pathMatch: "full" },
         ]
     },
-    { path: "test", pathMatch: "full", component: ColorComponent },
-    { path: "*", redirectTo: "" }
+//People
+{
+    path: "people/:id", component: DetailedPeopleComponent, resolve: { people: detailedPeopleResolver }, children: [
+        { path: "", component: DetailedPeopleOverviewComponent },
+        { path: "images", component: DetailedPeopleImagesComponent },
+        { path: "recommendations", component: DetailedPeopleRecommendationsComponent },
+    ]
+},
+{ path: "test", pathMatch: "full", component: ColorComponent },
+{ path: "*", redirectTo: "" }
 ];

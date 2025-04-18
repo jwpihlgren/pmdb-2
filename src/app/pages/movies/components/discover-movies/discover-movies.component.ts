@@ -85,12 +85,6 @@ export class DiscoverMoviesComponent {
                 return { lte: data.lte[0], gte: data.gte[0] }
             })
         ), { initialValue: { lte: "", gte: "" } })
-
-        console.log(this.results())
-
-        //this.peopleSearchSevice.results$.subscribe(data => console.log(data))
-
-        //this.peopleSearchSevice.search("jason")
     }
 
     get selectedGenres() {

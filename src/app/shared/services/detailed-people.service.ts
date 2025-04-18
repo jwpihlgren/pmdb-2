@@ -26,8 +26,7 @@ export class DetailedPeopleService {
         return this.http.get<TmdbDetailedPeopleResponse>(queryBuilder.url, options).pipe(
             map(data => {
                 return new TmdbDetailedPeople(data)
-            }),
-            tap(data => console.log(data))
+            })
         )
     }
 }
