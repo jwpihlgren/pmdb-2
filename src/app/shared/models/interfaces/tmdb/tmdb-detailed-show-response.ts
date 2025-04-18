@@ -1,3 +1,4 @@
+import TmdbKeywordsResponse from "./tmdb-keywords-response"
 import TmdbResponseWrapper from "./tmdb-response-wrapper"
 
 export interface TmdbDetailedShowResponse {
@@ -32,6 +33,7 @@ export interface TmdbDetailedShowResponse {
     homepage: string
     id: number
     in_production: boolean
+    keywords: TmdbKeywordsResponse
     languages: string[]
     last_air_date: string
     last_episode_to_air: {

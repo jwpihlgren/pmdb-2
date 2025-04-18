@@ -1,7 +1,9 @@
-<ul>
-    @for(button of pageButtons(); track $index) {
-        <li>
-            <button (click)="requestPage(button.page)" [disabled]="button.disabled">{{button.content}}</button>
+<nav class="pagination">
+    <ul class="pagination__button-list">
+        @for(button of pageButtons(); track $index) {
+        <li class="pagination__list-item">
+            <button class="pagination__button" [ngClass]="{'pagination__button--active': button.isCurrent}" (click)="requestPage(button.page)" [disabled]="button.disabled">{{button.content}}</button>
         </li>
-    }
-</ul>
+        }
+    </ul>
+</nav>

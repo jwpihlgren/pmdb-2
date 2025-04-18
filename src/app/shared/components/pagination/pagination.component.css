@@ -1,0 +1,34 @@
+:host {
+    --pagination__button-min-width: 3rem;
+    --pagination__button-min-height: 3rem;
+}
+.pagination__button-list {
+    display: flex;
+    gap: var(--spacing-small);
+    list-style: none;
+}
+
+.pagination__list-item {
+    display: contents;
+}
+
+.pagination__button {
+    min-width: var(--pagination__button-min-width, 3rem);
+    min-height: var(--pagination__button-min-height, 3rem);
+    border: 2px solid var(--clr-accent);
+    border-radius: var(--radii-medium);
+    background-color: var(--clr-surface-elevation-1);
+    color: var(--clr-on-surface);
+}
+
+.pagination__button:hover {
+    background: var(--clr-surface-elevation-3);
+}
+
+.pagination__button:active {
+    background: var(--clr-surface);
+}
+
+.pagination__button--active {
+    background-color: var(--clr-accent);
+}

@@ -1,7 +1,10 @@
 import { DetailedShow, DetailedShowCredits, DetailedShowRecommendation } from "../interfaces/detailed-show";
+import Keyword from "../interfaces/keywords";
 import { TmdbDetailedShowCreditsResponse, TmdbDetailedShowRecommendationsResponse, TmdbDetailedShowResponse } from "../interfaces/tmdb/tmdb-detailed-show-response";
+import TmdbKeywordsResponse from "../interfaces/tmdb/tmdb-keywords-response";
 import Gender from "../types/gender";
 import TmdbGenderFactory from "./tmdbGenderFactory.class";
+import { TmdbKeywordsFactory } from "./tmdbKeywordsFactory.class";
 
 export class TmdbDetailedShow implements DetailedShow {
     adult: boolean
@@ -40,6 +43,7 @@ export class TmdbDetailedShow implements DetailedShow {
         showId: number
         stillPath: string
     }
+    keywords: Keyword[];
     name: string
     nextEpisodeToAir: string | "null"
     networks: {
@@ -103,6 +107,7 @@ export class TmdbDetailedShow implements DetailedShow {
         this.languages = data.languages
         this.lastAirDate = data.last_air_date
         this.lastEpisodeToAir = this.mapLastEpisode(data.last_episode_to_air)
+        this.keywords = this.mapKeywords(data.keywords)
         this.name = data.name
         this.nextEpisodeToAir = data.next_episode_to_air
         this.networks = this.mapNetworks(data.networks)
@@ -125,6 +130,10 @@ export class TmdbDetailedShow implements DetailedShow {
         this.voteAverage = data.vote_average
         this.voteCount = data.vote_count
 
+    }
+
+    mapKeywords(data: TmdbKeywordsResponse): Keyword[] {
+        return TmdbKeywordsFactory.create(data)
     }
 
     mapCreatedBy(data: TmdbDetailedShowResponse["created_by"]): TmdbDetailedShow["createdBy"] {

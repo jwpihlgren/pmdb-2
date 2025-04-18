@@ -1,26 +1,47 @@
 import { Component, inject, Signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { DetailedShow } from '../../../../shared/models/interfaces/detailed-show';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { DetailedShow, DetailedShowCredits } from '../../../../shared/models/interfaces/detailed-show';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
+import { Location } from '@angular/common';
 
 @Component({
     selector: 'app-detailed-show-cast',
-    imports: [],
+    imports: [RouterLink, CardComponent],
     templateUrl: './detailed-show-cast.component.html',
     styleUrl: './detailed-show-cast.component.css'
 })
 export class DetailedShowCastComponent {
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
+    protected location: Location = inject(Location)
+
     detailedShow: Signal<DetailedShow>
 
     constructor() {
         this.detailedShow = toSignal(this.activatedRoute.parent!.data.pipe(
             map(data => {
-                console.log(data)
                 return data["show"] as DetailedShow
             })
         ), { requireSync: true })
     }
+
+    createParams(data: DetailedShowCredits["cast"][0] | DetailedShowCredits["crew"][0]): CardParams {
+        return {
+            aspectRatio: { numerator: 2, denominator: 3 },
+            direction: "vertical",
+            imageType: "profile",
+            href: ["/", "people", data.id.toString()],
+            id: data.id,
+            imageSrc: data.profilePath,
+            mediaType: "person"
+        }
+    }
+
+    goBack(event: Event): void {
+        event.preventDefault()
+        this.location.back()
+    }
+
 
 }

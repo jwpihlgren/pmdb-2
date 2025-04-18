@@ -88,7 +88,9 @@
         <aside class="content__aside">
             <h2>Keywords</h2>
             <div class="meta--keywords">
-                
+                @for(keyword of m.keywords; track $index) {
+                <app-chip [value]="keyword.name">{{keyword.name}}</app-chip>
+                }
             </div>
         </aside>
     </section>

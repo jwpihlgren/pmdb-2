@@ -1,5 +1,6 @@
 import { DetailedShowRecommendationsComponent } from "../../../pages/detailed-show/components/detailed-show-recommendations/detailed-show-recommendations.component"
 import Gender from "../types/gender"
+import Keyword from "./keywords"
 
 export interface DetailedShow {
     adult: boolean
@@ -22,6 +23,7 @@ export interface DetailedShow {
     id: number
     imdbId: string
     inProduction: boolean
+    keywords: Keyword[]
     languages: string[]
     lastAirDate: string
     lastEpisodeToAir: {
