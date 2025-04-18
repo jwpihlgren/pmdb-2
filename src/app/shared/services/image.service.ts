@@ -32,6 +32,7 @@ export class ImageService {
 
     sanitizeImageUrl(url: string): string {
         if (url === "") return this.PLACEHOLDER_IMAGE_CONSTANT
+        if (!url) return this.PLACEHOLDER_IMAGE_CONSTANT
         return url
     }
 

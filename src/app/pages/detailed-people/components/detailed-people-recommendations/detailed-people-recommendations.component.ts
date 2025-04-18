@@ -4,7 +4,7 @@ import { ConfigService } from '../../../../shared/services/config.service';
 import DetailedPeople from '../../../../shared/models/interfaces/detailed-people';
 import { ImageComponent, ImageParams } from '../../../../shared/components/image/image.component';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map, tap } from 'rxjs';
+import { map } from 'rxjs';
 import { Location } from '@angular/common';
 import { CreditedMovieActor } from '../../../../shared/models/interfaces/filmography.interface';
 
@@ -22,7 +22,6 @@ export class DetailedPeopleRecommendationsComponent {
 
     constructor() {
         this.people = toSignal(this.activatedRoute.parent!.data.pipe(
-            tap(data => console.log(data)),
             map(data => data["people"] as DetailedPeople)), { requireSync: true })
     }
 

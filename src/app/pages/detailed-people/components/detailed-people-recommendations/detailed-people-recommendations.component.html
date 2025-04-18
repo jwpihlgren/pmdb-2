@@ -3,7 +3,7 @@
 <ul class="list">
     @for(r of people().filmography.allMovies.cast; track $index) {
     <li class="list__item">
-        <a [routerLink]="['../..', r.id]" class="list__item-anchor">
+        <a [routerLink]="['/','movies', r.id]" class="list__item-anchor">
             <app-image class="list__item-image" [params]="createImageParams(r)"></app-image>
             <div class="list__item-wrapper">
                 <div class="list__item-header">

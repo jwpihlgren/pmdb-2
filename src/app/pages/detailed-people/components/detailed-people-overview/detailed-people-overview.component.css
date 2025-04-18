@@ -142,6 +142,16 @@ main {
     text-transform: capitalize;
 }
 
+.meta--credits span {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.meta--credits {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+}
+
 
 .content__aside {
     position: absolute;

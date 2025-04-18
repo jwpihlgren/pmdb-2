@@ -1,7 +1,7 @@
 import { Component, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import DetailedPeople from '../../../../shared/models/interfaces/detailed-people';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { ImageComponent, ImageParams } from '../../../../shared/components/image/image.component';
 import { environment } from '../../../../../environments/environment.development';
@@ -10,7 +10,7 @@ import Metadata from '../../../../shared/models/interfaces/meta-data.interface';
 
 @Component({
     selector: 'app-detailed-people-overview',
-    imports: [ImageComponent, CardComponent],
+    imports: [ImageComponent, CardComponent, RouterLink],
     templateUrl: './detailed-people-overview.component.html',
     styleUrl: './detailed-people-overview.component.css'
 })

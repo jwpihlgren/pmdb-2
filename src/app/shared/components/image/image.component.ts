@@ -26,5 +26,6 @@ export class ImageComponent {
 export interface ImageParams {
     src: string,
     type?: "poster" | "backdrop" | "profile" | "still" | "logo"
-    aspectRatio: AspectRatio
+    aspectRatio: AspectRatio,
+    priority?: boolean
 }
