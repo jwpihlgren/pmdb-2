@@ -10,6 +10,7 @@ import { RoutingService } from '../../../../shared/services/routing.service';
 import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { environment } from '../../../../../environments/environment.development';
 
 @Component({
     selector: 'app-detailed-movie-overview',
@@ -42,7 +43,7 @@ export class DetailedMovieOverviewComponent {
     }
 
     imdbUrl(detailedMovie: DetailedMovie) {
-        return `https://www.imdb.com/title/${detailedMovie.imdbId}`
+        return `${environment.imdbMediaUrl}${detailedMovie.imdbId}`
     }
 
     topBilled(detailedMovie: DetailedMovie) {

@@ -39,7 +39,7 @@ export class DetailedPeopleOverviewComponent {
     }
 
     get imdbUrl(): string {
-        return `${environment.imdbUrl}${this.people.imdbId}`
+        return `${environment.imdbPeopleUrl}${this.people.imdbId}`
     }
 
     getPeopleCardParams(image: DetailedPeople["images"][0]): CardParams {
