@@ -1,11 +1,12 @@
 import { Component, computed, input, InputSignal, OnInit, output, OutputEmitterRef, Signal } from '@angular/core';
 import { Pagination } from '../../models/interfaces/pagination';
 import { PageButton } from '../../models/interfaces/page-button';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-pagination',
     standalone: true,
-    imports: [],
+    imports: [NgClass],
     templateUrl: './pagination.component.html',
     styleUrl: './pagination.component.css'
 })

@@ -1,4 +1,4 @@
-export interface TmdbResponseWrapper {
+export default interface TmdbResponseWrapper {
     page: number
     total_pages: number
     total_results: number

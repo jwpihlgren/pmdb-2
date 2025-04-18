@@ -1,0 +1,38 @@
+:host {
+    display: contents;
+}
+
+.chip {
+    list-style: none;
+    padding-inline: var(--spacing-md, 0.5rem);
+    padding-block: var(--spacing-sm, 0.25rem);
+    border-radius: var(--radii-full, 9999px);
+    border: 2px solid var(--clr-accent, red);
+    background: var(--clr-surface-elevation-3);
+    min-width: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-sm, 0.5rem);
+}
+
+
+.chip--button {
+    all: unset;
+    cursor: pointer;
+    border-radius: var(--radii-full, 9999px);
+    background: var(--clr-surface-elevation-4);
+    height: 1.5rem;
+    width: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chip--button:hover {
+    background: var(--clr-surface-elevation-5);
+}
+
+.chip--button:focus-visible {
+    outline: 1px solid var(--clr-accent);
+}

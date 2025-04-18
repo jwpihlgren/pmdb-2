@@ -1,0 +1,30 @@
+<a [routerLink]="['../']" (click)="goBack($event)">Back</a>
+<h1>Recommendations</h1>
+<ul class="list">
+    @for(r of movie().recommendations.results; track $index) {
+    <li class="list__item">
+        <a [routerLink]="['../..', r.id]" class="list__item-anchor">
+            <app-image class="list__item-image" [params]="createImageParams(r)"></app-image>
+            <div class="list__item-wrapper">
+                <div class="list__item-header">
+                    <span class="label-medium">{{r.title}}</span>
+                    <span class="label-medium">{{r.releaseDate}}</span>
+                </div>
+                <div class="list__item-content">
+                    <span>{{r.overview}}</span>
+                    <ul class="list-genre">
+                        @for(g of getGenres(r); track $index){
+                        <li class="list-genre__item">
+                            <app-chip [value]="g.name">
+                                {{g.name}}
+                            </app-chip>
+                        </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </li>
+    }
+</ul>

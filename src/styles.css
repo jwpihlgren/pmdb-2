@@ -50,22 +50,45 @@
     --clr-on-surface: var(--clr-petroleum-0);
     --clr-on-surface-accent: var(--clr-accent);
 
+    --shadow-elevation-1: 0 1px 4px rgba(16, 26, 33, 0.6), 0 1px 3px rgba(16, 26, 33, 0.7);
+    --shadow-elevation-2: 0 3px 8px rgba(16, 26, 33, 0.7), 0 3px 6px rgba(16, 26, 33, 0.8);
+    --shadow-elevation-3: 0 6px 16px rgba(16, 26, 33, 0.8), 0 6px 12px rgba(16, 26, 33, 0.9);
+    --shadow-elevation-4: 0 10px 24px rgba(16, 26, 33, 0.9), 0 10px 18px rgba(16, 26, 33, 1);
+    --shadow-elevation-5: 0 15px 32px rgba(16, 26, 33, 1), 0 15px 24px rgba(16, 26, 33, 1);
+
     --duration-short: 200ms;
     --duration-medium: 400ms;
     --duration-long: 200ms;
 
 
-    --fs-display-large: 5rem;
-    --fs-display-medium: 4rem;
-    --fs-display-small: 3rem;
+    --fs-display-large: 4rem;
+    --fs-display-medium: 2.75rem;
+    --fs-display-small: 2.5rem;
 
-    --fs-headline-large: 2.5rem;
-    --fs-headline-medium: 2.0rem;
+    --fs-headline-large: 2.25rem;
+    --fs-headline-medium: 1.5rem;
     --fs-headline-small: 1rem;
 
     --fs-body-large: 1.20rem;
     --fs-body-medium: 1.0rem;
     --fs-body-small: 0.80rem;
+
+    --fs-label-medium: 0.9rem;
+
+    --fw-body-small: 400;
+    --fw-label-medium: 600;
+
+    --letter-spacing-display-large: 0.25rem;
+    --letter-spacing-display-medium: 0.25rem;
+    --letter-spacing-display-small: 0.25rem;
+    --letter-spacing-headline-large: 0.25rem;
+    --letter-spacing-headline-medium: 0.25rem;
+    --letter-spacing-headline-small: 0.25rem;
+    --letter-spacing-body-large: 0.25rem;
+    --letter-spacing-body-medium: 0.25rem;
+    --letter-spacing-body-small: 0.25rem;
+    --letter-spacing-label-medium: 0.1rem;
+
 
     --heading-line-height-multiplier: 1.2;
     --body-line-height-multiplier: 1.5;
@@ -74,6 +97,41 @@
     --ff-heading: "Inter", serif;
     --ff-body: "Inter", serif;
 
+    --spacing-extra-small: 0.25rem;
+    --spacing-small: 0.5rem;
+    --spacing-medium: 1rem;
+    --spacing-large: 2rem;
+    --spacing-extra-large: 4rem;
+    --spacing-xx-large: 6rem;
+    --spacing-xxx-large: 8rem;
+
+    --radii-small: 0.25rem;
+    --radii-medium: 1rem;
+    --radii-full: 9999px;
+
+
+    --app-header-height: 5rem;
+    --app-container-padding: 10rem;
+}
+
+
+.label-medium {
+    font-size: var(--fs-label-medium);
+    font-weight: var(--fw-label-medium);
+    letter-spacing: var(--letter-spacing-label-medium);
+    font-family: var(--ff-body)
+}
+
+@media screen and (max-width: 768px) {
+    :root {
+        --app-container-padding: 1rem;
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    :root {
+        --app-container-padding: 2rem;
+    }
 }
 
 
@@ -90,6 +148,12 @@
 
         --clr-on-surface: #101A21;
         --clr-on-surface-accent: #D26A42;
+
+        --shadow-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(0, 0, 0, 0.1);
+        --shadow-elevation-2: 0 2px 4px rgba(0, 0, 0, 0.1), 0 2px 3px rgba(0, 0, 0, 0.15);
+        --shadow-elevation-3: 0 4px 8px rgba(0, 0, 0, 0.15), 0 4px 6px rgba(0, 0, 0, 0.2);
+        --shadow-elevation-4: 0 6px 12px rgba(0, 0, 0, 0.2), 0 6px 10px rgba(0, 0, 0, 0.25);
+        --shadow-elevation-5: 0 8px 16px rgba(0, 0, 0, 0.25), 0 8px 14px rgba(0, 0, 0, 0.3);
     }
 }
 
@@ -111,11 +175,43 @@ html {
     line-height: calc(var(--fs-body-medium) * var(--body-line-height-multiplier));
 }
 
+body {}
+
 h1,
 h2,
 h3,
 h4 {
     font-family: var(--ff-heading);
+}
+
+h1 {
+    font-size: var(--fs-display-large);
+    line-height: calc(var(--fs-display-large) * var(--heading-line-height-multiplier));
+    letter-spacing: 0.25px;
+}
+
+h2 {
+    font-size: var(--fs-display-medium);
+    line-height: calc(var(--fs-display-medium) * var(--heading-line-height-multiplier));
+    letter-spacing: 0.25px;
+}
+
+h3 {
+    font-size: var(--fs-display-small);
+    line-height: calc(var(--fs-display-small) * var(--heading-line-height-multiplier));
+    letter-spacing: 0.25px;
+}
+
+h4 {
+    font-size: var(--fs-headline-large);
+    line-height: calc(var(--fs-headline-large) * var(--heading-line-height-multiplier));
+    letter-spacing: 0.25px;
+}
+
+h1 {
+    font-size: var(--fs-display-large);
+    line-height: calc(var(--fs-display-large) * var(--heading-line-height-multiplier));
+    letter-spacing: 0.25px;
 }
 
 h5 {
@@ -131,4 +227,34 @@ img {
     width: 100%;
     height: auto;
     object-fit: cover;
+}
+
+
+.button {
+    height: var(--button-height, 2.5rem);
+    min-width: 8rem;
+    border-radius: var(--button-radii, 9999px);
+    cursor: pointer;
+    padding-inline: var(--spacing-medium);
+    font-size: var(--fs-label-medium);
+    font-weight: var(--fw-label-medium);
+    font-family: var(--ff-body);
+    letter-spacing: var(--letter-spacing-label-medium);
+}
+
+.button--primary {
+    background: var(--clr-accent);
+    color: var(--clr-on-accent);
+    border: none;
+}
+
+.button--secondary {
+    background: none;
+    color: var(--clr-accent);
+    border: 2px solid var(--clr-accent);
+
+}
+
+a {
+    color: var(--clr-on-surface-accent);
 }

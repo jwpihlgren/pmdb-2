@@ -1,18 +1,24 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ButtonComponent } from '../../button/button.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, RouterLinkActive, ButtonComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  links = [
-      {name: "Home", href: ""},
-      {name: "Movies", href: "movies"},
-      {name: "Shows", href: "shows"},
-      {name: "test", href: "test"},
+  links: HeaderLink[] = [
+      {name: "Home", href: "", exact: true},
+      {name: "Movies", href: "movies", exact: false},
+      {name: "Shows", href: "shows", exact: false},
   ]
+}
+
+interface HeaderLink {
+    name: string
+    href: string
+    exact: boolean
 }

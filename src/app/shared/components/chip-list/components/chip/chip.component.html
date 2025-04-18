@@ -1,0 +1,6 @@
+<li class=chip>
+    <ng-content></ng-content>
+    @if(action()) {
+    <button (click)=onClick(value()) (keyup)="handleKeyup({value: value(), event: $event})" type="button" class="chip--button">X</button>
+    }
+</li>

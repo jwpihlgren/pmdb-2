@@ -1,0 +1,8 @@
+<nav class="tabbed-menu">
+    <ul class="tabbed-menu__list">@for(tab of params().tabs; track $index){
+        <li class="tabbed-menu__listitem" [routerLinkActive]="'tabbed-menu__listitem--active'">
+            <a class="tabbed-menu__anchor" [routerLink]="tab.href">{{tab.name}}</a>
+        </li>
+        }
+    </ul>
+</nav>

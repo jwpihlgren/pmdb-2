@@ -2,16 +2,23 @@ import { inject, Injectable } from '@angular/core';
 import { TmdbConfig } from '../models/interfaces/tmdb/tmdb-config';
 import { StorageService } from './storage.service';
 import { environment } from '../../../environments/environment.development';
+import AspectRatio from '../models/types/aspect-ratio.type';
+import { ColorComponent } from '../components/color/color.component';
+
+type ImageType = "poster_sizes" | "backdrop_sizes" | "profile_sizes" | "logo_sizes" | "still_sizes"
 
 @Injectable({
     providedIn: 'root'
 })
 
+
 export class ImageService {
     protected storage = inject(StorageService)
-    config: TmdbConfig | null = this.storage.getLocalItem<TmdbConfig>(`${environment.storageKeyPrefix}-config`)
+    config: TmdbConfig | null = this.storage.getSessionItem<TmdbConfig>(`${environment.storageKeyPrefix}-config`)
 
     imageUrl: string = this.config?.images.secure_base_url || ""
+
+    private PLACEHOLDER_IMAGE_CONSTANT = "_LoAdiNg_"
 
     parseSizes(sizes: string[]): string[] {
         return sizes.sort((a, b) => {
@@ -23,8 +30,16 @@ export class ImageService {
         })
     }
 
-    getUrl(image: string, size: number = 500, type: string | undefined): string {
+    sanitizeImageUrl(url: string): string {
+        if (url === "") return this.PLACEHOLDER_IMAGE_CONSTANT
+        if (!url) return this.PLACEHOLDER_IMAGE_CONSTANT
+        return url
+    }
 
+    getUrl(image: string, size: number = 500, type?: string): string {
+
+        if (image === "") return this.getPlaceholderUrl()
+        if (image === this.PLACEHOLDER_IMAGE_CONSTANT) return this.getPlaceholderUrl({ width: size })
         const types: any = {
             poster: "poster_sizes",
             backdrop: "backdrop_sizes",
@@ -33,22 +48,42 @@ export class ImageService {
             still: "still_sizes"
         }
 
-        const queryType: "poster_sizes" | "backdrop_sizes" | "profile_sizes" | "logo_sizes" | "still_sizes" | undefined = 
-            type ? types[type] : undefined
+        const queryType: ImageType = type && types[type] || "poster_sizes"
 
-        let querySizes: any[] = []
-        if (queryType) {
-            querySizes = this.parseSizes(Object.values(this.config?.images[queryType] || []))
-        }
+        let querySizes: any[] = this.parseSizes(Object.values(this.config?.images[queryType] || []))
 
-        let closestSize: string | undefined = querySizes.find((querySize: string) => {
-            return +querySize.replace("w", "") > size
-        })
+        let closestSize = querySizes.find((querySize: string) => +querySize.replace("w", "") > size)
         if (!closestSize) closestSize = querySizes[querySizes.length - 1]
+
         return `${this.imageUrl}${closestSize}${image}`
     }
 
-    getPlaceholderUrl(): string {
-        return "https://images.unsplash.com/photo-1623018035782-b269248df916?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    getPlaceholderUrl(options?: Partial<PlaceholderOptions>): string {
+
+        const background = "101a21"
+        const foreground = "d26b42"
+        const width = options?.width || 400
+        const height = this.getHeightFromAspectRatio(width, options?.aspectRatio || { numerator: 2, denominator: 3 })
+        const fileFormat = options?.fileFormat || "png"
+        const text = encodeURIComponent((options?.text || "no image"))
+
+        return `${environment.dummyImageApiUrl}/${width}x${height}/${background}/${foreground}.${fileFormat}&text=${text}`
+
     }
+
+    getHeightFromAspectRatio(width: number, aspectRatio: AspectRatio): number {
+        return width * aspectRatio.denominator / aspectRatio.numerator
+    }
+
+    getWidthFromAspectRatio(height: number, aspectRatio: AspectRatio): number {
+        return height * (aspectRatio.denominator / aspectRatio.denominator)
+    }
+
+}
+
+interface PlaceholderOptions {
+    width: number
+    aspectRatio: AspectRatio
+    fileFormat: "png" | "jpg" | "gif"
+    text: string
 }

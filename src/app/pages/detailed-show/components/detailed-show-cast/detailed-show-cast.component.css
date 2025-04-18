@@ -1,0 +1,29 @@
+:host {
+    --list__item-image-width: 120px;
+    display: grid;
+    padding-block: var(--spacing-large);
+    gap: var(--radii-medium);
+}
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 200px));
+    list-style: none;
+    gap: var(--spacing-large);
+}
+
+.list__item {
+    display: contents;
+}
+
+.list--item {
+    background: var(--clr-surface-elevation-2);
+}
+
+.list--about {
+    padding: var(--spacing-medium);
+}
+
+.list--about__accent {
+    color: var(--clr-accent);
+}

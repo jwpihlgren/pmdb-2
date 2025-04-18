@@ -35,7 +35,7 @@ export class StorageService {
         localStorage.clear()
     }
 
-    setSessionItem(key: string, value: any): void {
+    setSessionItem<T>(key: string, value: any): void {
         try {
             const jsonValue = JSON.stringify(value)
             sessionStorage.setItem(key, jsonValue)

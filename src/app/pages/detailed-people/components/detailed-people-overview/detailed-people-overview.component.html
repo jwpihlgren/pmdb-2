@@ -1,0 +1,116 @@
+@defer(when detailedPeople() !== undefined) {
+@let p = detailedPeople()!;
+@let f = p.filmography;
+<main>
+    <div class="container">
+        <section class="hero">
+            <app-image class="hero--image" [params]="posterParams"></app-image>
+            <div class="hero--about">
+                <div class="hero--header">
+                    <h1 [title]="'Also known as: \n' + p.alsoKnownAs.join(',\n')">
+                        {{p.name}}
+                    </h1>
+                </div>
+                <div class="hero--meta">
+                    @for(data of metadata; track $index){
+                    <span>{{data.value}}</span>
+                    @if($index !== metadata.length - 1) {
+                    <span> | </span>
+                    }
+                    }
+                </div>
+
+                <p>{{p.biography}}</p>
+                <a [href]="imdbUrl" rel="noreferrer" target="_blank">View at imdb</a>
+            </div>
+        </section>
+        <section class="content">
+            <div class="main">
+                <div class="article">
+                    @let images = p.images;
+                    <div class="article__header">
+                        <h2>Images</h2>
+                        @if(images.length > 0){
+                        <a [routerLink]="['images']">Show all</a>
+                        }
+                    </div>
+                    @if(images.length > 0) {
+                    <div class="article--grid">
+                        @for(image of p.images; track $index) {
+                        <app-card [params]="getPeopleCardParams(image)"></app-card>
+                        }
+                    </div>
+                    }
+                    @else {
+                        No images
+                    }
+                </div>
+                <div class="article__header">
+                    <h2>Recommendations</h2>
+                    <a [routerLink]="['recommendations']">Show all</a>
+                </div>
+                @let top = f.top10LatestMovies;
+                <div class="article--grid">
+                    @for(m of top; track $index){
+                    <app-card class="article--item" [params]="createRecommendationCardParams(m)">
+                        <div class="article--about">
+                            <h5 class="article--about__accent">
+                                {{m.title}}
+                            </h5>
+                            <span>{{m.releaseDate}}</span>
+                        </div>
+                    </app-card>
+
+                    }
+                </div>
+            </div>
+            <aside class="content__aside">
+                <h2>Metadata</h2>
+                <div>
+                    <div class="meta--credits">
+                        <h5>Commitments:</h5>
+                        <span>{{f.countMovies + f.countShows}}</span>
+
+                        <h5>Movies:</h5>
+                        <span>{{f.countMovies}}</span>
+                        <h5>Shows:</h5>
+                        <span>{{f.countShows}}</span>
+                    </div>
+                    <div class="meta--credits">
+                        <h5>Actor:</h5>
+                        <span>{{f.countMovieActor + f.countShowsActor}}</span>
+                        <h5>Crew:</h5>
+                        <span>{{f.countMovieCrew + f.countShowsCrew}}</span>
+                    </div>
+                    <div class="meta--credits">
+
+                        @if(f.countMoviesPerDepartment) {
+                        <h5>Movie crew:</h5>
+                        <span>{{f.countMovieCrew}}</span>
+                        @for(d of f.countMoviesPerDepartment; track $index) {
+                        <h5>{{d.department}}:</h5>
+                        <span>{{d.count}}</span>
+                        }
+                        }
+                    </div>
+                    <div class="meta--credits">
+
+                        @if(f.countShowsPerDepartment.length > 0) {
+                        <h5>Shows crew:</h5>
+                        <span>{{f.countShowsCrew}}</span>
+                        @for(d of f.countShowsPerDepartment; track $index) {
+                        <h5>{{d.department}}:</h5>
+                        <span>{{d.count}}</span>
+                        }
+                        }
+                    </div>
+                </div>
+            </aside>
+        </section>
+    </div>
+</main>
+
+}
+@placeholder {
+Loading...
+}

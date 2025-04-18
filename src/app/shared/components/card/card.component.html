@@ -1,4 +1,13 @@
-<a [routerLink]="['../', params().id || '']">
-    <app-image [params]="{src: params().src, type: 'poster'}"></app-image>
+@defer (when params() !== undefined) {
+@if(params().href !== undefined) {
+<a [routerLink]="params().href">
+    <app-image [params]="createImageParams()"></app-image>
     <ng-content></ng-content>
 </a>
+} @else {
+<div>
+    <app-image [params]="createImageParams()"></app-image>
+</div>
+
+}
+}

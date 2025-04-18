@@ -1,1 +1,4 @@
-<img [ngSrc]="params().src" fill placeholder [loaderParams]="{type: params().type}">
+@defer(when params() !== undefined) {
+@let p = params()!;
+<img [ngSrc]="sanitizeUrl(p.src)" [priority]="p.priority" fill placeholder [loaderParams]="{type: p.type}">
+}

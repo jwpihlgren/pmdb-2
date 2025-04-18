@@ -1,0 +1,9 @@
+<form class="search">
+    <label class="search--label" for="search">
+        <h5>Search</h5>
+    </label>
+    <div class="search-input">
+        <input (keyup)="searchRequest($event)" class="search-input--input" id="search" type="search" placeholder="search">
+        <button class="search-input--clear">X</button>
+    </div>
+</form>

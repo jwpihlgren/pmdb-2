@@ -1,30 +1,47 @@
 import { Component, inject, Signal } from '@angular/core';
 import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
-import { TrendingMovie } from '../../../../shared/models/interfaces/trending-movie';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { Pagination } from '../../../../shared/models/interfaces/pagination';
 import { TrendingMoviesService } from '../../../../shared/services/trending-movies.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { CardComponent } from '../../../../shared/components/card/card.component';
+import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
+import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
+import { RoutingService } from '../../../../shared/services/routing.service';
+import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
+import { DetailedMovieService } from '../../../../shared/services/detailed-movie.service';
+import { first, map } from 'rxjs';
+import { PrefetchService } from '../../../../shared/services/prefetch.service';
 
 @Component({
     selector: 'app-trending-movies',
-    imports: [CardGridComponent, PaginationComponent, CardComponent, ContentMovieComponent],
+    imports: [CardGridComponent, PaginationComponent, CardComponent, ContentMovieComponent, CardLoadingComponent],
     templateUrl: './trending-movies.component.html',
     styleUrl: './trending-movies.component.css',
     standalone: true
 })
 export class TrendingMoviesComponent {
 
-    trendingMovies: Signal<TrendingMovie[] | undefined>
-    paginationResult: Signal<Pagination>
     protected trendingMoviesService: TrendingMoviesService = inject(TrendingMoviesService)
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     protected router: Router = inject(Router)
+    protected routingService: RoutingService = inject(RoutingService)
+    protected detailedMovieServie: DetailedMovieService = inject(DetailedMovieService)
+    protected prefetchService: PrefetchService<number> = inject(PrefetchService)
+
+    trendingMovies: Signal<ResultMovie[] | undefined>
+    paginationResult: Signal<Pagination>
+    prefetch: Signal<number | undefined>
+
 
     constructor() {
+        this.prefetch = toSignal(this.prefetchService.prefetch$.pipe(
+            map(id => {
+                this.detailedMovieServie.get(`${id}`).pipe(first()).subscribe()
+                return id
+            })
+        ))
         const page = this.activatedRoute.snapshot.queryParamMap.get("page")
         if (!page) this.trendingMovies = toSignal(this.trendingMoviesService.get())
         else this.trendingMovies = toSignal(this.trendingMoviesService.get(+page))
@@ -40,4 +57,17 @@ export class TrendingMoviesComponent {
         })
     }
 
+    createCardParams(movie: ResultMovie): CardParams {
+        const params: CardParams = {
+            imageType: "poster",
+            direction: "vertical",
+            id: movie.id,
+            mediaType: "movie",
+            imageSrc: movie.posterImagePath,
+            href: ["/", this.routingService.stubs.MOVIE, `${movie.id}`],
+            aspectRatio: { numerator: 2, denominator: 3 }
+        }
+
+        return params
+    }
 }

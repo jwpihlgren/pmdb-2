@@ -1,5 +1,10 @@
-import { DetailedShow } from "../interfaces/detailed-show";
-import { TmdbShowDetails } from "../interfaces/tmdb/tmdb-show-details";
+import { DetailedShow, DetailedShowCredits, DetailedShowRecommendation } from "../interfaces/detailed-show";
+import Keyword from "../interfaces/keywords";
+import { TmdbDetailedShowCreditsResponse, TmdbDetailedShowRecommendationsResponse, TmdbDetailedShowResponse } from "../interfaces/tmdb/tmdb-detailed-show-response";
+import TmdbKeywordsResponse from "../interfaces/tmdb/tmdb-keywords-response";
+import Gender from "../types/gender";
+import TmdbGenderFactory from "./tmdbGenderFactory.class";
+import { TmdbKeywordsFactory } from "./tmdbKeywordsFactory.class";
 
 export class TmdbDetailedShow implements DetailedShow {
     adult: boolean
@@ -11,6 +16,7 @@ export class TmdbDetailedShow implements DetailedShow {
         gender: number
         profilePath: string
     }[]
+    credits: DetailedShowCredits
     episodeRunTime: number[]
     firstAirDate: string
     genres: {
@@ -19,6 +25,7 @@ export class TmdbDetailedShow implements DetailedShow {
     }[]
     homepage: string
     id: number
+    imdbId: string
     inProduction: boolean
     languages: string[]
     lastAirDate: string
@@ -36,6 +43,7 @@ export class TmdbDetailedShow implements DetailedShow {
         showId: number
         stillPath: string
     }
+    keywords: Keyword[];
     name: string
     nextEpisodeToAir: string | "null"
     networks: {
@@ -62,6 +70,7 @@ export class TmdbDetailedShow implements DetailedShow {
         iso31661: string
         name: string
     }[]
+    recommendations: DetailedShowRecommendation[];
     seasons: {
         airDate: string
         episodeCount: number
@@ -83,19 +92,22 @@ export class TmdbDetailedShow implements DetailedShow {
     voteAverage: number
     voteCount: number
 
-    constructor(data: TmdbShowDetails) {
+    constructor(data: TmdbDetailedShowResponse) {
         this.adult = data.adult
         this.backdropImageUrl = data.backdrop_path
         this.createdBy = this.mapCreatedBy(data.created_by)
+        this.credits = this.mapCredits(data.credits)
         this.episodeRunTime = data.episode_run_time
         this.firstAirDate = data.first_air_date
         this.genres = this.mapGenres(data.genres)
         this.homepage = data.homepage
         this.id = data.id
+        this.imdbId = data.external_ids.imdb_id
         this.inProduction = data.in_production
         this.languages = data.languages
         this.lastAirDate = data.last_air_date
         this.lastEpisodeToAir = this.mapLastEpisode(data.last_episode_to_air)
+        this.keywords = this.mapKeywords(data.keywords)
         this.name = data.name
         this.nextEpisodeToAir = data.next_episode_to_air
         this.networks = this.mapNetworks(data.networks)
@@ -109,6 +121,7 @@ export class TmdbDetailedShow implements DetailedShow {
         this.posterPath = data.poster_path
         this.productionCompanies = this.mapProductionCompanies(data.production_companies)
         this.productionCountries = this.mapProductionCountries(data.production_countries)
+        this.recommendations = this.mapRecommendations(data.recommendations)
         this.seasons = this.mapSeasons(data.seasons)
         this.spokenLanguages = this.mapSpokenLanguages(data.spoken_languages)
         this.status = data.status
@@ -119,7 +132,11 @@ export class TmdbDetailedShow implements DetailedShow {
 
     }
 
-    mapCreatedBy(data: TmdbShowDetails["created_by"]): DetailedShow["createdBy"] {
+    mapKeywords(data: TmdbKeywordsResponse): Keyword[] {
+        return TmdbKeywordsFactory.create(data)
+    }
+
+    mapCreatedBy(data: TmdbDetailedShowResponse["created_by"]): TmdbDetailedShow["createdBy"] {
         return data.map(datum => {
             return {
                 id: datum.id,
@@ -131,7 +148,7 @@ export class TmdbDetailedShow implements DetailedShow {
         })
     }
 
-    mapGenres(data: TmdbShowDetails["genres"]): DetailedShow["genres"] {
+    mapGenres(data: TmdbDetailedShowResponse["genres"]): TmdbDetailedShow["genres"] {
         return data.map(datum => {
             return {
                 id: datum.id,
@@ -140,7 +157,7 @@ export class TmdbDetailedShow implements DetailedShow {
         })
     }
 
-    mapLastEpisode(data: TmdbShowDetails["last_episode_to_air"]): DetailedShow["lastEpisodeToAir"] {
+    mapLastEpisode(data: TmdbDetailedShowResponse["last_episode_to_air"]): TmdbDetailedShow["lastEpisodeToAir"] {
         return {
             id: data.id,
             name: data.name,
@@ -157,7 +174,7 @@ export class TmdbDetailedShow implements DetailedShow {
         }
     }
 
-    mapNetworks(data: TmdbShowDetails["networks"]): DetailedShow["networks"] {
+    mapNetworks(data: TmdbDetailedShowResponse["networks"]): TmdbDetailedShow["networks"] {
         return data.map(datum => {
             return {
                 id: datum.id,
@@ -168,7 +185,7 @@ export class TmdbDetailedShow implements DetailedShow {
         })
     }
 
-    mapProductionCompanies(data: TmdbShowDetails["production_companies"]): DetailedShow["productionCompanies"] {
+    mapProductionCompanies(data: TmdbDetailedShowResponse["production_companies"]): TmdbDetailedShow["productionCompanies"] {
         return data.map(datum => {
             return {
                 originCountry: datum.origin_country,
@@ -179,7 +196,7 @@ export class TmdbDetailedShow implements DetailedShow {
         })
     }
 
-    mapProductionCountries(data: TmdbShowDetails["production_countries"]): DetailedShow["productionCountries"] {
+    mapProductionCountries(data: TmdbDetailedShowResponse["production_countries"]): TmdbDetailedShow["productionCountries"] {
         return data.map(datum => {
             return {
                 name: datum.name,
@@ -188,7 +205,7 @@ export class TmdbDetailedShow implements DetailedShow {
         })
     }
 
-    mapSeasons(data: TmdbShowDetails["seasons"]): DetailedShow["seasons"] {
+    mapSeasons(data: TmdbDetailedShowResponse["seasons"]): TmdbDetailedShow["seasons"] {
         return data.map(datum => {
             return {
                 name: datum.name,
@@ -203,7 +220,7 @@ export class TmdbDetailedShow implements DetailedShow {
         })
     }
 
-    mapSpokenLanguages(data: TmdbShowDetails["spoken_languages"]): DetailedShow["spokenLanguages"] {
+    mapSpokenLanguages(data: TmdbDetailedShowResponse["spoken_languages"]): TmdbDetailedShow["spokenLanguages"] {
         return data.map(datum => {
             return {
                 name: datum.name,
@@ -211,5 +228,101 @@ export class TmdbDetailedShow implements DetailedShow {
                 englishName: datum.english_name
             }
         })
+    }
+
+    private mapCredits(raw: TmdbDetailedShowResponse["credits"]): DetailedShowCredits {
+        return new TmdbDetailedShowCredits(raw)
+    }
+
+    mapRecommendations(recommendations: TmdbDetailedShowRecommendationsResponse): DetailedShowRecommendation[] {
+        return recommendations.results.map(r => {
+            return new TmdbRecommendation(r)
+        })
+    }
+
+}
+
+
+class TmdbDetailedShowCredits implements DetailedShowCredits {
+    cast: { adult: boolean; gender: Gender; id: number; knownForDepartment: string; name: string; originalName: string; popularity: number; profilePath: string; character: string; creditId: string; order: number; }[];
+
+    crew: { adult: boolean; gender: Gender; id: number; knownForDepartment: string; name: string; originalName: string; popularity: number; profilePath: string; creditId: string; department: string; job: string; }[];
+
+    constructor(raw: TmdbDetailedShowCreditsResponse) {
+        this.cast = this.mapCast(raw.cast)
+        this.crew = this.mapCrew(raw.crew)
+    }
+
+    mapCast(cast: TmdbDetailedShowCreditsResponse["cast"]): DetailedShowCredits["cast"] {
+        return cast.map(c => {
+            return {
+                adult: c.adult,
+                character: c.character,
+                creditId: c.credit_id,
+                gender: TmdbGenderFactory.create(c.gender),
+                id: c.id,
+                knownForDepartment: c.known_for_department,
+                name: c.name,
+                order: c.order,
+                originalName: c.original_name,
+                popularity: c.popularity,
+                profilePath: c.profile_path
+            }
+        })
+
+    }
+    mapCrew(crew: TmdbDetailedShowCreditsResponse["crew"]): DetailedShowCredits["crew"] {
+        return crew.map(c => {
+            return {
+                adult: c.adult,
+                creditId: c.credit_id,
+                department: c.department,
+                gender: TmdbGenderFactory.create(c.gender),
+                id: c.id,
+                job: c.job,
+                knownForDepartment: c.known_for_department,
+                name: c.name,
+                originalName: c.original_name,
+                popularity: c.popularity,
+                profilePath: c.profile_path,
+            }
+        })
+    }
+
+}
+
+class TmdbRecommendation implements DetailedShowRecommendation {
+    adult: boolean;
+    id: number;
+    name: string;
+    originalName: string;
+    popularity: number;
+    firstAirDate: string;
+    posterPath: string;
+    genreIds: number[];
+    overview: string;
+    mediaType: string;
+    voteCount: number;
+    voteAverage: number;
+    backdropPath: string;
+    originCountry: string[];
+    originalLanguage: string;
+
+    constructor(raw: TmdbDetailedShowRecommendationsResponse["results"][0]) {
+        this.adult = raw.adult
+        this.id = raw.id
+        this.name = raw.name
+        this.originalName = raw.original_name
+        this.popularity = raw.popularity
+        this.firstAirDate = raw.first_air_date
+        this.posterPath = raw.poster_path
+        this.genreIds = raw.genre_ids
+        this.overview = raw.overview
+        this.mediaType = raw.media_type
+        this.voteCount = raw.vote_count
+        this.voteAverage = raw.vote_average
+        this.backdropPath = raw.backdrop_path
+        this.originCountry = raw.origin_country
+        this.originalLanguage = raw.original_language
     }
 }

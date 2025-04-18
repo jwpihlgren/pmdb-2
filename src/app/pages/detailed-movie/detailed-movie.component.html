@@ -1,5 +1,12 @@
-@defer (when movieDetails() != undefined ){
-    <span>{{movieDetails()!.title}}</span>
+@defer (when movieDetails() !== undefined ){
+@let m = movieDetails()!;
+<main>
+    <div *ngIf="m.backdropImagePath" class="background-image">
+        <img [ngSrc]="sanitizeUrl(m.backdropImagePath)" priority fill alt="" [loaderParams]="{type: 'backdrop'}">
+    </div>
+    <div class="background-blur"></div>
+    <router-outlet></router-outlet>
+</main>
 } @placeholder {
-    <span>Loading</span>
+<span>Loading</span>
 }

@@ -1,15 +1,27 @@
-
-@defer(on immediate; when popoularMovies() !== undefined) {
+@defer(when popularMovies() !== undefined) {
 <app-card-grid>
-    @for( movie of popoularMovies(); track $index) {
-    <app-card [params]="{id: movie.id, src: movie.posterImagePath}">
+    @for( movie of popularMovies(); track $index) {
+    <app-card (mouseenter)="prefetchService.startIntent(movie.id)" (mouseleave)="prefetchService.clearIntent()" [params]="createCardParams(movie)">
         <app-content-movie [params]="movie"></app-content-movie>
     </app-card>
     }
 </app-card-grid>
 <app-pagination (pageRequest)="paginate($event)" [pagination]=paginationResult()></app-pagination>
 }
-
-@placeholder(minimum 100ms) {
-<span>Loading</span>
+@loading() {
+<app-card-grid>
+    @for(card of [].constructor(20); track $index){
+    <app-card-loading></app-card-loading>
+    }
+</app-card-grid>
 }
+
+@placeholder {
+<app-card-grid>
+    @for(card of [].constructor(20); track $index){
+    <app-card-loading></app-card-loading>
+    }
+</app-card-grid>
+
+}
+

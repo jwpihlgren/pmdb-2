@@ -1,3 +1,8 @@
+<app-card-grid>
+    @for(card of [].constructor(20); track $index){
+        <app-card-loading></app-card-loading>
+    }
+</app-card-grid>
 <div>
     <span></span>
     <span></span>

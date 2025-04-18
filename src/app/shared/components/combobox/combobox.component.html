@@ -1,0 +1,15 @@
+<button 
+    (click)="onToggle($event)" 
+    (keyup)="handleKeyUp($event)" 
+    (appClickOutside)="handleClickOutside($event)" 
+    (appFocusLost)="handleFocusLost($event)" type="button" class="combobox--toggle"
+    formControlName="comboboxFormControl"
+    >
+    {{title()}}
+    <div class="combobox--list" [ngClass]="{'combobox--list__open': open}">
+        <ng-content select=".list"></ng-content>
+    </div>
+</button>
+<div class="combobox--selected">
+    <ng-content select=".selected"></ng-content>
+</div>

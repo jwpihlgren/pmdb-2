@@ -1,9 +1,4 @@
 <section>
-    <nav>
-        <ul>@for(tab of tabs; track $index){
-            <li><a [routerLink]="[tab.href]">{{tab.name}}</a></li>
-            }
-        </ul>
-    </nav>
+    <app-tabbed-menu [params]="{tabs: tabs}"></app-tabbed-menu>
     <router-outlet></router-outlet>
 </section>

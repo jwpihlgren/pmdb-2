@@ -1,22 +1,15 @@
 import { Component, input, InputSignal } from '@angular/core';
+import { ResultMovie } from '../../../../models/interfaces/result-movie';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
     selector: 'app-content-movie',
-    imports: [],
+    imports: [DecimalPipe],
     templateUrl: './content-movie.component.html',
     styleUrl: './content-movie.component.css',
     standalone: true
 })
 export class ContentMovieComponent {
-    params: InputSignal<ContentMovieParams> = input.required<ContentMovieParams>()
+    params: InputSignal<ResultMovie> = input.required<ResultMovie>()
 }
 
-export interface ContentMovieParams {
-    title: string
-    id: number
-    releaseDate: string
-    overview: string
-    posterImagePath: string
-    popularity: number
-    originalLanguage: string
-}
