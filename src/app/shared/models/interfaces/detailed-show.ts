@@ -1,3 +1,6 @@
+import { DetailedShowRecommendationsComponent } from "../../../pages/detailed-show/components/detailed-show-recommendations/detailed-show-recommendations.component"
+import Gender from "../types/gender"
+
 export interface DetailedShow {
     adult: boolean
     backdropImageUrl: string
@@ -8,6 +11,7 @@ export interface DetailedShow {
         gender: number
         profilePath: string
     }[]
+    credits: DetailedShowCredits
     episodeRunTime: number[]
     firstAirDate: string
     genres: {
@@ -16,6 +20,7 @@ export interface DetailedShow {
     }[]
     homepage: string
     id: number
+    imdbId: string
     inProduction: boolean
     languages: string[]
     lastAirDate: string
@@ -58,7 +63,8 @@ export interface DetailedShow {
     productionCountries: {
         iso31661: string
         name: string
-    }[]
+    }[],
+    recommendations: DetailedShowRecommendation[]
     seasons: {
         airDate: string
         episodeCount: number
@@ -79,4 +85,52 @@ export interface DetailedShow {
     type: string
     voteAverage: number
     voteCount: number
+}
+
+
+export interface DetailedShowCredits {
+    cast: {
+        adult: boolean
+        gender: Gender
+        id: number
+        knownForDepartment: string
+        name: string
+        originalName: string
+        popularity: number
+        profilePath: string
+        character: string
+        creditId: string
+        order: number
+    }[]
+    crew: {
+        adult: boolean
+        gender: Gender
+        id: number
+        knownForDepartment: string
+        name: string
+        originalName: string
+        popularity: number
+        profilePath: string
+        creditId: string
+        department: string
+        job: string
+    }[]
+}
+
+export interface DetailedShowRecommendation {
+    adult: boolean
+    backdropPath: string
+    id: number
+    name: string
+    originalLanguage: string
+    originalName: string
+    overview: string
+    posterPath: string
+    mediaType: string
+    genreIds: number[]
+    popularity: number
+    firstAirDate: string
+    voteAverage: number
+    voteCount: number
+    originCountry: string[]
 }

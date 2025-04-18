@@ -19,10 +19,13 @@ export class DetailedShowService {
 
     private request(id: string): Observable<TmdbDetailedShow> {
         const queryBuilder = new SearchQueryBuilder(environment.tmdbApiUrl, `tv/${id}`)
-        queryBuilder.apiKey(environment.tmdbApiKey)
+        queryBuilder
+            .apiKey(environment.tmdbApiKey)
+            .appendToResponse(["credits", "external_ids", "images", "keywords", "recommendations", "reviews", "similar", "videos"])
         const options = {}
 
         return this.http.get<TmdbDetailedShowResponse>(queryBuilder.url, options).pipe(
+            tap(data => console.log(data)),
             map(data => new TmdbDetailedShow(data))
         )
     }

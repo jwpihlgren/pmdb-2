@@ -55,7 +55,7 @@ export const routes: Routes = [
     },
     {
         path: "shows/:id", component: DetailedShowComponent, resolve: {
-            shows: detailedShowResolver
+            show: detailedShowResolver
         }, children: [
             { path: "", component: DetailedShowOverviewComponent, pathMatch: "full" },
             { path: "cast-and-crew", component: DetailedShowCastComponent, pathMatch: "full" },

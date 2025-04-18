@@ -108,6 +108,7 @@ export class DiscoverMoviesComponent {
         const formValue: DiscoverMovieFormValue = this.discoverForm.getRawValue()
         this.discoverService.discover(formValue, page)
     }
+
     onRemove(value: string): void {
         const selectedGenres = this.selectedGenres.getRawValue()
         const updatedGenres = selectedGenres.filter((genre: string | number) => genre.toString() !== value.toString())
