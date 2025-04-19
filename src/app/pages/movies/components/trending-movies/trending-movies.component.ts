@@ -1,4 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, inject, output, Signal } from '@angular/core';
 import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { Pagination } from '../../../../shared/models/interfaces/pagination';
@@ -13,6 +13,7 @@ import { CardLoadingComponent } from '../../../../shared/components/card-loading
 import { DetailedMovieService } from '../../../../shared/services/detailed-movie.service';
 import { first, map } from 'rxjs';
 import { PrefetchService } from '../../../../shared/services/prefetch.service';
+import { AppEventService } from '../../../../shared/services/app-event.service';
 
 @Component({
     selector: 'app-trending-movies',
@@ -29,11 +30,11 @@ export class TrendingMoviesComponent {
     protected routingService: RoutingService = inject(RoutingService)
     protected detailedMovieServie: DetailedMovieService = inject(DetailedMovieService)
     protected prefetchService: PrefetchService<number> = inject(PrefetchService)
+    protected appEventService: AppEventService = inject(AppEventService)
 
     trendingMovies: Signal<ResultMovie[] | undefined>
     paginationResult: Signal<Pagination>
     prefetch: Signal<number | undefined>
-
 
     constructor() {
         this.prefetch = toSignal(this.prefetchService.prefetch$.pipe(
@@ -55,6 +56,7 @@ export class TrendingMoviesComponent {
             queryParamsHandling: "replace",
             queryParams: { page: page }
         })
+        this.appEventService.emitEvent({type: "PAGINATION", data: undefined})
     }
 
     createCardParams(movie: ResultMovie): CardParams {
