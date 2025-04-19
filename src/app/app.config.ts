@@ -1,10 +1,11 @@
 import { ApplicationConfig, EnvironmentInjector, inject, InjectionToken, provideAppInitializer, provideZoneChangeDetection, runInInjectionContext } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { ImageLoaderConfig, IMAGE_LOADER, ImageLoader } from '@angular/common';
+import { ImageLoaderConfig, IMAGE_LOADER, ImageLoader, APP_BASE_HREF } from '@angular/common';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ConfigService } from './shared/services/config.service';
 import { ImageService } from './shared/services/image.service';
+import { environment } from '../environments/environment';
 
 interface ImageConfig {
     backdrop: string,
@@ -39,6 +40,6 @@ export const appConfig: ApplicationConfig = {
             provide: IMAGE_LOADER,
             useFactory: customImageLoaderFactory,
             deps: [ImageService]
-        }
+        },
     ]
 };

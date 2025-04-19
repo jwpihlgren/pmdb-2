@@ -13,10 +13,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/pmdb-2",
+            "outputPath": "dist",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "baseHref": "/pmdb-2",
             "polyfills": [
               "zone.js"
             ],
@@ -98,7 +97,13 @@
           }
         },
         "deploy": {
-          "builder": "angular-cli-ghpages:deploy"
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+              "outputPath: {
+                  base: "dist",
+                  browser: ""
+              }
+          }
         }
       }
     }
