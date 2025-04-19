@@ -19,6 +19,7 @@ import { DiscoverMovieFormValue } from '../../../../shared/models/interfaces/dis
 import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { RoutingService } from '../../../../shared/services/routing.service';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
+import { AppEventService } from '../../../../shared/services/app-event.service';
 
 @Component({
     selector: 'app-discover-movies',
@@ -33,6 +34,7 @@ export class DiscoverMoviesComponent {
     protected configService: ConfigService = inject(ConfigService)
     protected peopleSearchSevice: SearchPeopleService = inject(SearchPeopleService)
     protected routingService: RoutingService = inject(RoutingService)
+    protected appEventService: AppEventService = inject(AppEventService)
     genres!: Genre[]
 
     listboxParams!: { list: { name: string, value: string | number }[] }
@@ -107,6 +109,7 @@ export class DiscoverMoviesComponent {
     handlePageRequest(page: number) {
         const formValue: DiscoverMovieFormValue = this.discoverForm.getRawValue()
         this.discoverService.discover(formValue, page)
+        this.appEventService.emitEvent({type: "PAGINATION", data: undefined})
     }
 
     onRemove(value: string): void {

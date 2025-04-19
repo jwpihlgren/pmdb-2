@@ -13,6 +13,7 @@ import { PrefetchService } from '../../../../shared/services/prefetch.service';
 import { first, map, switchMap } from 'rxjs';
 import { DetailedMovieService } from '../../../../shared/services/detailed-movie.service';
 import { DetailedMovie } from '../../../../shared/models/interfaces/detailed-movie';
+import { AppEventService } from '../../../../shared/services/app-event.service';
 
 @Component({
     selector: 'app-popular-movies',
@@ -28,6 +29,7 @@ export class PopularMoviesComponent {
     protected routingService: RoutingService = inject(RoutingService)
     protected detailedMovieService: DetailedMovieService = inject(DetailedMovieService)
     protected prefetchService: PrefetchService<number> = inject(PrefetchService)
+    protected appEventService: AppEventService = inject(AppEventService)
 
     popularMovies
     paginationResult
@@ -52,6 +54,7 @@ export class PopularMoviesComponent {
             queryParamsHandling: "replace",
             queryParams: { page: page }
         })
+        this.appEventService.emitEvent({type: "PAGINATION", data: undefined})
     }
 
     createCardParams(movie: ResultMovie): CardParams {

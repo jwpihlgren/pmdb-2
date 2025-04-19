@@ -9,6 +9,7 @@ import { CardGridComponent } from '../../../../shared/components/card-grid/card-
 import { ContentShowComponent } from '../../../../shared/components/card/components/content-show/content-show.component';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
+import { AppEventService } from '../../../../shared/services/app-event.service';
 
 @Component({
     selector: 'app-popular-shows',
@@ -22,6 +23,7 @@ export class PopularShowsComponent {
     protected popularShowsService: PopularShowsService = inject(PopularShowsService)
     protected activatedRoute = inject(ActivatedRoute)
     protected router = inject(Router)
+    protected appEventService: AppEventService = inject(AppEventService)
 
     constructor() {
         const page = this.activatedRoute.snapshot.queryParamMap.get("page")
@@ -37,6 +39,8 @@ export class PopularShowsComponent {
             queryParamsHandling: "replace",
             queryParams: { page: page }
         })
+
+        this.appEventService.emitEvent({type: "PAGINATION", data: {}})
     }
 
     createCardParams(result: ResultShow): CardParams {

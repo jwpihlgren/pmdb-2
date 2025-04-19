@@ -13,7 +13,7 @@ app-header {
     width: 100vw;
 }
 
-.container {
+.scrollable-container {
     overflow: auto;
     scrollbar-gutter: stable;
     padding-inline: var(--app-container-padding);

@@ -9,6 +9,7 @@ import { CardComponent, CardParams } from '../../../../shared/components/card/ca
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { ContentShowComponent } from '../../../../shared/components/card/components/content-show/content-show.component';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
+import { AppEventService } from '../../../../shared/services/app-event.service';
 
 @Component({
     selector: 'app-trending-shows',
@@ -22,6 +23,7 @@ export class TrendingShowsComponent {
     protected trendingShowsService = inject(TrendingShowsService)
     protected activatedRoute = inject(ActivatedRoute)
     protected router = inject(Router)
+    protected appEventService: AppEventService = inject(AppEventService)
 
     constructor() {
         const page = this.activatedRoute.snapshot.queryParamMap.get("page")
@@ -37,6 +39,7 @@ export class TrendingShowsComponent {
             queryParamsHandling: "replace",
             queryParams: { page: page }
         })
+        this.appEventService.emitEvent({type : "PAGINATION", data: {}})
     }
 
     createCardParams(result: ResultShow): CardParams {
