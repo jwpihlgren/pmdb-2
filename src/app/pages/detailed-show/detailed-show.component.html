@@ -1,1 +1,11 @@
-<router-outlet></router-outlet>
+@defer (when detailedShow() !== undefined ){
+@let s = detailedShow()!;
+<main>
+    <img class="background-image" [ngSrc]="sanitizeUrl(s.backdropImageUrl)" priority fill alt=""
+        [loaderParams]="{type: 'backdrop'}">
+    <div class="background-blur"></div>
+    <router-outlet></router-outlet>
+</main>
+} @placeholder {
+<span>Loading</span>
+}
