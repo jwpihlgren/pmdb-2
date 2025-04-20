@@ -4,7 +4,9 @@
     <img class="background-image" [ngSrc]="sanitizeUrl(s.backdropImageUrl)" priority fill alt=""
         [loaderParams]="{type: 'backdrop'}">
     <div class="background-blur"></div>
-    <router-outlet></router-outlet>
+    <div class="container">
+        <router-outlet></router-outlet>
+    </div>
 </main>
 } @placeholder {
 <span>Loading</span>
