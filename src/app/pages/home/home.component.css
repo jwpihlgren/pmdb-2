@@ -2,6 +2,9 @@
     --searchbar-max-width: 800px;
     --search-result-image-width: 80px;
     --max-count-result: 10;
+    display: block;
+    padding: var(--spacing-large);
+    height: calc(100lvh - var(--app-footer-height) - var(--app-header-height));
 }
 
 .search {

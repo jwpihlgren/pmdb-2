@@ -1,0 +1,5 @@
+:host {
+    display: block;
+    background: var(--clr-surface-elevation-2);
+    height: var(--app-footer-height);
+}
