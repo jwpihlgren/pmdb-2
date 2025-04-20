@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ButtonComponent } from '../../button/button.component';
+import { RoutingService } from '../../services/routing.service';
 
 @Component({
   selector: 'app-header',
@@ -10,15 +11,5 @@ import { ButtonComponent } from '../../button/button.component';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  links: HeaderLink[] = [
-      {name: "Home", href: "", exact: true},
-      {name: "Movies", href: "movies", exact: false},
-      {name: "Shows", href: "shows", exact: false},
-  ]
-}
-
-interface HeaderLink {
-    name: string
-    href: string
-    exact: boolean
+    protected routingService: RoutingService = inject(RoutingService)
 }
