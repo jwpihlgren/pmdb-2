@@ -17,7 +17,7 @@ export class ConfigService {
 
     config!: TmdbConfig
     movieGenres!: Genre[]
-    tvGenres!: Genre[]
+    showGenres!: Genre[]
 
     protected http = inject(HttpClient)
     protected storage = inject(StorageService)
@@ -28,7 +28,7 @@ export class ConfigService {
         if ([config, movieGenres, tvGenres].every(item => item !== null)) {
             this.config = config as TmdbConfig
             this.movieGenres = movieGenres as Genre[]
-            this.tvGenres = tvGenres as Genre[]
+            this.showGenres = tvGenres as Genre[]
             return of(true)
         }
         const configUrl = `${environment.tmdbApiUrl}configuration?api_key=${environment.tmdbApiKey}`
@@ -38,15 +38,15 @@ export class ConfigService {
         return forkJoin({
             config: this.http.get<TmdbConfig>(configUrl),
             movieGenres: this.http.get<{ genres: Genre[] }>(movieGenresUrl),
-            tvGenres: this.http.get<{ genres: Genre[] }>(tvGenresUrl)
+            showGenres: this.http.get<{ genres: Genre[] }>(tvGenresUrl)
         }).pipe(
             map(data => {
                 this.storage.setSessionItem<TmdbConfig>(this.configStorageKey, data.config)
                 this.storage.setSessionItem<Genre[]>(this.movieGenresStorageKey, data.movieGenres.genres)
-                this.storage.setSessionItem<Genre[]>(this.tvGenresStorageKey, data.tvGenres.genres)
+                this.storage.setSessionItem<Genre[]>(this.tvGenresStorageKey, data.showGenres.genres)
                 this.config = data.config
                 this.movieGenres = data.movieGenres.genres
-                this.tvGenres = data.tvGenres.genres
+                this.showGenres = data.showGenres.genres
                 return true
             })
         )

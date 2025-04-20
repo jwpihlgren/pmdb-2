@@ -16,9 +16,8 @@ import { ResultMovie } from '../models/interfaces/result-movie';
     providedIn: 'root'
 })
 export class DiscoverMoviesService {
-    protected http = inject(HttpClient)
 
-    private api = environment.tmdbApiUrl
+    protected http = inject(HttpClient)
 
     private query$: ReplaySubject<{query: DiscoverMovieFormValue, page?: number}> = new ReplaySubject()
     private paginationResults$ = new BehaviorSubject<Pagination>(new PlaceholderPagination())
