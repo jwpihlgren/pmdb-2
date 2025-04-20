@@ -77,9 +77,9 @@ export class DetailedShowOverviewComponent {
             imageType: "poster",
             direction: "horizontal",
             id: rec.id,
-            mediaType: "movie",
+            mediaType: "show",
             imageSrc: rec.posterPath,
-            href: ["/", this.routingService.stubs.MOVIE, `${rec.id}`],
+            href: ["/", this.routingService.stubs.SHOW, `${rec.id}`],
             aspectRatio: { numerator: 2, denominator: 3 }
         }
 
