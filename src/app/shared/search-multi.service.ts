@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { debounce, debounceTime, EMPTY, map, Observable, ReplaySubject as BehaviorSubject, shareReplay, Subject, switchMap, of } from 'rxjs';
+import { debounceTime, map, Observable, ReplaySubject as BehaviorSubject, switchMap, of } from 'rxjs';
 import ResultMulti from './models/interfaces/result-multi';
 import { environment } from '../../environments/environment.development';
 import SearchQueryBuilder from './models/classes/movie-search-query-builder.class';
