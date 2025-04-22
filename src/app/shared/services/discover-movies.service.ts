@@ -3,7 +3,6 @@ import { environment } from '../../../environments/environment';
 import { BehaviorSubject, map, Observable, ReplaySubject, switchMap, } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import MovieDiscoverQueryBuilder from '../models/classes/movie-discover-query-builder.class';
-import MovieFilters from '../models/interfaces/movie-filters';
 import { PlaceholderPagination } from '../models/classes/placeholder-pagination';
 import { Pagination } from '../models/interfaces/pagination';
 import { TmdbPagination } from '../models/classes/tmdb-pagination';
@@ -19,7 +18,7 @@ export class DiscoverMoviesService {
 
     protected http = inject(HttpClient)
 
-    private query$: ReplaySubject<{query: DiscoverMovieFormValue, page?: number}> = new ReplaySubject()
+    private query$: ReplaySubject<{ query: DiscoverMovieFormValue, page?: number }> = new ReplaySubject()
     private paginationResults$ = new BehaviorSubject<Pagination>(new PlaceholderPagination())
     results$: Observable<ResultMovie[]>
 
@@ -32,17 +31,17 @@ export class DiscoverMoviesService {
     }
 
     discover(value: DiscoverMovieFormValue, page?: number): void {
-        this.query$.next({query: value, page: page})
+        this.query$.next({ query: value, page: page })
     }
 
     get pagination(): Observable<Pagination> {
         return this.paginationResults$.asObservable()
     }
 
-    private request(params: {query: DiscoverMovieFormValue, page?: number}): Observable<ResultMovie[]> {
+    private request(params: { query: DiscoverMovieFormValue, page?: number }): Observable<ResultMovie[]> {
         const value = params.query
-        const page = params.page 
-        const genres: string[] = value.genres?.map( value => value.toString()) || []
+        const page = params.page
+        const genres: string[] = value.genres?.map(value => value.toString()) || []
         const queryBuilder = new MovieDiscoverQueryBuilder(environment.tmdbApiUrl, "discover/movie")
         queryBuilder
             .apiKey(environment.tmdbApiKey)
