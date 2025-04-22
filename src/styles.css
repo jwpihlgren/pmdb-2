@@ -112,8 +112,21 @@
 
     --app-header-height: 5rem;
     --app-container-padding: 10rem;
+    --app-footer-height: 300px;
 }
 
+@media screen and (max-width:768px) {
+    :root {
+        --app-footer-height: calc(100dvh - var(--app-header-height));
+    }
+}
+
+.headline-medium {
+    font-size: var(--fs-headline-medium);
+    font-weight: var(--fw-headline-medium);
+    letter-spacing: var(--letter-spacing-headline-medium);
+    font-family: var(--ff-body)
+}
 
 .label-medium {
     font-size: var(--fs-label-medium);
@@ -175,7 +188,10 @@ html {
     line-height: calc(var(--fs-body-medium) * var(--body-line-height-multiplier));
 }
 
-body {}
+body {
+    height: 100vh;
+    overflow: hidden;
+}
 
 h1,
 h2,

@@ -2,7 +2,17 @@
     --searchbar-max-width: 800px;
     --search-result-image-width: 80px;
     --max-count-result: 10;
+    display: block;
+    padding: var(--spacing-large);
+    height: calc(100lvh - var(--app-footer-height) - var(--app-header-height));
 }
+
+@media screen and (max-width: 768px) {
+    :host {
+        height: calc(100lvh - var(--app-header-height));
+    }
+}
+
 
 .search {
     margin-block: var(--spacing-medium);
@@ -71,5 +81,3 @@ section {
     font-weight: var(--fw-body-small);
 
 }
-
-

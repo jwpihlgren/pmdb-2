@@ -1,0 +1,20 @@
+<div>
+    <a class="footer-logo headline-medium" [routerLink]="['/']">PMDB</a>
+    <nav class="footer-navigation">
+        <ul class="footer-navigation__list">
+            @for(link of routingService.primaryNavigation; track $index) {
+            <li class="footer-navigation__item">
+                <a [routerLink]="link.href">{{link.name}}</a>
+            </li>
+            }
+        </ul>
+    </nav>
+</div>
+<div><span>Copyright. All rights reserved</span></div>
+<ul class="attribution">
+    <li class="attribution__item">
+        <span class="attribution__heading headline-medium">TMDb</span>
+        <p class="attribution__paragraph">This product uses the TMDb API for data and images but is not endorsed or
+            certified by TMDb.</p>
+    </li>
+</ul>

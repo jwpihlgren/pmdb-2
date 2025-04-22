@@ -1,10 +1,10 @@
-import { Component, inject, signal, Signal } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { DetailedMovie } from '../../shared/models/interfaces/detailed-movie';
 import { NgIf, NgOptimizedImage } from '@angular/common';
 import { DetailedMovieService } from '../../shared/services/detailed-movie.service';
-import { switchMap } from 'rxjs';
+import { map } from 'rxjs';
 import { ImageService } from '../../shared/services/image.service';
 
 @Component({
@@ -18,15 +18,16 @@ import { ImageService } from '../../shared/services/image.service';
 export class DetailedMovieComponent {
 
     protected activatedRoute = inject(ActivatedRoute)
-    protected detailedMovieService = inject(DetailedMovieService)
     protected imageService = inject(ImageService)
 
-    movieDetails: Signal<DetailedMovie | undefined> = signal(undefined)
+    movieDetails: Signal<DetailedMovie>
 
     constructor() {
-        this.movieDetails = toSignal(this.activatedRoute.paramMap.pipe(switchMap(data => {
-            return this.detailedMovieService.get(data.get("id")!)
-        })))
+        this.movieDetails = toSignal(this.activatedRoute.data.pipe(
+            map(data => {
+                return data["movie"] as DetailedMovie
+            })
+        ), {requireSync: true})
     }
 
     sanitizeUrl(url: string): string {

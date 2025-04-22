@@ -1,8 +1,12 @@
 :host {
     --list__item-image-width: 120px;
     display: grid;
-    padding-block: var(--spacing-large);
     gap: var(--radii-medium);
+}
+
+
+section {
+    margin-block-end: var(--spacing-large);
 }
 
 .list {

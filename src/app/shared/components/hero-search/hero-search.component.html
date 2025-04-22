@@ -4,6 +4,6 @@
     </label>
     <div class="search-input">
         <input (keyup)="searchRequest($event)" class="search-input--input" id="search" type="search" placeholder="search">
-        <button class="search-input--clear">X</button>
+        <button (click)="clearRequest($event)" class="search-input--clear">X</button>
     </div>
 </form>

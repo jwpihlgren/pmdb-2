@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { debounce, debounceTime, map, Observable, ReplaySubject, shareReplay, Subject, switchMap } from 'rxjs';
+import { debounce, debounceTime, EMPTY, map, Observable, ReplaySubject as BehaviorSubject, shareReplay, Subject, switchMap, of } from 'rxjs';
 import ResultMulti from './models/interfaces/result-multi';
 import { environment } from '../../environments/environment.development';
 import SearchQueryBuilder from './models/classes/movie-search-query-builder.class';
@@ -16,20 +16,27 @@ export class SearchMultiService {
 
     http: HttpClient = inject(HttpClient)
 
-    private _search: ReplaySubject<string> = new ReplaySubject()
-    searchResults$: Observable<ResultMulti[]>
+    private _search: BehaviorSubject<string | undefined> = new BehaviorSubject(undefined)
+    searchResults$: Observable<ResultMulti[] | undefined>
 
     constructor() {
         this.searchResults$ = this._search.pipe(
             debounceTime(100),
             switchMap(query => {
+                if (query === undefined || query === "") {
+                    return of(undefined)
+                }
                 return this.request(query)
             })
         )
     }
 
-    find(query: string) {
+    find(query: string): void {
         this._search.next(query)
+    }
+
+    clear(): void {
+        this._search.next(undefined)
     }
 
 

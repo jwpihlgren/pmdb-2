@@ -8,8 +8,14 @@ import { Component, output } from '@angular/core';
 })
 export class HeroSearchComponent {
     search = output<string>()
+    clear = output<Event>()
     
     searchRequest(event: any): void {
         this.search.emit(event.target.value)
+    }
+
+    clearRequest(event: Event) {
+        event.preventDefault()
+        this.clear.emit(event)
     }
 }

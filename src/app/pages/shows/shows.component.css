@@ -1,2 +1,5 @@
-
+:host {
+    display: block;
+    padding: var(--spacing-large);
+}
 
