@@ -4,6 +4,12 @@
     gap: var(--spacing-lg, 2rem);
 }
 
+main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-large);
+
+}
 aside {
     position: relative;
 }

@@ -87,6 +87,7 @@ export class DiscoverShowsComponent {
                 return { lte: data.lte[0], gte: data.gte[0] }
             })
         ), { initialValue: { lte: "", gte: "" } })
+        this.onSubmit()
     }
 
     get selectedGenres() {
