@@ -1,4 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, inject, OnDestroy, Signal } from '@angular/core';
 import { HeroSearchComponent } from '../../shared/components/hero-search/hero-search.component';
 import { SearchMultiService } from '../../shared/search-multi.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -14,21 +14,21 @@ import { tap } from 'rxjs';
     templateUrl: './home.component.html',
     styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnDestroy {
 
-    searchMultiServie: SearchMultiService = inject(SearchMultiService)
+    searchMultiService: SearchMultiService = inject(SearchMultiService)
     searchResults: Signal<ResultMulti[] | undefined>
 
     constructor() {
-        this.searchResults = toSignal(this.searchMultiServie.searchResults$.pipe(tap((data: any) => console.log(data))))
+        this.searchResults = toSignal(this.searchMultiService.searchResults$.pipe(tap((data: any) => console.log(data))))
     }
 
     search(query: string) {
-        this.searchMultiServie.find(query)
+        this.searchMultiService.find(query)
     }
     clear(event: Event) {
         console.log("clear")
-        this.searchMultiServie.clear()
+        this.searchMultiService.clear()
     }
 
     createImageParams(result: ResultMulti): ImageParams {
@@ -37,5 +37,9 @@ export class HomeComponent {
             src: result.posterPath,
             type: "poster"
         }
+    }
+
+    ngOnDestroy(): void {
+        this.searchMultiService.clear()
     }
 }
