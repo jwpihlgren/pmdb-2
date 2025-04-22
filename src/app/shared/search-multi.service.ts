@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { debounce, debounceTime, EMPTY, map, Observable, ReplaySubject as BehaviorSubject, shareReplay, Subject, switchMap, of } from 'rxjs';
+import { debounceTime, map, Observable, ReplaySubject as BehaviorSubject, switchMap, of } from 'rxjs';
 import ResultMulti from './models/interfaces/result-multi';
 import { environment } from '../../environments/environment.development';
 import SearchQueryBuilder from './models/classes/movie-search-query-builder.class';
@@ -8,13 +8,16 @@ import TmdbResultMultiResponse from './models/interfaces/tmdb/tmdb-result-multi-
 import { TmdbResultPeopleResponse } from './models/interfaces/tmdb/tmdb-search-people-response';
 import { TmdbResultShowResponse } from './models/interfaces/tmdb/tmdb-result-show-response';
 import { TmdbResultMovieResponse } from './models/interfaces/tmdb/tmdb-result-movie-response';
+import { StorageService } from './services/storage.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SearchMultiService {
+    SEARCH_HISTORY_KEY = `${environment.storageKeyPrefix}-multi-search-queries`
 
     http: HttpClient = inject(HttpClient)
+    storageService: StorageService = inject(StorageService)
 
     private _search: BehaviorSubject<string | undefined> = new BehaviorSubject(undefined)
     searchResults$: Observable<ResultMulti[] | undefined>
@@ -37,6 +40,18 @@ export class SearchMultiService {
 
     clear(): void {
         this._search.next(undefined)
+    }
+
+    addToSearchHistory(query: string): void {
+        if (query === "") return
+        const previousQueries: string[] = this.storageService.getLocalItem(this.SEARCH_HISTORY_KEY) ?? []
+        let updatedQueries = [query, ...previousQueries.slice(0, 9)]
+        updatedQueries = Array.from(new Set(updatedQueries))
+        this.storageService.setLocalItem(this.SEARCH_HISTORY_KEY, updatedQueries)
+    }
+
+    get searchHistory$(): Observable<string[]> {
+        return of(this.storageService.getLocalItem(this.SEARCH_HISTORY_KEY) ?? [])
     }
 
 

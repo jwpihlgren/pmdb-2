@@ -1,14 +1,16 @@
 <div class="search">
-    <app-hero-search class="search__bar" (search)="search($event)" (clear)="clear($event)"></app-hero-search>
+    <app-hero-search [formControl]="searchInput" class="search__bar" (search)="search($event)" (clear)="clear($event)" (focus)="onFocus($event)"
+        (blur)="onBlur($event)"></app-hero-search>
     @defer(when searchResults() !== undefined) {
     @let s = searchResults()!;
     @if(s !== undefined) {
     <div class="search__result-list-wrapper">
-        @if(s.length > 1) {
+        @if(s.length >= 1) {
         <ul class="search__result-list">
             @for(result of s; track $index) {
             <li class="search__result">
-                <a class="search__result-anchor" [routerLink]="['/', result.stub, result.id]">
+                <a class="search__result-anchor" [routerLink]="['/', result.stub, result.id]"
+                    (click)="addToSearchHistory(result.name)">
                     <app-image class="search__result-image" [params]=createImageParams(result)></app-image>
                     <div class="search__result-wrapper">
                         <span class="search__result-data">{{result.name}}
@@ -24,9 +26,28 @@
             }
         </ul>
         } @else {
-            No results
+        No results
         }
     </div>
     }
+    @else if(searchHasFocus()) {
+            <ng-container *ngTemplateOutlet="history"></ng-container>
+        }
+    }
+    @placeholder{
+    @if(searchHasFocus()) {
+        <ng-container *ngTemplateOutlet="history"></ng-container>    
+    }
+
     }
 </div>
+
+<ng-template #history>
+<div class="search__result-list-wrapper">
+        <ul class="search__result-list">
+            @for(query of searchHistory(); track $index) {
+            <li tabindex="0" (click)="onHistoryClick($event)" class="search__result" [attr.data-type]="SEARCH_HISTORY_ITEM_IDENTIFIER">{{query}}</li>
+            }
+        </ul>
+    </div>
+</ng-template>

@@ -34,24 +34,33 @@ section {
     transform: translate(0, var(--spacing-medium));
     z-index: 9999;
     background-color: var(--clr-surface-elevation-3);
-    padding-block: var(--spacing-medium);
-    padding-inline-start: var(--spacing-small);
-    padding-inline-end: var(--spacing-medium);
     border-radius: var(--radii-medium);
     width: min(100%, var(--searchbar-max-width));
     left: calc(50% - (min(100%, var(--searchbar-max-width)) / 2));
+    padding-block: var(--spacing-medium);
 }
 
 .search__result-list {
     display: grid;
     max-height: calc(var(--search-result-image-width) * var(--max-count-result));
     overflow-y: auto;
-    gap: var(--spacing-small);
 }
 
 .search__result {
+    padding-block: var(--spacing-extra-small);
+    padding-inline-start: var(--spacing-small);
+    padding-inline-end: var(--spacing-medium);
     list-style: none;
 }
+
+.search__result:hover {
+    background-color: var(--clr-surface-elevation-4);
+}
+
+.search__result:active {
+    background-color: var(--clr-surface-elevation-2);
+}
+
 
 .search__result-wrapper {
     display: grid;

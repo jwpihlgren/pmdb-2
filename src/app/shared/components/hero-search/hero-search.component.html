@@ -3,7 +3,8 @@
         <h5>Search</h5>
     </label>
     <div class="search-input">
-        <input (keyup)="searchRequest($event)" class="search-input--input" id="search" type="search" placeholder="search">
+        <input (keyup)="searchRequest($event)" (focus)="focusRequest($event)" (blur)="blurRequest($event)"
+            class="search-input--input" id="search" type="search" [formControl]="searchInput" placeholder="Movies, shows, people...">
         <button (click)="clearRequest($event)" class="search-input--clear">X</button>
     </div>
 </form>
