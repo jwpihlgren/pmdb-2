@@ -1,9 +1,12 @@
 <div class="search">
-    <app-hero-search class="search__bar" (search)="search($event)"></app-hero-search>
+    <app-hero-search class="search__bar" (search)="search($event)" (clear)="clear($event)"></app-hero-search>
     @defer(when searchResults() !== undefined) {
+    @let s = searchResults()!;
+    @if(s !== undefined) {
     <div class="search__result-list-wrapper">
+        @if(s.length > 1) {
         <ul class="search__result-list">
-            @for(result of searchResults()! || []; track $index) {
+            @for(result of s; track $index) {
             <li class="search__result">
                 <a class="search__result-anchor" [routerLink]="['/', result.stub, result.id]">
                     <app-image class="search__result-image" [params]=createImageParams(result)></app-image>
@@ -20,6 +23,10 @@
             </li>
             }
         </ul>
+        } @else {
+            No results
+        }
     </div>
+    }
     }
 </div>
