@@ -25,7 +25,6 @@ export class DetailedShowService {
         const options = {}
 
         return this.http.get<TmdbDetailedShowResponse>(queryBuilder.url, options).pipe(
-            tap(data => console.log(data)),
             map(data => new TmdbDetailedShow(data))
         )
     }

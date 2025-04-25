@@ -1,7 +1,7 @@
 @defer(when popularShows() !== undefined) {
 <app-card-grid>
     @for( show of popularShows(); track $index) {
-    <app-card [params]="createCardParams(show)">
+    <app-card (mouseenter)="prefetchService.startIntent(show.id)" (mouseleave)="prefetchService.clearIntent()" [params]="createCardParams(show)">
         <app-content-show [params]="show"></app-content-show>
     </app-card>
     }
