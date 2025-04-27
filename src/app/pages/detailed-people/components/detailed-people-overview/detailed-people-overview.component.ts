@@ -7,6 +7,7 @@ import { ImageComponent, ImageParams } from '../../../../shared/components/image
 import { environment } from '../../../../../environments/environment.development';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import Metadata from '../../../../shared/models/interfaces/meta-data.interface';
+import { RoutingService } from '../../../../shared/services/routing.service';
 
 @Component({
     selector: 'app-detailed-people-overview',
@@ -16,6 +17,7 @@ import Metadata from '../../../../shared/models/interfaces/meta-data.interface';
 })
 export class DetailedPeopleOverviewComponent {
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
+    protected routingService: RoutingService = inject(RoutingService)
     detailedPeople: Signal<DetailedPeople>
 
     constructor() {
@@ -50,15 +52,25 @@ export class DetailedPeopleOverviewComponent {
         }
     }
 
-    createRecommendationCardParams(movie: DetailedPeople["filmography"]["top10LatestMovies"][0]): CardParams {
+    createCastMoviesCardParams(movie: DetailedPeople["filmography"]["top10LatestMovies"][0]): CardParams {
         return {
             imageType: "poster",
             direction: 'vertical',
             imageSrc: movie.posterImagePath,
             aspectRatio: { numerator: 2, denominator: 3 },
-            href: ["/", "movies", movie.id.toString()]
+            href: ["/", this.routingService.stubs.MOVIE, movie.id.toString()]
         }
     }
+    createCastShowsCardParams(show: DetailedPeople["filmography"]["top10LatestShows"][0]): CardParams {
+        return {
+            imageType: "poster",
+            direction: 'vertical',
+            imageSrc: show.posterImagePath,
+            aspectRatio: { numerator: 2, denominator: 3 },
+            href: ["/", this.routingService.stubs.SHOW, show.id.toString()]
+        }
+    }
+
 
     get metadata(): Metadata[] {
         const metadata: Metadata[] = []

@@ -1,15 +1,28 @@
-<a [routerLink]="['../']" (click)="goBack($event)">Back</a>
-<h1>Recommendations</h1>
+<a [routerLink]="['../..']" (click)="goBack($event)">Back</a>
+<h1>Credited {{mediaType()}}</h1>
+@defer(when credited() !== undefined) {
+@let cast = credited()!;
 <ul class="list">
-    @for(r of people().filmography.allMovies.cast; track $index) {
+    @for(r of cast; track $index) {
     <li class="list__item">
         <a [routerLink]="['/','movies', r.id]" class="list__item-anchor">
             <app-image class="list__item-image" [params]="createImageParams(r)"></app-image>
             <div class="list__item-wrapper">
+                @switch(r.mediaType){
+                @case("show") {
                 <div class="list__item-header">
-                    <span class="label-medium">{{r.title}}</span>
+                    <span class="label-medium">{{r.title}} (as {{r.character}})</span>
+                    <span class="label-medium">{{r.firstAirDate}}</span>
+                </div>
+                }
+                @case("movie") {
+                <div class="list__item-header">
+                    <span class="label-medium">{{r.title}} (as {{r.character}})</span>
                     <span class="label-medium">{{r.releaseDate}}</span>
                 </div>
+                }
+
+                }
                 <div class="list__item-content">
                     <span>{{r.overview}}</span>
                 </div>
@@ -18,3 +31,7 @@
     </li>
     }
 </ul>
+}
+@placeholder{
+Loading ...
+}

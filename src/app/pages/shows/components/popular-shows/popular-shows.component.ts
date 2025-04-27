@@ -10,6 +10,9 @@ import { ContentShowComponent } from '../../../../shared/components/card/compone
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 import { AppEventService } from '../../../../shared/services/app-event.service';
+import { DetailedShowService } from '../../../../shared/services/detailed-show.service';
+import { PrefetchService } from '../../../../shared/services/prefetch.service';
+import { first, map } from 'rxjs';
 
 @Component({
     selector: 'app-popular-shows',
@@ -18,18 +21,30 @@ import { AppEventService } from '../../../../shared/services/app-event.service';
     styleUrl: './popular-shows.component.css'
 })
 export class PopularShowsComponent {
-    popularShows: Signal<ResultShow[] | undefined>
-    paginationResult: Signal<Pagination>
+
     protected popularShowsService: PopularShowsService = inject(PopularShowsService)
+    protected detailedShowService: DetailedShowService = inject(DetailedShowService)
+    protected prefetchService: PrefetchService<number> = inject(PrefetchService)
     protected activatedRoute = inject(ActivatedRoute)
     protected router = inject(Router)
     protected appEventService: AppEventService = inject(AppEventService)
+
+    popularShows: Signal<ResultShow[] | undefined>
+    paginationResult: Signal<Pagination>
+    prefetchSignal: Signal<number | undefined>
+
 
     constructor() {
         const page = this.activatedRoute.snapshot.queryParamMap.get("page")
         if (!page) this.popularShows = toSignal(this.popularShowsService.get())
         else this.popularShows = toSignal(this.popularShowsService.get(+page))
         this.paginationResult = toSignal(this.popularShowsService.getPaginationResults(), { requireSync: true })
+        this.prefetchSignal = toSignal(this.prefetchService.prefetch$.pipe(
+            map(id => {
+                this.detailedShowService.get(id.toString()).pipe(first()).subscribe()
+                return id
+            })
+        ))
     }
 
     paginate(page: number): void {
@@ -40,7 +55,7 @@ export class PopularShowsComponent {
             queryParams: { page: page }
         })
 
-        this.appEventService.emitEvent({type: "PAGINATION", data: {}})
+        this.appEventService.emitEvent({ type: "PAGINATION", data: {} })
     }
 
     createCardParams(result: ResultShow): CardParams {

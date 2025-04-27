@@ -10,6 +10,9 @@ import { PaginationComponent } from '../../../../shared/components/pagination/pa
 import { ContentShowComponent } from '../../../../shared/components/card/components/content-show/content-show.component';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 import { AppEventService } from '../../../../shared/services/app-event.service';
+import { PrefetchService } from '../../../../shared/services/prefetch.service';
+import { first, map, tap } from 'rxjs';
+import { DetailedShowService } from '../../../../shared/services/detailed-show.service';
 
 @Component({
     selector: 'app-trending-shows',
@@ -18,18 +21,31 @@ import { AppEventService } from '../../../../shared/services/app-event.service';
     styleUrl: './trending-shows.component.css'
 })
 export class TrendingShowsComponent {
-    trendingShows: Signal<ResultShow[] | undefined>
-    paginationResult: Signal<Pagination>
+
     protected trendingShowsService = inject(TrendingShowsService)
+    protected detailedShowService = inject(DetailedShowService)
     protected activatedRoute = inject(ActivatedRoute)
     protected router = inject(Router)
     protected appEventService: AppEventService = inject(AppEventService)
+    protected prefetchService: PrefetchService<number> = inject(PrefetchService)
+
+    trendingShows: Signal<ResultShow[] | undefined>
+    paginationResult: Signal<Pagination>
+    prefetchSignal: Signal<number | undefined>
+
+
 
     constructor() {
         const page = this.activatedRoute.snapshot.queryParamMap.get("page")
         if (!page) this.trendingShows = toSignal(this.trendingShowsService.get())
         else this.trendingShows = toSignal(this.trendingShowsService.get(+page))
         this.paginationResult = toSignal(this.trendingShowsService.getPaginationResults(), { requireSync: true })
+        this.prefetchSignal = toSignal(this.prefetchService.prefetch$.pipe(
+            map(id => {
+                this.detailedShowService.get(id.toString()).pipe(first()).subscribe()
+                return id
+            })
+        ))
     }
 
     paginate(page: number): void {
@@ -39,15 +55,15 @@ export class TrendingShowsComponent {
             queryParamsHandling: "replace",
             queryParams: { page: page }
         })
-        this.appEventService.emitEvent({type : "PAGINATION", data: {}})
+        this.appEventService.emitEvent({ type: "PAGINATION", data: {} })
     }
 
     createCardParams(result: ResultShow): CardParams {
         return {
-            aspectRatio: {numerator: 2, denominator: 3},
+            aspectRatio: { numerator: 2, denominator: 3 },
             direction: "vertical",
             imageType: "poster",
-            href: ["/", "shows",`${result.id}`],
+            href: ["/", "shows", `${result.id}`],
             id: result.id,
             imageSrc: result.posterImageUrl,
             mediaType: "show"

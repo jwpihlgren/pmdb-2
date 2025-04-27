@@ -8,7 +8,7 @@ export class PrefetchService<T> {
 
     private prefetchSubject: Subject<T> = new Subject()
     private intentTimeout: any
-    private intendId: T | undefined
+    private intentId: T | undefined
 
     prefetch$: Observable<T>
 
@@ -16,15 +16,15 @@ export class PrefetchService<T> {
         this.prefetch$ = this.prefetchSubject.asObservable()   }
 
     startIntent(id: T) {
-        this.intendId = id
+        this.intentId = id
         this.intentTimeout = setTimeout(() => {
-            if (this.intendId === id) this.prefetchSubject.next(id)
-            this.intendId = undefined
+            if (this.intentId === id) this.prefetchSubject.next(id)
+            this.intentId = undefined
         }, 400)
     }
 
     clearIntent() {
-        this.intendId = undefined
+        this.intentId = undefined
         clearTimeout(this.intentTimeout)
     }
 }

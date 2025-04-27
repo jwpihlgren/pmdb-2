@@ -1,1 +1,19 @@
+:host {
+    display: contents;
+    --content__aside-width: 320px;
+}
+
+main {
+    min-width: min(100%, 1440px);
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.container {
+    min-height: calc(100vh - var(--app-header-height));
+    display: grid;
+    gap: var(--spacing-large, 2rem);
+    padding-inline: var(--spacing-extra-large, 4rem);
+    padding-block-start: var(--spacing-xx-large, 6rem);
+}
 
