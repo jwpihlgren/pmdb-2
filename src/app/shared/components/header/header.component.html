@@ -1,15 +1,17 @@
 <header class="header">
     <div class="header__logo">PMDB</div>
-  <nav class="nav-primary">
-    <ul class="nav-primary__list">
-      @for(link of routingService.primaryNavigation; track $index) {
-      <li class="nav-primary__listitem" 
-          [routerLinkActive]="'nav-primary__listitem--active'"
-          [routerLinkActiveOptions]="{exact: link.exact}"
-          >
-          <a class="nav-primary__anchor" [routerLink]="[link.href]">{{link.name}}</a>
-      </li>
-      }
-    </ul>
-  </nav>
+    <nav class="nav-primary">
+        <ul class="nav-primary__list">
+            @for(link of routingService.primaryNavigation; track $index) {
+            <li class="nav-primary__listitem" [routerLinkActive]="'nav-primary__listitem--active'"
+                [routerLinkActiveOptions]="{exact: link.exact}">
+                <a class="nav-primary__anchor" [routerLink]="[link.href]">
+                    <div class="nav-primary__box">
+                        {{link.name}}
+                    </div>
+                </a>
+            </li>
+            }
+        </ul>
+    </nav>
 </header>
