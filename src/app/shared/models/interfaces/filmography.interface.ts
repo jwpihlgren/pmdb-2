@@ -8,9 +8,9 @@ export default interface Filmography {
     countShowsPerDepartment: { department: string, count: number }[]
     countMoviesPerDepartment: { department: string, count: number }[]
     top10LatestMovies: CreditedMovie[]
-    allMovies: {cast: CreditedMovieActor[], crew: CreditedMovieCrew[]}
+    allMovies: CreditedMovie[] 
     top10LatestShows: CreditedShow[]
-    allShows: {cast: CreditedShowActor[], crew: CreditedShowCrew[]}
+    allShows: CreditedShow[]
 }
 
 export type CreditedMovie = CreditedMovieActor | CreditedMovieCrew
@@ -24,6 +24,8 @@ export interface CreditedMovieActor {
     title: string
     voteAverage: number
     character: string
+    mediaType: "movie"
+    creditType: "cast"
 }
 
 export interface CreditedMovieCrew {
@@ -35,6 +37,8 @@ export interface CreditedMovieCrew {
     title: string
     voteAverage: number
     job: string
+    mediaType: "movie"
+    creditType: "crew"
 }
 
 export type CreditedShow = CreditedShowActor | CreditedShowCrew
@@ -49,6 +53,8 @@ export interface CreditedShowActor {
     title: string
     voteAverage: number
     character: string
+    mediaType: "show"
+    creditType: "cast"
 }
 
 export interface CreditedShowCrew {
@@ -61,4 +67,6 @@ export interface CreditedShowCrew {
     title: string
     voteAverage: number
     job: string
+    mediaType: "show"
+    creditType: "crew"
 }

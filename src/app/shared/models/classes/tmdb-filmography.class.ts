@@ -1,4 +1,3 @@
-import { ImageService } from "../../services/image.service";
 import Filmography, { CreditedMovie, CreditedMovieActor, CreditedMovieCrew, CreditedShow, CreditedShowActor, CreditedShowCrew } from "../interfaces/filmography.interface";
 import TmdbDetailedPeopleMovieCreditResponse from "../interfaces/tmdb/tmdb-detailed-people-movie-credits-response";
 import TmdbShowCreditResponse from "../interfaces/tmdb/tmdb-detailed-show-credit-response";
@@ -13,8 +12,8 @@ export default class TmdbFilmography implements Filmography {
     countMovieActor: number;
     countShowsPerDepartment: GroupByDepartment[];
     countMoviesPerDepartment: GroupByDepartment[];
-    allShows: { cast: CreditedShowActor[]; crew: CreditedShowCrew[]; };
-    allMovies: { cast: CreditedMovieActor[]; crew: CreditedMovieCrew[]; };
+    allShows: CreditedShow[] 
+    allMovies: CreditedMovie[] 
     top10LatestShows: CreditedShow[];
     top10LatestMovies: CreditedMovie[];
 
@@ -42,10 +41,10 @@ export default class TmdbFilmography implements Filmography {
         return Object.entries(grouped).map((k) => { return { department: k[0], count: k[1] } })
     }
 
-    mapShows(credits: TmdbShowCreditResponse): { cast: CreditedShowActor[], crew: CreditedShowCrew[] } {
-        const shows: { cast: CreditedShowActor[], crew: CreditedShowCrew[] } = { cast: [], crew: [] }
+    mapShows(credits: TmdbShowCreditResponse): CreditedShow[] {
+        const shows: CreditedShow[] = []
         credits.crew.forEach(c => {
-            shows.crew.push({
+            shows.push({
                 backdropImagePath: c.backdrop_path,
                 job: c.job,
                 id: c.id,
@@ -54,11 +53,13 @@ export default class TmdbFilmography implements Filmography {
                 overview: c.overview,
                 posterImagePath: c.poster_path,
                 title: c.name,
-                voteAverage: c.vote_average
+                voteAverage: c.vote_average,
+                mediaType: "show",
+                creditType: "crew"
             })
         })
         credits.cast.forEach(c => {
-            shows.cast.push({
+            shows.push({
                 backdropImagePath: c.backdrop_path,
                 character: c.character,
                 id: c.id,
@@ -67,16 +68,18 @@ export default class TmdbFilmography implements Filmography {
                 overview: c.overview,
                 posterImagePath: c.poster_path,
                 title: c.name,
-                voteAverage: c.vote_average
+                voteAverage: c.vote_average,
+                mediaType: "show",
+                creditType: "cast"
             })
         })
         return shows
     }
 
-    mapMovies(credits: TmdbDetailedPeopleMovieCreditResponse): { cast: CreditedMovieActor[], crew: CreditedMovieCrew[] } {
-        const movies: { cast: CreditedMovieActor[], crew: CreditedMovieCrew[] } = { cast: [], crew: [] }
+    mapMovies(credits: TmdbDetailedPeopleMovieCreditResponse): CreditedMovie[] {
+        const movies: CreditedMovie[] = []
         credits.crew.forEach(c => {
-            movies.crew.push({
+            movies.push({
                 backdropImagePath: c.backdrop_path,
                 id: c.id,
                 job: c.job,
@@ -85,10 +88,12 @@ export default class TmdbFilmography implements Filmography {
                 releaseDate: c.release_date,
                 title: c.title,
                 voteAverage: c.vote_average,
+                mediaType: "movie",
+                creditType: "crew"
             })
         })
         credits.cast.forEach(c => {
-            movies.cast.push({
+            movies.push({
                 backdropImagePath: c.backdrop_path,
                 character: c.character,
                 id: c.id,
@@ -97,19 +102,19 @@ export default class TmdbFilmography implements Filmography {
                 releaseDate: c.release_date,
                 title: c.title,
                 voteAverage: c.vote_average,
+                mediaType: "movie",
+                creditType: "cast"
             })
         })
         return movies
     }
 
     getTop10Movies(): CreditedMovie[] {
-        let movies = [...this.allMovies.cast.slice(0, 10), ...this.allMovies.crew.slice(0, 10)]
-        movies = movies.sort((a, b) => a.releaseDate < b.releaseDate ? 1 : a.releaseDate > b.releaseDate ? -1 : 0)
+        const movies = this.allMovies.sort((a, b) => a.releaseDate < b.releaseDate ? 1 : a.releaseDate > b.releaseDate ? -1 : 0)
         return movies.slice(0, 10)
     }
     getTop10Shows(): CreditedShow[] {
-        let shows = [...this.allShows.cast.slice(0, 10), ...this.allShows.crew.slice(0, 10)]
-        shows = shows.sort((a, b) => a.firstAirDate < b.firstAirDate ? 1 : a.firstAirDate > b.firstAirDate ? -1 : 0)
+        const shows = this.allShows.sort((a, b) => a.firstAirDate < b.firstAirDate ? 1 : a.firstAirDate > b.firstAirDate ? -1 : 0)
         return shows.slice(0, 10)
     }
 }

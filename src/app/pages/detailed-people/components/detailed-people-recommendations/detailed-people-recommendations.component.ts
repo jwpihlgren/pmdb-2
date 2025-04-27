@@ -1,12 +1,12 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, inject, signal, Signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ConfigService } from '../../../../shared/services/config.service';
 import DetailedPeople from '../../../../shared/models/interfaces/detailed-people';
 import { ImageComponent, ImageParams } from '../../../../shared/components/image/image.component';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { Location } from '@angular/common';
-import { CreditedMovieActor } from '../../../../shared/models/interfaces/filmography.interface';
+import { CreditedMovie, CreditedMovieActor, CreditedShow, CreditedShowActor } from '../../../../shared/models/interfaces/filmography.interface';
 
 @Component({
     selector: 'app-detailed-people-recommendations',
@@ -18,17 +18,30 @@ export class DetailedPeopleRecommendationsComponent {
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     protected location: Location = inject(Location)
     protected configService: ConfigService = inject(ConfigService)
-    people: Signal<DetailedPeople>
+    credited: Signal<CreditedMovieActor[] | CreditedShowActor[] | undefined>
+    mediaType = signal("Unknown media")
 
     constructor() {
-        this.people = toSignal(this.activatedRoute.parent!.data.pipe(
-            map(data => data["people"] as DetailedPeople)), { requireSync: true })
+        this.credited = toSignal(combineLatest(
+            {
+                url: this.activatedRoute.url,
+                data: this.activatedRoute.parent!.data
+            }
+        ).pipe(
+            map(forked => {
+                const stub: "movies" | "shows" = forked.url.pop()!.path as unknown as "movies" | "shows"
+                this.mediaType.set(stub)
+                const data = forked.data["people"] as DetailedPeople
+                if (stub === "movies") { return data.filmography.allMovies.filter(movie => Object.hasOwn(movie, "character")) as CreditedMovieActor[] }
+                return data.filmography.allShows.filter(show => Object.hasOwn(show, "character")) as CreditedShowActor[]
+            })
+        ))
     }
 
-    createImageParams(people: CreditedMovieActor): ImageParams {
+    createImageParams(credit: CreditedShow | CreditedMovie): ImageParams {
         return {
             aspectRatio: { numerator: 2, denominator: 3 },
-            src: people.posterImagePath,
+            src: credit.posterImagePath,
             type: "poster"
         }
     }

@@ -9,7 +9,6 @@ import { TrendingMoviesComponent } from './pages/movies/components/trending-movi
 import { PopularMoviesComponent } from './pages/movies/components/popular-movies/popular-movies.component';
 import { DiscoverMoviesComponent } from './pages/movies/components/discover-movies/discover-movies.component';
 import { DetailedPeopleComponent } from './pages/detailed-people/detailed-people.component';
-import { PeopleComponent } from './pages/people/people.component';
 import { TrendingShowsComponent } from './pages/shows/components/trending-shows/trending-shows.component';
 import { PopularShowsComponent } from './pages/shows/components/popular-shows/popular-shows.component';
 import { DiscoverShowsComponent } from './pages/shows/components/discover-shows/discover-shows.component';
@@ -67,7 +66,8 @@ export const routes: Routes = [
     path: "people/:id", component: DetailedPeopleComponent, resolve: { people: detailedPeopleResolver }, children: [
         { path: "", component: DetailedPeopleOverviewComponent },
         { path: "images", component: DetailedPeopleImagesComponent },
-        { path: "recommendations", component: DetailedPeopleRecommendationsComponent },
+        { path: "cast/movies", component: DetailedPeopleRecommendationsComponent },
+        { path: "cast/shows", component: DetailedPeopleRecommendationsComponent },
     ]
 },
 { path: "test", pathMatch: "full", component: ColorComponent },

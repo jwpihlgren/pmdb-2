@@ -42,17 +42,20 @@
                     </div>
                     }
                     @else {
-                        No images
+                    No images
                     }
                 </div>
+                @let topMovies = f.top10LatestMovies;
                 <div class="article__header">
-                    <h2>Recommendations</h2>
-                    <a [routerLink]="['recommendations']">Show all</a>
+                    <h2>Movies ({{f.countMovies}})</h2>
+                    @if(topMovies.length >= 1) {
+                    <a [routerLink]="['cast', 'movies']">Show all</a>
+                    }
                 </div>
-                @let top = f.top10LatestMovies;
+                @if(topMovies.length >= 1) {
                 <div class="article--grid">
-                    @for(m of top; track $index){
-                    <app-card class="article--item" [params]="createRecommendationCardParams(m)">
+                    @for(m of topMovies; track $index){
+                    <app-card class="article--item" [params]="createCastMoviesCardParams(m)">
                         <div class="article--about">
                             <h5 class="article--about__accent">
                                 {{m.title}}
@@ -63,6 +66,30 @@
 
                     }
                 </div>
+                }
+
+                @let topShows = f.top10LatestShows;
+                <div class="article__header">
+                    <h2>Shows ({{f.countShows}})</h2>
+                    @if(topShows.length >= 1) {
+                    <a [routerLink]="['cast', 'shows']">Show all</a>
+                    }
+                </div>
+                @if(topShows.length >= 1) {
+                <div class="article--grid">
+                    @for(m of topShows; track $index){
+                    <app-card class="article--item" [params]="createCastShowsCardParams(m)">
+                        <div class="article--about">
+                            <h5 class="article--about__accent">
+                                {{m.title}}
+                            </h5>
+                            <span>{{m.firstAirDate}}</span>
+                        </div>
+                    </app-card>
+
+                    }
+                </div>
+                }
             </div>
             <aside class="content__aside">
                 <h2>Metadata</h2>
