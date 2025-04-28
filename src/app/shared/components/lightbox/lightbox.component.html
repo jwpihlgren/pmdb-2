@@ -1,0 +1,13 @@
+<button (click)="close($event)">X</button>
+<main class="content">
+    @for(image of params().images; track $index) {
+    <div class="content__slide" [ngClass]="{'content__slide--active': $index === activeIndex()}">
+        <span class="content__number">{{$index + 1}}/{{params().images.length}}</span>
+        <app-image class="content__image" [params]="image"></app-image>
+    </div>
+    }
+
+    <button class="content__control content__control--prev" (click)="previous($event)">
+        < </button>
+            <button class="content__control content__control--next" (click)="next($event)"> > </button>
+</main>

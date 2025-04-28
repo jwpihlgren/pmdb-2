@@ -1,11 +1,14 @@
 <a [routerLink]="['../']" (click)="goBack($event)">Back</a>
 <h1>Images</h1>
 
+<section>
+    <app-lightbox [visible]="lightboxOpen()" (closeRequest)="closeLightbox()" [params]="createLightboxImageParams(detailedPeople().images)"></app-lightbox>
+</section>
 <section class="">
     <div>
         <ul class="list">
             @for(i of detailedPeople().images; track $index) {
-            <li class="list__item">
+            <li (click)="openLightbox($index)" class="list__item">
                 <app-card [params]="createParams(i)">
                 </app-card>
 

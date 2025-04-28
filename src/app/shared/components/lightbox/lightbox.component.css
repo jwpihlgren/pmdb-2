@@ -1,0 +1,44 @@
+:host{
+    position: fixed;
+    z-index: 1;
+    padding-block-start: calc(var(--app-header-height) + var(--spacing-large));
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--clr-surface-elevation-1);
+}
+.content {
+    position: relative;
+    background-color: var(--clr-surface-elevation-3);
+    margin: auto;
+    width: 90%;
+    max-width: 600px;
+}
+
+.content__image{
+}
+
+.content__slide{
+    display: none;
+}
+
+.content__slide--active {
+    display: initial;
+}
+.content__number{}
+.content__control{
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: var(--spacing-medium);
+
+}
+
+.content__control--prev{
+    left: 0;
+}
+.content__control--next{
+    right: 0;
+}
+
