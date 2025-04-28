@@ -16,7 +16,7 @@ export class LightboxComponent implements OnChanges {
     params: InputSignal<LightboxParams> = input.required()
     visible: InputSignal<number | undefined> = input.required()
     closeRequest = output<boolean>()
-    activeIndex: WritableSignal<number | undefined> = signal(0)
+    protected activeIndex: WritableSignal<number | undefined> = signal(0)
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes["visible"]) {
@@ -40,7 +40,6 @@ export class LightboxComponent implements OnChanges {
     }
     next(event: Event) {
         event.preventDefault()
-
         const index = this.activeIndex()
         if (index === undefined) return
         if (index + 1 >= this.params().images.length) {
