@@ -1,4 +1,7 @@
-:host{
+:host {
+    --content-control-size: calc(var(--spacing-medium) + var(--spacing-large));
+    --content-control-inset: var(--spacing-medium);
+
     position: fixed;
     z-index: 1;
     padding-block-start: calc(var(--app-header-height) + var(--spacing-large));
@@ -8,37 +11,85 @@
     overflow: auto;
     background-color: var(--clr-surface-elevation-1);
 }
+
+
+
 .content {
     position: relative;
-    background-color: var(--clr-surface-elevation-3);
+    background-color: var(--clr-surface-elevation-2);
     margin: auto;
     width: 90%;
     max-width: 600px;
+    border-radius: var(--radii-medium);
+    overflow: hidden;
+
 }
 
-.content__image{
-}
+.content__image {}
 
-.content__slide{
+.content__slide {
     display: none;
 }
 
 .content__slide--active {
     display: initial;
 }
-.content__number{}
-.content__control{
+
+.content__number {
+    padding-inline: var(--spacing-medium);
+    color: var(--clr-accent);
+}
+
+.close {
+    position: fixed;
+    top: calc(var(--app-header-height) + var(--spacing-medium));
+    right: calc(var(--spacing-medium));
+    background: var(--clr-surface-elevation-3);
+    z-index: 9999px;
+}
+
+.close:hover {
+    background: var(--clr-surface-elevation-4)
+}
+
+.close:active {
+    background: var(--clr-surface-elevation-2)
+}
+
+.content__control,
+.close {
+    border: none;
+    border-radius: var(--radii-full);
+    width: var(--content-control-size);
+    height: var(--content-control-size);
+    color: var(--clr-on-surface);
+    cursor: pointer;
+}
+
+.content__control {
     position: absolute;
     top: 50%;
-    width: auto;
+    width: var(--content-control-size);
+    height: var(--content-control-size);
     padding: var(--spacing-medium);
-
+    background: var(--clr-surface-elevation-2);
+    opacity: var(--clr-opacity-elevation-1);
 }
 
-.content__control--prev{
-    left: 0;
-}
-.content__control--next{
-    right: 0;
+
+
+.content__control:hover {
+    background: var(--clr-surface-elevation-3);
 }
 
+.content__control:active {
+    background: var(--clr-surface-elevation-1);
+}
+
+.content__control--prev {
+    left: var(--content-control-inset);
+}
+
+.content__control--next {
+    right: var(--content-control-inset);
+}

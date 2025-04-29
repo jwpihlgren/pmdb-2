@@ -50,6 +50,11 @@
     --clr-on-surface: var(--clr-petroleum-0);
     --clr-on-surface-accent: var(--clr-accent);
 
+    --clr-opacity-elevation-1: 0.4;
+    --clr-opacity-elevation-2: 0.5;
+    --clr-opacity-elevation-3: 0.6;
+    --clr-opacity-elevation-4: 0.7;
+
     --shadow-elevation-1: 0 1px 4px rgba(16, 26, 33, 0.6), 0 1px 3px rgba(16, 26, 33, 0.7);
     --shadow-elevation-2: 0 3px 8px rgba(16, 26, 33, 0.7), 0 3px 6px rgba(16, 26, 33, 0.8);
     --shadow-elevation-3: 0 6px 16px rgba(16, 26, 33, 0.8), 0 6px 12px rgba(16, 26, 33, 0.9);
