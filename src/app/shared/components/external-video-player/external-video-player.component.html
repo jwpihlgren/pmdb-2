@@ -1,0 +1,23 @@
+@let p = params();
+@switch(p.type) {
+@case("youtube") {
+<iframe width="100%" height="100%" [src]="youtubeUrl"
+    title="YouTube video player" frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+}
+@case("vimeo") {
+<div style="padding:56.25% 0 0 0;position:relative;">
+    <iframe
+        [src]="vimeoUrl"
+        frameborder="0" allow="fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+        style="position:absolute;top:0;left:0;width:100%;height:100%;" [title]="p.title">
+    </iframe>
+</div>
+<script src="https://player.vimeo.com/api/player.js"></script>
+}
+
+@default{
+<span>Video type {{p.type}} is not yet supported</span>
+}
+}

@@ -1,9 +1,9 @@
 @let m = detailedMovie();
 <div class="container">
     <section class="hero">
-        <app-image class="hero--image" [params]="posterParams(m)"></app-image>
-        <div class="hero--about">
-            <div class="hero--header">
+        <app-image class="hero__image" [params]="posterParams(m)"></app-image>
+        <div class="hero__about">
+            <div class="hero__header">
                 <h1 [title]="'Original title: ' + m.originalTitle">{{m.title}}
                     @if(m.status !== "released"){
                     <h5>
@@ -13,7 +13,7 @@
                 </h1>
                 <h5 [title]="m.voteCount">{{m.voteAverage | number: '1.1-1'}} / 10</h5>
             </div>
-            <div class="hero--meta">
+            <div class="hero__meta">
                 @for(data of metaData(m); track $index) {
                 <span [title]="data.alt">{{data.value}} {{data.suffix}}</span>
                 @if($index !== metaData.length - 1) {
@@ -22,7 +22,7 @@
                 }
             </div>
             <p>{{m.overview}}</p>
-            <div class="hero--genres">
+            <div class="hero__genres">
                 @for(genre of m.genres; track $index) {
                 <app-chip [value]="genre.name">{{genre.name}}</app-chip>
                 }
@@ -41,11 +41,11 @@
                     }
                 </div>
                 @if(top.length > 0) {
-                <ul class="article--grid">
+                <ul class="article__grid">
                     @for(top of topBilled(m); track $index){
-                    <app-card class="article--item" [params]="createTopCardParams(top)">
-                        <div class="article--about">
-                            <h5 class="article--about__accent">
+                    <app-card class="article__item" [params]="createTopCardParams(top)">
+                        <div class="article__about">
+                            <h5 class="article__about__accent">
                                 {{top.character}}
                             </h5>
                             <span>{{top.name}}</span>
@@ -67,11 +67,11 @@
                     }
                 </div>
                 @if(m.recommendations.results.length > 0) {
-                <ul class="article--grid">
+                <ul class="article__grid">
                     @for(rec of m.recommendations.results; track $index){
-                    <app-card class="article--item" [params]="createRecommendationCardParams(rec)">
-                        <div class="article--about">
-                            <h5 class="article--about__accent">
+                    <app-card class="article__item" [params]="createRecommendationCardParams(rec)">
+                        <div class="article__about">
+                            <h5 class="article__about--accent">
                                 {{rec.title}}
                             </h5>
                             <span>{{rec.releaseDate}}</span>
@@ -84,10 +84,23 @@
                 No recommendations
                 }
             </article>
+            <article class="article trailers">
+                <div class="article__header">
+                    <h2>Trailers</h2>
+                </div>
+                @if(m.trailers.length > 0) {
+                <ul class="trailer__grid">
+                    @for(trailer of m.trailers; track $index) {
+                    <app-external-video-player [params]="createTrailerParams(trailer)"></app-external-video-player>
+                    }
+                </ul>
+                }
+
+            </article>
         </div>
         <aside class="content__aside">
             <h2>Keywords</h2>
-            <div class="meta--keywords">
+            <div class="meta__keywords">
                 @for(keyword of m.keywords; track $index) {
                 <app-chip [value]="keyword.name">{{keyword.name}}</app-chip>
                 }

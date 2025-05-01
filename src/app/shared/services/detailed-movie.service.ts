@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { DetailedMovie } from '../models/interfaces/detailed-movie';
 import { TmdbDetailedMovie } from '../models/classes/tmdb-detailed-movie';
@@ -27,6 +27,7 @@ export class DetailedMovieService {
 
         return this.http.get<TmdbDetailedMovieResponse>(queryBuilder.url, options).pipe(
             map(data => new TmdbDetailedMovie(data)),
+            tap(data => console.log(data))
         )
     }
 }

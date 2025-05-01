@@ -19,7 +19,7 @@ export default class TmdbTrailer implements Trailer {
         this.iso6391 = tmdbTrailer.iso_639_1
         this.iso31661 = tmdbTrailer.iso_3166_1
         this.type = tmdbTrailer.type
-        this.site = tmdbTrailer.site
+        this.site = tmdbTrailer.site.toLowerCase()
         this.id = tmdbTrailer.id
         this.key = tmdbTrailer.key
         this.official = tmdbTrailer.official

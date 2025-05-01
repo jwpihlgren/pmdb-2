@@ -1,4 +1,3 @@
-import { ImageService } from "../../services/image.service";
 import { DetailedMovie } from "../interfaces/detailed-movie";
 import DetailedMovieCredits from "../interfaces/detailed-movie-credits";
 import { Image } from "../interfaces/image";
