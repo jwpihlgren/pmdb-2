@@ -7,6 +7,9 @@
     background: var(--clr-surface-elevation-2);
 }
 
+.header__anchor {
+    display: contents;
+}
 .header__logo {
     display: flex;
     align-items: center;

@@ -1,5 +1,7 @@
 <header class="header">
-    <div class="header__logo">PMDB</div>
+    <a class="header__anchor" [routerLink]="['/']">
+        <div class="header__logo">PMDB</div>
+    </a>
     <nav class="nav-primary">
         <ul class="nav-primary__list">
             @for(link of routingService.primaryNavigation; track $index) {
