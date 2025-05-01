@@ -7,12 +7,9 @@ import Trailer from "./trailer"
 
 export interface DetailedMovie {
     backdropImagePath: string
-    //belongs_to_collection: string
-    //budget: number
     credits: DetailedMovieCredits
     genres: { id: number, name: string }[]
     hasVideo: boolean
-    //homepage: string
     id: number
     images: {
         backdrops: Image[]
@@ -30,7 +27,6 @@ export interface DetailedMovie {
     productionCountries: { iso31661: string, name: string }[]
     recommendations: Recommendations
     releaseDate: string
-    //revenue: number
     runtime: number
     spokenLanguages: { englishName: string, iso6391: string, name: string }[]
     status: string
