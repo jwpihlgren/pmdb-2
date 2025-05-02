@@ -1,0 +1,36 @@
+:host {
+    position: relative;
+}
+
+.click-trap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999px;
+    cursor: pointer;
+}
+
+.modal-player {
+    width: 100vw;
+    height: 100vh;
+    background: var(--clr-surface-elevation-1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.modal-player__close {
+    position: absolute;
+    top: calc(var(--spacing-large));
+    right: calc(var(--spacing-large));
+}
+
+.modal-player__wrapper {
+    width: 100%;
+    max-width: 1440px;
+    aspect-ratio: 16/9;
+    padding-inline: var(--spacing-extra-large);
+}
