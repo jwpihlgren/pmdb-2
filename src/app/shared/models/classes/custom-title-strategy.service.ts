@@ -21,9 +21,6 @@ export class CustomTitleStrategyService extends TitleStrategy {
         const dataKey = Object.keys(resolvedData)[0] ?? undefined
         const innerData: CustomPageTitle | undefined = resolvedData[dataKey] as CustomPageTitle || undefined
         const customPageTitle: string | undefined = innerData?.customPageTitle ?? undefined
-        console.log(resolvedData)
-        console.log(dataKey)
-        console.log(customPageTitle)
         if(customPageTitle) {
             this.title.setTitle(`${baseTitle} - ${customPageTitle}`)
             return 
