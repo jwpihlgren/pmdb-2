@@ -12,6 +12,7 @@ export default class TmdbDetailedPeople implements DetailedPeople {
     alsoKnownAs: string[];
     biography: string;
     birthday: string;
+    customPageTitle: string;
     deathday: string;
     gender: Gender;
     homepage: string;
@@ -32,6 +33,7 @@ export default class TmdbDetailedPeople implements DetailedPeople {
         this.alsoKnownAs = tmdbDetailedPeople.also_known_as
         this.biography = tmdbDetailedPeople.biography
         this.birthday = tmdbDetailedPeople.birthday
+        this.customPageTitle = `${tmdbDetailedPeople.name}`
         this.deathday = tmdbDetailedPeople.deathday
         this.gender = TmdbGenderFactory.create(tmdbDetailedPeople.gender)
         this.homepage = tmdbDetailedPeople.homepage

@@ -1,8 +1,8 @@
-import { DetailedShowRecommendationsComponent } from "../../../pages/detailed-show/components/detailed-show-recommendations/detailed-show-recommendations.component"
 import Gender from "../types/gender"
+import { CustomPageTitle } from "./custom-page-title"
 import Keyword from "./keywords"
 
-export interface DetailedShow {
+export interface DetailedShow extends CustomPageTitle {
     adult: boolean
     backdropImageUrl: string
     createdBy: {
@@ -12,6 +12,7 @@ export interface DetailedShow {
         gender: number
         profilePath: string
     }[]
+    customPageTitle: string
     credits: DetailedShowCredits
     episodeRunTime: number[]
     firstAirDate: string

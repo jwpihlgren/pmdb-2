@@ -18,7 +18,8 @@ import { TmdbKeywordsFactory } from "./tmdbKeywordsFactory.class";
 
 export class TmdbDetailedMovie implements DetailedMovie {
     backdropImagePath: string;
-    credits: DetailedMovieCredits
+    credits: DetailedMovieCredits;
+    customPageTitle: string;
     genres: { id: number; name: string; }[];
     hasVideo: boolean
     id: number;
@@ -46,6 +47,7 @@ export class TmdbDetailedMovie implements DetailedMovie {
     constructor(details: TmdbDetailedMovieResponse) {
         this.backdropImagePath = details.backdrop_path 
         this.credits = this.mapCredits(details.credits)
+        this.customPageTitle = `${details.title} (${details.release_date})`
         this.genres = details.genres
         this.hasVideo = details.video
         this.id = details.id

@@ -17,6 +17,7 @@ export class TmdbDetailedShow implements DetailedShow {
         profilePath: string
     }[]
     credits: DetailedShowCredits
+    customPageTitle: string
     episodeRunTime: number[]
     firstAirDate: string
     genres: {
@@ -97,6 +98,7 @@ export class TmdbDetailedShow implements DetailedShow {
         this.backdropImageUrl = data.backdrop_path
         this.createdBy = this.mapCreatedBy(data.created_by)
         this.credits = this.mapCredits(data.credits)
+        this.customPageTitle = `${data.name} (${data.first_air_date})`
         this.episodeRunTime = data.episode_run_time
         this.firstAirDate = data.first_air_date
         this.genres = this.mapGenres(data.genres)

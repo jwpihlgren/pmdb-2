@@ -25,9 +25,10 @@ export class DetailedMovieComponent {
     constructor() {
         this.movieDetails = toSignal(this.activatedRoute.data.pipe(
             map(data => {
-                return data["movie"] as DetailedMovie
+                const movie = data["movie"] as DetailedMovie
+                return movie
             })
-        ), {requireSync: true})
+        ), { requireSync: true })
     }
 
     sanitizeUrl(url: string): string {
