@@ -5,6 +5,8 @@ import { ImageService } from '../../shared/services/image.service';
 import { DetailedShow } from '../../shared/models/interfaces/detailed-show';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { Title } from '@angular/platform-browser';
+import { DetailedMovie } from '../../shared/models/interfaces/detailed-movie';
 
 @Component({
   selector: 'app-detailed-show',
@@ -16,13 +18,16 @@ import { map } from 'rxjs';
 export class DetailedShowComponent {
     protected imageService: ImageService = inject(ImageService)
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
+    protected titleService: Title = inject(Title)
     detailedShow: Signal<DetailedShow>
     
 
     constructor() {
         this.detailedShow = toSignal(this.activatedRoute.data.pipe(
             map(data => {
-                return data["show"] as DetailedShow
+                const show = data["show"] as DetailedShow
+                this.titleService.setTitle(`Pmdb2 - ${show.name} (${show.firstAirDate})`)
+                return show
             })
         ), {requireSync: true})
     }
