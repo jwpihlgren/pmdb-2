@@ -6,7 +6,6 @@ import { NgIf, NgOptimizedImage } from '@angular/common';
 import { DetailedMovieService } from '../../shared/services/detailed-movie.service';
 import { map } from 'rxjs';
 import { ImageService } from '../../shared/services/image.service';
-import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-detailed-movie',
@@ -20,7 +19,6 @@ export class DetailedMovieComponent {
 
     protected activatedRoute = inject(ActivatedRoute)
     protected imageService = inject(ImageService)
-    protected titleService: Title = inject(Title)
 
     movieDetails: Signal<DetailedMovie>
 
@@ -28,7 +26,6 @@ export class DetailedMovieComponent {
         this.movieDetails = toSignal(this.activatedRoute.data.pipe(
             map(data => {
                 const movie = data["movie"] as DetailedMovie
-                this.titleService.setTitle(`Pmdb2 - ${movie.title} (${movie.releaseDate}) `)
                 return movie
             })
         ), { requireSync: true })

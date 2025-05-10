@@ -1,15 +1,16 @@
-import Credits from "./credits"
+import { CustomPageTitle } from "./custom-page-title"
 import DetailedMovieCredits from "./detailed-movie-credits"
 import { Image } from "./image"
 import Keyword from "./keywords"
 import Recommendations from "./recommendations"
 import Trailer from "./trailer"
 
-export interface DetailedMovie {
+export interface DetailedMovie extends CustomPageTitle {
     backdropImagePath: string
     //belongs_to_collection: string
     //budget: number
     credits: DetailedMovieCredits
+    customPageTitle: string
     genres: { id: number, name: string }[]
     hasVideo: boolean
     //homepage: string
