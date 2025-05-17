@@ -75,7 +75,6 @@ export class DetailedShowOverviewComponent {
         const params: CardParams = {
             imageType: "poster",
             direction: "horizontal",
-            id: rec.id,
             mediaType: "show",
             imageSrc: rec.posterPath,
             href: ["/", this.routingService.stubs.SHOW, `${rec.id}`],
