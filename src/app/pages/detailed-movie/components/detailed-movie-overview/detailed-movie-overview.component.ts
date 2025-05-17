@@ -1,9 +1,9 @@
-import { Component, inject, input, InputSignal, Signal } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { ImageComponent, ImageParams } from '../../../../shared/components/image/image.component';
 import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { DetailedMovie } from '../../../../shared/models/interfaces/detailed-movie';
-import { ActivatedRoute, Data, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import Metadata from '../../../../shared/models/interfaces/meta-data.interface';
 import { DecimalPipe } from '@angular/common';
 import { RoutingService } from '../../../../shared/services/routing.service';
@@ -11,21 +11,26 @@ import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { environment } from '../../../../../environments/environment.development';
+import { AppEventTriggerDirective } from '../../../../shared/directives/app-event-trigger.directive';
 
 @Component({
     selector: 'app-detailed-movie-overview',
     imports: [ImageComponent, ChipComponent, CardComponent, RouterLink, DecimalPipe],
     templateUrl: './detailed-movie-overview.component.html',
-    styleUrl: './detailed-movie-overview.component.css'
+    styleUrl: './detailed-movie-overview.component.css',
+    hostDirectives: [{
+        directive: AppEventTriggerDirective,
+    }]
 })
 export class DetailedMovieOverviewComponent {
     protected routingService = inject(RoutingService)
     protected activatedRoute = inject(ActivatedRoute)
     detailedMovie: Signal<DetailedMovie>
 
-    constructor(){
+    constructor() {
         this.detailedMovie = toSignal(this.activatedRoute.parent!.data.pipe(map(data => {
-            return data["movie"] as DetailedMovie})), {requireSync: true})
+            return data["movie"] as DetailedMovie
+        })), { requireSync: true })
     }
 
     posterParams(detailedMovie: DetailedMovie): ImageParams {

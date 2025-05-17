@@ -63,7 +63,7 @@
                 <div class="article__header">
                     <h2>Recommendations</h2>
                     @if(m.recommendations.results.length > 0) {
-                    <a [routerLink]="['recommendations']">Show all</a>
+                    <a [routerLink]="['recommendations']" [queryParams]="{debug: true}">Show all</a>
                     }
                 </div>
                 @if(m.recommendations.results.length > 0) {

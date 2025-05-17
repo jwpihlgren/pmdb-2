@@ -16,9 +16,9 @@ export class AppEventService {
     }
 }
 
-type AppEventType = "PAGINATION"
+type AppEventType = "PAGINATION" | "NAVIGATION"
 
-interface AppEvent {
+export interface AppEvent {
     type: AppEventType,
     data: any
 }

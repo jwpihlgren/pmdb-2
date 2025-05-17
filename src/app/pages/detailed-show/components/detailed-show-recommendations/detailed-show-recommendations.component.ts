@@ -3,15 +3,17 @@ import { ActivatedRoute } from '@angular/router';
 import { DetailedShow } from '../../../../shared/models/interfaces/detailed-show';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { AppEventTriggerDirective } from '../../../../shared/directives/app-event-trigger.directive';
 
 @Component({
-  selector: 'app-detailed-show-recommendations',
-  imports: [],
-  templateUrl: './detailed-show-recommendations.component.html',
-  styleUrl: './detailed-show-recommendations.component.css'
+    selector: 'app-detailed-show-recommendations',
+    imports: [],
+    templateUrl: './detailed-show-recommendations.component.html',
+    styleUrl: './detailed-show-recommendations.component.css',
+    hostDirectives: [AppEventTriggerDirective]
 })
 export class DetailedShowRecommendationsComponent {
-   protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
+    protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     detailedShow: Signal<DetailedShow>
 
     constructor() {
@@ -20,7 +22,7 @@ export class DetailedShowRecommendationsComponent {
                 console.log(data)
                 return data["show"] as DetailedShow
             })
-        ), {requireSync: true})
+        ), { requireSync: true })
     }
 
 }

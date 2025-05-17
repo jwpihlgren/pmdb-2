@@ -9,12 +9,16 @@ import { ChipComponent } from '../../../../shared/components/chip-list/component
 import { Genre } from '../../../../shared/models/interfaces/genre';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { Location } from '@angular/common';
+import { AppEventTriggerDirective } from '../../../../shared/directives/app-event-trigger.directive';
 
 @Component({
   selector: 'app-detailed-movie-recommendations',
   imports: [RouterLink, ImageComponent, ChipComponent],
   templateUrl: './detailed-movie-recommendations.component.html',
-  styleUrl: './detailed-movie-recommendations.component.css'
+  styleUrl: './detailed-movie-recommendations.component.css',
+    hostDirectives: [
+        AppEventTriggerDirective
+    ]
 })
 export class DetailedMovieRecommendationsComponent {
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)

@@ -5,12 +5,14 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { Location } from '@angular/common';
+import { AppEventTriggerDirective } from '../../../../shared/directives/app-event-trigger.directive';
 
 @Component({
     selector: 'app-detailed-show-cast',
     imports: [RouterLink, CardComponent],
     templateUrl: './detailed-show-cast.component.html',
-    styleUrl: './detailed-show-cast.component.css'
+    styleUrl: './detailed-show-cast.component.css',
+    hostDirectives: [AppEventTriggerDirective]
 })
 export class DetailedShowCastComponent {
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)

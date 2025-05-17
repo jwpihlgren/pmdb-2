@@ -10,12 +10,14 @@ import Metadata from '../../../../shared/models/interfaces/meta-data.interface';
 import { environment } from '../../../../../environments/environment';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { RoutingService } from '../../../../shared/services/routing.service';
+import { AppEventTriggerDirective } from '../../../../shared/directives/app-event-trigger.directive';
 
 @Component({
     selector: 'app-detailed-show-overview',
     imports: [ImageComponent, ChipComponent, DecimalPipe, RouterLink, CardComponent],
     templateUrl: './detailed-show-overview.component.html',
-    styleUrl: './detailed-show-overview.component.css'
+    styleUrl: './detailed-show-overview.component.css',
+    hostDirectives: [AppEventTriggerDirective]
 })
 export class DetailedShowOverviewComponent {
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)

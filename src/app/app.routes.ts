@@ -61,15 +61,15 @@ export const routes: Routes = [
             { path: "recommendations", component: DetailedShowRecommendationsComponent, pathMatch: "full" },
         ]
     },
-//People
-{
-    path: "people/:id", component: DetailedPeopleComponent, resolve: { people: detailedPeopleResolver }, children: [
-        { path: "", component: DetailedPeopleOverviewComponent },
-        { path: "images", component: DetailedPeopleImagesComponent },
-        { path: "cast/movies", component: DetailedPeopleRecommendationsComponent },
-        { path: "cast/shows", component: DetailedPeopleRecommendationsComponent },
-    ]
-},
-{ path: "test", pathMatch: "full", component: ColorComponent },
-{ path: "*", redirectTo: "" }
+    //People
+    {
+        path: "people/:id", component: DetailedPeopleComponent, resolve: { people: detailedPeopleResolver }, children: [
+            { path: "", component: DetailedPeopleOverviewComponent },
+            { path: "images", component: DetailedPeopleImagesComponent },
+            { path: "cast/movies", component: DetailedPeopleRecommendationsComponent },
+            { path: "cast/shows", component: DetailedPeopleRecommendationsComponent },
+        ]
+    },
+    { path: "test", pathMatch: "full", component: ColorComponent },
+    { path: "*", redirectTo: "" }
 ];

@@ -5,12 +5,14 @@ import { DetailedMovie } from '../../../../shared/models/interfaces/detailed-mov
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
+import { AppEventTriggerDirective } from '../../../../shared/directives/app-event-trigger.directive';
 
 @Component({
     selector: 'app-detailed-movie-cast',
     imports: [RouterLink, CardComponent],
     templateUrl: './detailed-movie-cast.component.html',
-    styleUrl: './detailed-movie-cast.component.css'
+    styleUrl: './detailed-movie-cast.component.css',
+    hostDirectives: [ AppEventTriggerDirective]
 })
 export class DetailedMovieCastComponent {
     protected location: Location = inject(Location)
