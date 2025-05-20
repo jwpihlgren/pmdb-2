@@ -43,15 +43,13 @@ export class PopularMoviesComponent {
             })
         ))
         this.page = toSignal(this.activatedRoute.queryParamMap.pipe(map(data => {
-            const currentPage = data.get("page")
-            if (!currentPage) return undefined
-            if (currentPage) {
-                this.popularMoviesService.get(+currentPage as number)
-            }
-            else {
+            const currentPage = parseInt(data.get("page") ?? "")
+            if (isNaN(currentPage)) {
                 this.popularMoviesService.get()
+                return undefined
             }
-            return +currentPage as number
+            this.popularMoviesService.get(currentPage)
+            return 5
         })
         ))
         this.popularMovies = toSignal(this.popularMoviesService.get())

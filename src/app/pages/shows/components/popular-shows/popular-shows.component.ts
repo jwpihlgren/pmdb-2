@@ -32,12 +32,23 @@ export class PopularShowsComponent {
     popularShows: Signal<ResultShow[] | undefined>
     paginationResult: Signal<Pagination>
     prefetchSignal: Signal<number | undefined>
+    page: Signal<number | undefined>
 
 
     constructor() {
-        const page = this.activatedRoute.snapshot.queryParamMap.get("page")
-        if (!page) this.popularShows = toSignal(this.popularShowsService.get())
-        else this.popularShows = toSignal(this.popularShowsService.get(+page))
+        this.popularShows = toSignal(this.popularShowsService.get())
+        this.page = toSignal(this.activatedRoute.queryParamMap.pipe(
+            map(data => {
+                const currentPage = parseInt(data.get("page") ?? "")
+                if (isNaN(currentPage)) {
+                    this.popularShowsService.get()
+                    return undefined
+                }
+
+                this.popularShowsService.get(currentPage)
+                return currentPage
+            })
+        ))
         this.paginationResult = toSignal(this.popularShowsService.getPaginationResults(), { requireSync: true })
         this.prefetchSignal = toSignal(this.prefetchService.prefetch$.pipe(
             map(id => {
@@ -48,7 +59,6 @@ export class PopularShowsComponent {
     }
 
     paginate(page: number): void {
-        this.popularShowsService.set(page)
         this.router.navigate(["."], {
             relativeTo: this.activatedRoute,
             queryParamsHandling: "replace",

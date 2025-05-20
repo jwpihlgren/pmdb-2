@@ -32,13 +32,23 @@ export class TrendingShowsComponent {
     trendingShows: Signal<ResultShow[] | undefined>
     paginationResult: Signal<Pagination>
     prefetchSignal: Signal<number | undefined>
+    page: Signal<number | undefined>
 
 
 
     constructor() {
-        const page = this.activatedRoute.snapshot.queryParamMap.get("page")
-        if (!page) this.trendingShows = toSignal(this.trendingShowsService.get())
-        else this.trendingShows = toSignal(this.trendingShowsService.get(+page))
+        this.trendingShows = toSignal(this.trendingShowsService.get())
+        this.page = toSignal(this.activatedRoute.queryParamMap.pipe(
+            map(data => {
+                const currentPage = parseInt(data.get("page") ?? "")
+                if (isNaN(currentPage)) {
+                    this.trendingShowsService.get()
+                    return undefined
+                }
+                this.trendingShowsService.get(currentPage)
+                return currentPage
+            })
+        ))
         this.paginationResult = toSignal(this.trendingShowsService.getPaginationResults(), { requireSync: true })
         this.prefetchSignal = toSignal(this.prefetchService.prefetch$.pipe(
             map(id => {
@@ -49,7 +59,6 @@ export class TrendingShowsComponent {
     }
 
     paginate(page: number): void {
-        this.trendingShowsService.set(page)
         this.router.navigate(["."], {
             relativeTo: this.activatedRoute,
             queryParamsHandling: "replace",

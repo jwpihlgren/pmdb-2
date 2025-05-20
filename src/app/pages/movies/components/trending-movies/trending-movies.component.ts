@@ -46,10 +46,13 @@ export class TrendingMoviesComponent {
         ))
         this.page = toSignal(this.activatedRoute.queryParamMap.pipe(
             map(data => {
-                const page = data.get("page") ?? undefined
-                if(page && typeof parseInt(page) === "number") {}
-                else {}
-                return page
+                const currentPage = parseInt(data.get("page") ?? "")
+                if (isNaN(currentPage)) {
+                    this.trendingMoviesService.get()
+                    return undefined
+                }
+                this.trendingMoviesService.get(currentPage)
+                return currentPage
             })
         ))
         this.trendingMovies = toSignal(this.trendingMoviesService.get())
@@ -57,13 +60,12 @@ export class TrendingMoviesComponent {
     }
 
     paginate(page: number): void {
-        this.trendingMoviesService.set(page)
         this.router.navigate(["."], {
             relativeTo: this.activatedRoute,
             queryParamsHandling: "replace",
             queryParams: { page: page }
         })
-        this.appEventService.emitEvent({type: "PAGINATION", data: undefined})
+        this.appEventService.emitEvent({ type: "PAGINATION", data: undefined })
     }
 
     createCardParams(movie: ResultMovie): CardParams {
