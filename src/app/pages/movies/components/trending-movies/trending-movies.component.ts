@@ -34,6 +34,7 @@ export class TrendingMoviesComponent {
 
     trendingMovies: Signal<ResultMovie[] | undefined>
     paginationResult: Signal<Pagination>
+    page: Signal<number | undefined>
     prefetch: Signal<number | undefined>
 
     constructor() {
@@ -43,20 +44,28 @@ export class TrendingMoviesComponent {
                 return id
             })
         ))
-        const page = this.activatedRoute.snapshot.queryParamMap.get("page")
-        if (!page) this.trendingMovies = toSignal(this.trendingMoviesService.get())
-        else this.trendingMovies = toSignal(this.trendingMoviesService.get(+page))
+        this.page = toSignal(this.activatedRoute.queryParamMap.pipe(
+            map(data => {
+                const currentPage = parseInt(data.get("page") ?? "")
+                if (isNaN(currentPage)) {
+                    this.trendingMoviesService.get()
+                    return undefined
+                }
+                this.trendingMoviesService.get(currentPage)
+                return currentPage
+            })
+        ))
+        this.trendingMovies = toSignal(this.trendingMoviesService.get())
         this.paginationResult = toSignal(this.trendingMoviesService.getPaginationResults(), { requireSync: true })
     }
 
     paginate(page: number): void {
-        this.trendingMoviesService.set(page)
         this.router.navigate(["."], {
             relativeTo: this.activatedRoute,
             queryParamsHandling: "replace",
             queryParams: { page: page }
         })
-        this.appEventService.emitEvent({type: "PAGINATION", data: undefined})
+        this.appEventService.emitEvent({ type: "PAGINATION", data: undefined })
     }
 
     createCardParams(movie: ResultMovie): CardParams {
