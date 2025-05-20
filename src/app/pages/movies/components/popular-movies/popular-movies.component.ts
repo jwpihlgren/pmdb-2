@@ -1,4 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, inject, OnChanges, Signal, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
@@ -34,27 +34,37 @@ export class PopularMoviesComponent {
     popularMovies
     paginationResult
     prefetch: Signal<DetailedMovie | undefined>
+    page: Signal<number | undefined>
 
     constructor() {
         this.prefetch = toSignal(this.prefetchService.prefetch$.pipe(
             switchMap(id => {
-              return this.detailedMovieService.get(`${id}`)
-            } )
+                return this.detailedMovieService.get(`${id}`)
+            })
         ))
-        const page = this.activatedRoute.snapshot.queryParamMap.get("page")
-        if (!page) this.popularMovies = toSignal(this.popularMoviesService.get())
-        else this.popularMovies = toSignal(this.popularMoviesService.get(+page))
+        this.page = toSignal(this.activatedRoute.queryParamMap.pipe(map(data => {
+            const currentPage = data.get("page")
+            if (!currentPage) return undefined
+            if (currentPage) {
+                this.popularMoviesService.get(+currentPage as number)
+            }
+            else {
+                this.popularMoviesService.get()
+            }
+            return +currentPage as number
+        })
+        ))
+        this.popularMovies = toSignal(this.popularMoviesService.get())
         this.paginationResult = toSignal(this.popularMoviesService.getPaginationResults(), { requireSync: true })
     }
 
     paginate(page: number): void {
-        this.popularMoviesService.set(page)
         this.router.navigate(["."], {
             relativeTo: this.activatedRoute,
             queryParamsHandling: "replace",
             queryParams: { page: page }
         })
-        this.appEventService.emitEvent({type: "PAGINATION", data: undefined})
+        this.appEventService.emitEvent({ type: "PAGINATION", data: undefined })
     }
 
     createCardParams(movie: ResultMovie): CardParams {
@@ -65,8 +75,8 @@ export class PopularMoviesComponent {
             mediaType: "movie",
             imageSrc: movie.posterImagePath,
             href: ["/", this.routingService.stubs.MOVIE, `${movie.id}`],
-            aspectRatio: {numerator: 2, denominator: 3}
-                        
+            aspectRatio: { numerator: 2, denominator: 3 }
+
         }
 
         return params

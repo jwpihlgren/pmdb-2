@@ -34,6 +34,7 @@ export class TrendingMoviesComponent {
 
     trendingMovies: Signal<ResultMovie[] | undefined>
     paginationResult: Signal<Pagination>
+    page: Signal<number | undefined>
     prefetch: Signal<number | undefined>
 
     constructor() {
@@ -43,9 +44,15 @@ export class TrendingMoviesComponent {
                 return id
             })
         ))
-        const page = this.activatedRoute.snapshot.queryParamMap.get("page")
-        if (!page) this.trendingMovies = toSignal(this.trendingMoviesService.get())
-        else this.trendingMovies = toSignal(this.trendingMoviesService.get(+page))
+        this.page = toSignal(this.activatedRoute.queryParamMap.pipe(
+            map(data => {
+                const page = data.get("page") ?? undefined
+                if(page && typeof parseInt(page) === "number") {}
+                else {}
+                return page
+            })
+        ))
+        this.trendingMovies = toSignal(this.trendingMoviesService.get())
         this.paginationResult = toSignal(this.trendingMoviesService.getPaginationResults(), { requireSync: true })
     }
 
