@@ -81,6 +81,7 @@ export class TmdbDetailedShow implements DetailedShow {
         posterImagePath: string
         seasonNumber: number
         voteAverage: number
+        special: boolean
     }[]
     spokenLanguages: {
         englishName: string
@@ -114,7 +115,7 @@ export class TmdbDetailedShow implements DetailedShow {
         this.nextEpisodeToAir = data.next_episode_to_air
         this.networks = this.mapNetworks(data.networks)
         this.numberOfEpisodes = data.number_of_episodes
-        this.numberOfSeasons = data.number_of_episodes
+        this.numberOfSeasons = data.number_of_seasons
         this.originCountry = data.origin_country
         this.originalLanguage = data.original_language
         this.originalName = data.original_name
@@ -217,9 +218,11 @@ export class TmdbDetailedShow implements DetailedShow {
                 overview: datum.overview,
                 airDate: datum.air_date,
                 episodeCount: datum.episode_count,
-                posterImagePath: datum.poster_path
+                posterImagePath: datum.poster_path,
+                special: datum.name.includes("special") ? true : false
+                
             }
-        })
+        }).sort((a,b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
     }
 
     mapSpokenLanguages(data: TmdbDetailedShowResponse["spoken_languages"]): TmdbDetailedShow["spokenLanguages"] {

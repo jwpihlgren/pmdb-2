@@ -23,6 +23,7 @@ export class DetailedShowComponent {
         this.detailedShow = toSignal(this.activatedRoute.data.pipe(
             map(data => {
                 const show = data["show"] as DetailedShow
+                console.log(show)
                 return show
             })
         ), {requireSync: true})
