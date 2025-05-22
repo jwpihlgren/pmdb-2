@@ -5,6 +5,9 @@ import { HttpClient } from '@angular/common/http';
 import { TmdbDetailedShow } from '../models/classes/tmdb-detailed-show';
 import { TmdbDetailedShowResponse } from '../models/interfaces/tmdb/tmdb-detailed-show-response';
 import SearchQueryBuilder from '../models/classes/movie-search-query-builder.class';
+import { DetailedSeason } from '../models/interfaces/detailed-season';
+import { TmdbDetailedSeasonResponse } from '../models/interfaces/tmdb/tmdb-detailed-season-response';
+import { TmdbDetailedSeason } from '../models/classes/tmdb-detailed-season';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +22,6 @@ export class DetailedShowService {
 
     private request(id: string): Observable<TmdbDetailedShow> {
         const queryBuilder = new SearchQueryBuilder(environment.tmdbApiUrl, `tv/${id}`)
-        queryBuilder
             .apiKey(environment.tmdbApiKey)
             .appendToResponse(["credits", "external_ids", "images", "keywords", "recommendations", "reviews", "similar", "videos"])
         const options = {}
@@ -27,5 +29,16 @@ export class DetailedShowService {
         return this.http.get<TmdbDetailedShowResponse>(queryBuilder.url, options).pipe(
             map(data => new TmdbDetailedShow(data))
         )
+    }
+
+    seasonById(showId: number, seasonNumber: number): Observable<DetailedSeason> {
+        const queryBuilder = new SearchQueryBuilder(environment.tmdbApiUrl, `tv/${showId}/season/${seasonNumber}`)
+            .apiKey(environment.tmdbApiKey)
+        const options = {}
+
+        return this.http.get<TmdbDetailedSeasonResponse>(queryBuilder.url, options).pipe(
+            map(data => new TmdbDetailedSeason(data))
+        )
+
     }
 }

@@ -92,7 +92,7 @@ export class DetailedShowOverviewComponent {
             direction: "horizontal",
             mediaType: "show",
             imageSrc: season.posterImagePath,
-            href: ["seasons", `${season.id}`],
+            href: ["seasons", `${season.seasonNumber}`],
             aspectRatio: {numerator: 2, denominator: 3}
         }
     }

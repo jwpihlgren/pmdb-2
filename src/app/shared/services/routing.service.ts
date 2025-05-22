@@ -18,6 +18,7 @@ export class RoutingService {
         { name: "Movies", href: this.stubs.MOVIE, exact: false },
         { name: "Shows", href: this.stubs.SHOW, exact: false },
     ]
+
 }
 
 interface Link {
