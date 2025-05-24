@@ -5,10 +5,15 @@
 }
 
 .list {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     list-style: none;
     background: var(--clr-surface-elevation-1);
     border-radius: var(--radii-medium);
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
     padding: var(--spacing-medium);
 }
 

@@ -3,10 +3,12 @@ import { DetailedSeason } from '../../../../shared/models/interfaces/detailed-se
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { ImageComponent, ImageParams } from '../../../../shared/components/image/image.component';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-detailed-season',
-  imports: [],
+  imports: [ImageComponent, DecimalPipe],
   templateUrl: './detailed-season.component.html',
   styleUrl: './detailed-season.component.css'
 })
@@ -22,5 +24,12 @@ export class DetailedSeasonComponent {
                 return data["season"] as DetailedSeason
             })
         ))
+    }
+
+    posterParams(season: DetailedSeason): ImageParams  {
+        return {
+            src: season.posterPath,
+            aspectRatio: {denominator: 3, numerator: 2}
+        }
     }
 }

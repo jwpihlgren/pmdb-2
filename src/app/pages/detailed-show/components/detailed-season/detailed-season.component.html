@@ -1,1 +1,36 @@
-<p>detailed-season works!</p>
+@defer(when detailedSeason() !== undefined) {
+@let s = detailedSeason()!;
+<section class="hero">
+    <div class="hero--about">
+        <div class="hero--header">
+            <h1 [title]="'Original title: ' + s.name">{{s.name}}</h1>
+            <h5>{{s.voteAverage | number: '1.1-1'}} / 10</h5>
+        </div>
+        <p>{{s.overview}}</p>
+    </div>
+</section>
+<section class="content">
+    <div class="main">
+        <article class="article seasons">
+            <div class="article__header">
+                <h2>Episodes ({{s.episodes.length}})</h2>
+                @if(s.episodes.length > 0) {
+                }
+            </div>
+            <ul class="list">
+                @for(episode of s.episodes; track $index){
+                <div class="list__item">
+                    <div class="list__header">
+                        <h5 class="list__header--accent">{{episode.name}}</h5>
+                        <span>{{episode.airDate}}</span>
+                    </div>
+                    <div class="list__about">
+                        <span>{{episode.overview}} episodes </span>
+                    </div>
+                </div>
+                }
+            </ul>
+        </article>
+    </div>
+</section>
+}
