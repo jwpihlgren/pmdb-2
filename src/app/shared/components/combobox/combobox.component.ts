@@ -12,8 +12,4 @@ import { FocusLostDirective } from '../../directives/focus-lost.directive';
 })
 export class ComboboxComponent extends Closable {
     title: InputSignal<any> = input.required()
-
-    test(): void {
-        console.log("parent")
-    }
 }

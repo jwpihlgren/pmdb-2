@@ -26,7 +26,6 @@ export class DetailedShowRecommendationsComponent {
     constructor() {
         this.detailedShow = toSignal(this.activatedRoute.parent!.data.pipe(
             map(data => {
-                console.log(data)
                 return data["show"] as DetailedShow
             })
         ), { requireSync: true })
@@ -43,7 +42,6 @@ export class DetailedShowRecommendationsComponent {
 
     getGenres(show: number[]): Genre[] {
         return this.configService.showGenres.filter(genre => {
-            console.log(genre, show)
             show.includes(genre.id)
         })
     }

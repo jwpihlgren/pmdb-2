@@ -60,8 +60,6 @@ export class DetailedPeopleImagesComponent {
     }
 
     closeLightbox(): void {
-        console.log("click")
         this.lightboxOpen.set(undefined)
-        console.log(this.lightboxOpen())
     }
 }

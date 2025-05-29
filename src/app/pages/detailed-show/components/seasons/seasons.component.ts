@@ -22,7 +22,6 @@ export class SeasonsComponent {
     constructor() {
         this.detailedShow = toSignal(this.activatedRoute.parent!.data.pipe(
             map(data => {
-                console.log(data)
                 return data["show"] as DetailedShow
             })
         ), {requireSync: true})

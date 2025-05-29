@@ -19,7 +19,6 @@ export class ScrollToTopOnDirective implements OnInit {
                 this.appScrollToTopOn.pipe(
                     tap((event) => {
                         const scrollBehavior = event.type === "PAGINATION" ? "smooth" : "instant"
-                        console.log(event)
                         this.elementRef.nativeElement.scrollTo({
                             top: 0,
                             behavior: scrollBehavior,

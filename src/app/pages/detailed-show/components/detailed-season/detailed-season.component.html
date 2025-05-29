@@ -1,6 +1,9 @@
 @defer(when detailedSeason() !== undefined) {
 @let s = detailedSeason()!;
+
+<a [routerLink]="['../']" (click)="goBack($event)">Back</a>
 <section class="hero">
+    <app-image class="hero--image" [params]="posterParams(s)"></app-image>
     <div class="hero--about">
         <div class="hero--header">
             <h1 [title]="'Original title: ' + s.name">{{s.name}}</h1>
@@ -11,7 +14,7 @@
 </section>
 <section class="content">
     <div class="main">
-        <article class="article seasons">
+        <article class="article episodes">
             <div class="article__header">
                 <h2>Episodes ({{s.episodes.length}})</h2>
                 @if(s.episodes.length > 0) {
