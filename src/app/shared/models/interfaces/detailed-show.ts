@@ -77,6 +77,7 @@ export interface DetailedShow extends CustomPageTitle {
         posterImagePath: string
         seasonNumber: number
         voteAverage: number
+        special: boolean
     }[]
     spokenLanguages: {
         englishName: string

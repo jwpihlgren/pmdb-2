@@ -31,6 +31,26 @@
 </section>
 <section class="content">
     <div class="main">
+        <article class="article seasons">
+            <div class="article__header">
+            <h2>Seasons ({{m.numberOfSeasons}})</h2>
+            @if(m.seasons.length > 0) {
+            <a [routerLink]="['seasons']">Show all</a>
+            }
+            </div> 
+
+            <ul class="article--grid">
+            @for(season of m.seasons; track $index){
+                    <app-card class="article--item" [params]="createSeasonsCardParams(season)">
+                    <div class="article--about">
+                    <h5 class="article--about__accent">{{season.name}}</h5>
+                    <span>{{season.episodeCount}} episodes </span>
+                    <span>{{season.airDate}}</span>
+                    </div>
+                    </app-card>
+                }
+            </ul>
+        </article>
         <article class="article cast-and-crew">
             @let top = topBilled(m);
             <div class="article__header">

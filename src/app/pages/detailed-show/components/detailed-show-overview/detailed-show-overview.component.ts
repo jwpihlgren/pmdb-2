@@ -86,5 +86,16 @@ export class DetailedShowOverviewComponent {
         return params
     }
 
+    createSeasonsCardParams(season: DetailedShow["seasons"][0]): CardParams {
+        return {
+            imageType: "poster",
+            direction: "horizontal",
+            mediaType: "show",
+            imageSrc: season.posterImagePath,
+            href: ["seasons", `${season.seasonNumber}`],
+            aspectRatio: {numerator: 2, denominator: 3}
+        }
+    }
+
 
 } 

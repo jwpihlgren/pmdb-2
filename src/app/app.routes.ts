@@ -24,6 +24,9 @@ import { detailedPeopleResolver } from './shared/resolvers/detailed-people.resol
 import { DetailedPeopleRecommendationsComponent } from './pages/detailed-people/components/detailed-people-recommendations/detailed-people-recommendations.component';
 import { DetailedPeopleOverviewComponent } from './pages/detailed-people/components/detailed-people-overview/detailed-people-overview.component';
 import { DetailedPeopleImagesComponent } from './pages/detailed-people/components/detailed-people-images/detailed-people-images.component';
+import { SeasonsComponent } from './pages/detailed-show/components/seasons/seasons.component';
+import { DetailedSeasonComponent } from './pages/detailed-show/components/detailed-season/detailed-season.component';
+import { detailedSeasonResolver } from './shared/resolvers/detailed-season.resolver';
 
 export const routes: Routes = [
     { path: "", pathMatch: "full", component: HomeComponent },
@@ -59,6 +62,8 @@ export const routes: Routes = [
             { path: "", component: DetailedShowOverviewComponent, pathMatch: "full" },
             { path: "cast-and-crew", component: DetailedShowCastComponent, pathMatch: "full" },
             { path: "recommendations", component: DetailedShowRecommendationsComponent, pathMatch: "full" },
+            { path: "seasons", component: SeasonsComponent, pathMatch: "full" },
+            { path: "seasons/:seasonId", component: DetailedSeasonComponent, pathMatch: "full", resolve: {season: detailedSeasonResolver} },
         ]
     },
     //People

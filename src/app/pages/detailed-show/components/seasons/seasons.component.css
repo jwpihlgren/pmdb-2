@@ -13,6 +13,7 @@
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     padding: var(--spacing-medium);
+    min-height: 100dvh;
 }
 
 .list__item {

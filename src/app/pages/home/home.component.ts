@@ -56,7 +56,7 @@ export class HomeComponent implements OnDestroy {
     }
 
     onHistoryClick(event: Event): void {
-        console.log(event)
+        console.log(event, "not implemented")
     }
 
     addToSearchHistory(name: string): void {
