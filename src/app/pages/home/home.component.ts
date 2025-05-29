@@ -23,7 +23,7 @@ export class HomeComponent implements OnDestroy {
     searchHistory: Signal<string[] | undefined>
     searchHasFocus: WritableSignal<boolean> = signal(false)
 
-    searchInput: FormControl<string> = new FormControl("", {nonNullable: true})
+    searchInput: FormControl<string> = new FormControl("", { nonNullable: true })
 
     constructor() {
         this.searchResults = toSignal(this.searchMultiService.searchResults$)
@@ -46,17 +46,18 @@ export class HomeComponent implements OnDestroy {
             const relatedTarget = event.relatedTarget as HTMLElement
             const attributeMap = relatedTarget.dataset as Record<string, string>
             if (attributeMap["type"] === this.SEARCH_HISTORY_ITEM_IDENTIFIER) {
-                const query = relatedTarget.textContent ?? ""
-                this.searchMultiService.find(query)
-                this.searchMultiService.addToSearchHistory(query)
-                this.searchInput.setValue(query)
+                relatedTarget.click()
             }
         }
         this.searchHasFocus.set(false)
     }
 
     onHistoryClick(event: Event): void {
-        console.log(event, "not implemented")
+        const element = event.target as HTMLElement
+        const query = element.textContent ?? ""
+        this.searchMultiService.find(query)
+        this.searchMultiService.addToSearchHistory(query)
+        this.searchInput.setValue(query)
     }
 
     addToSearchHistory(name: string): void {
