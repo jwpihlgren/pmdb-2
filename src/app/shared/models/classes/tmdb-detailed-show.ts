@@ -19,7 +19,7 @@ export class TmdbDetailedShow implements DetailedShow {
     credits: DetailedShowCredits
     customPageTitle: string
     episodeRunTime: number[]
-    firstAirDate: string
+    firstAirDate: string | undefined
     genres: {
         id: number
         name: string
@@ -29,7 +29,7 @@ export class TmdbDetailedShow implements DetailedShow {
     imdbId: string
     inProduction: boolean
     languages: string[]
-    lastAirDate: string
+    lastAirDate: string | undefined
     lastEpisodeToAir: {
         id: number
         name: string
@@ -43,10 +43,10 @@ export class TmdbDetailedShow implements DetailedShow {
         seasonNumber: number
         showId: number
         stillPath: string
-    }
+    } | undefined
     keywords: Keyword[];
     name: string
-    nextEpisodeToAir: string | "null"
+    nextEpisodeToAir: string | undefined
     networks: {
         id: number
         logoImagePath: string
@@ -101,14 +101,14 @@ export class TmdbDetailedShow implements DetailedShow {
         this.credits = this.mapCredits(data.credits)
         this.customPageTitle = `${data.name} (${data.first_air_date})`
         this.episodeRunTime = data.episode_run_time
-        this.firstAirDate = data.first_air_date
+        this.firstAirDate = data.first_air_date || undefined
         this.genres = this.mapGenres(data.genres)
         this.homepage = data.homepage
         this.id = data.id
         this.imdbId = data.external_ids.imdb_id
         this.inProduction = data.in_production
         this.languages = data.languages
-        this.lastAirDate = data.last_air_date
+        this.lastAirDate = data.last_air_date || undefined
         this.lastEpisodeToAir = this.mapLastEpisode(data.last_episode_to_air)
         this.keywords = this.mapKeywords(data.keywords)
         this.name = data.name
@@ -160,7 +160,8 @@ export class TmdbDetailedShow implements DetailedShow {
         })
     }
 
-    mapLastEpisode(data: TmdbDetailedShowResponse["last_episode_to_air"]): TmdbDetailedShow["lastEpisodeToAir"] {
+    mapLastEpisode(data: TmdbDetailedShowResponse["last_episode_to_air"]): TmdbDetailedShow["lastEpisodeToAir"] | undefined{
+        if(!data) return undefined
         return {
             id: data.id,
             name: data.name,
@@ -302,7 +303,7 @@ class TmdbRecommendation implements DetailedShowRecommendation {
     name: string;
     originalName: string;
     popularity: number;
-    firstAirDate: string;
+    firstAirDate: string | undefined;
     posterPath: string;
     genreIds: number[];
     overview: string;
@@ -319,7 +320,7 @@ class TmdbRecommendation implements DetailedShowRecommendation {
         this.name = raw.name
         this.originalName = raw.original_name
         this.popularity = raw.popularity
-        this.firstAirDate = raw.first_air_date
+        this.firstAirDate = raw.first_air_date ?? undefined
         this.posterPath = raw.poster_path
         this.genreIds = raw.genre_ids
         this.overview = raw.overview

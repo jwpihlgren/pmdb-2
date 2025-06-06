@@ -25,7 +25,7 @@ export interface TmdbDetailedShowResponse {
         instagram_id: string
         twitter_id: string
     }
-    first_air_date: string
+    first_air_date: string | null
     genres: {
         id: number
         name: string
@@ -35,7 +35,7 @@ export interface TmdbDetailedShowResponse {
     in_production: boolean
     keywords: TmdbKeywordsResponse
     languages: string[]
-    last_air_date: string
+    last_air_date: string | null
     last_episode_to_air: {
         id: number
         name: string
@@ -49,7 +49,7 @@ export interface TmdbDetailedShowResponse {
         season_number: number
         show_id: number
         still_path: string
-    }
+    } | null
     name: string
     next_episode_to_air: string
     networks: {

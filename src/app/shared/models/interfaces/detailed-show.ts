@@ -15,7 +15,7 @@ export interface DetailedShow extends CustomPageTitle {
     customPageTitle: string
     credits: DetailedShowCredits
     episodeRunTime: number[]
-    firstAirDate: string
+    firstAirDate: string | undefined
     genres: {
         id: number
         name: string
@@ -26,7 +26,7 @@ export interface DetailedShow extends CustomPageTitle {
     inProduction: boolean
     keywords: Keyword[]
     languages: string[]
-    lastAirDate: string
+    lastAirDate: string | undefined
     lastEpisodeToAir: {
         id: number
         name: string
@@ -40,9 +40,9 @@ export interface DetailedShow extends CustomPageTitle {
         seasonNumber: number
         showId: number
         stillPath: string
-    }
+    } | undefined
     name: string
-    nextEpisodeToAir: string | "null"
+    nextEpisodeToAir: string | undefined
     networks: {
         id: number
         logoImagePath: string
@@ -133,7 +133,7 @@ export interface DetailedShowRecommendation {
     mediaType: string
     genreIds: number[]
     popularity: number
-    firstAirDate: string
+    firstAirDate: string | undefined
     voteAverage: number
     voteCount: number
     originCountry: string[]
