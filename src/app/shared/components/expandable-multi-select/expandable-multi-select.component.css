@@ -1,0 +1,21 @@
+:host {
+    --check-box-size: 1.5rem;
+
+}
+fieldset {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-medium);
+    gap: var(--spacing-medium);
+}
+
+label {
+    display: flex;
+    gap: var(--spacing-small);
+    text-transform: capitalize;
+}
+
+input[type="checkbox"] {
+    width: var(--check-box-size);
+    aspect-ratio: 1/1;
+}

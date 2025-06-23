@@ -27,6 +27,7 @@ import { DetailedPeopleImagesComponent } from './pages/detailed-people/component
 import { SeasonsComponent } from './pages/detailed-show/components/seasons/seasons.component';
 import { DetailedSeasonComponent } from './pages/detailed-show/components/detailed-season/detailed-season.component';
 import { detailedSeasonResolver } from './shared/resolvers/detailed-season.resolver';
+import { TestComponent } from './shared/components/test/test.component';
 
 export const routes: Routes = [
     { path: "", pathMatch: "full", component: HomeComponent },
@@ -75,6 +76,6 @@ export const routes: Routes = [
             { path: "cast/shows", component: DetailedPeopleRecommendationsComponent },
         ]
     },
-    { path: "test", pathMatch: "full", component: ColorComponent },
+    { path: "test", pathMatch: "full", component: TestComponent },
     { path: "*", redirectTo: "" }
 ];

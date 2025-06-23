@@ -1,0 +1,6 @@
+<fieldset>
+    @for(o of showMoreOptions(); track $index) {
+    <label [for]="o.id"><input type="checkbox" [value]="o.id" [id]="o.id">{{o.name}}</label>
+    }
+    <button class="button button--secondary" (click)="toggleShowMore($event)">{{showMoreDescription()}}</button>
+</fieldset>
