@@ -1,6 +1,10 @@
-<fieldset>
-    @for(o of showMoreOptions(); track $index) {
-    <label [for]="o.id"><input type="checkbox" [value]="o.id" [id]="o.id">{{o.name}}</label>
+<div class="container">
+<fieldset (click)="handleClick($event)">
+    @for(control of multiSelectForm.controls; track $index) {
+    @let opt = options()[$index];
+    <label [for]="opt.id"><input type="checkbox" [value]="opt.id" [id]="opt.id">{{opt.name}}</label>
     }
-    <button class="button button--secondary" (click)="toggleShowMore($event)">{{showMoreDescription()}}</button>
 </fieldset>
+<button class="button button--secondary" (click)="toggleShowMore($event)">{{showMoreDescription()}}</button>
+</div>
+
