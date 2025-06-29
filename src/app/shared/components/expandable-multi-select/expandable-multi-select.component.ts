@@ -1,9 +1,10 @@
+import { NgClass } from '@angular/common';
 import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
     selector: 'app-expandable-multi-select',
-    imports: [],
+    imports: [NgClass],
     templateUrl: './expandable-multi-select.component.html',
     styleUrl: './expandable-multi-select.component.css',
     providers: [
@@ -19,39 +20,25 @@ export class ExpandableMultiSelectComponent implements ControlValueAccessor, OnI
     private MAX_WHEN_HIDDEN = 3
     private SHOW_LESS = "show less"
     private SHOW_MORE = "show more"
-    private SELECT_ALL = "select all"
-    private DESELECT_ALL = "deselect all"
 
     protected formBuilder = inject(FormBuilder)
     protected showMore = signal(false)
     protected multiSelectState = signal<MultiSelectState>("none")
-    protected selectAllOption = computed(() => {
-        const option = { id: -9999, name: this.SELECT_ALL }
-        switch (this.multiSelectState()) {
-            case "none": option.name = this.SELECT_ALL; break;
-            case "indeterminate": option.name = this.SELECT_ALL; break;
-            case "all": option.name = this.DESELECT_ALL; break;
-        }
-        return option
-    })
     protected showMoreDescription = computed(() => this.showMore() ? this.SHOW_LESS : this.SHOW_MORE)
 
     options = input.required<ExpandableSelectOption[]>()
-    multiSelectForm = this.formBuilder.array<boolean>([])
+    multiSelectForm = this.formBuilder.group({
+        selected: [[] as string[]]
+    })
 
-    selected: number[] = []
-
+    get selected() {
+        return this.multiSelectForm.value.selected
+    }
 
     constructor() {
     }
 
-    ngOnInit(): void {
-        this.options().forEach(o => {
-            console.log(o)
-            this.multiSelectForm.push(this.formBuilder.control(false))
-        })
-
-    }
+    ngOnInit(): void { }
 
     toggleShowMore(_: Event): void {
         this.showMore.set(!this.showMore())
@@ -59,20 +46,25 @@ export class ExpandableMultiSelectComponent implements ControlValueAccessor, OnI
 
     handleClick(event: Event): void {
         const target = event.target as HTMLElement
-        if (target.tagName === "INPUT") {
-            console.log("input")
+        if (target.tagName !== "INPUT") return
+        const value = target.getAttribute("value")
+        if (!value) return
+        const index: number = this.selected?.findIndex(elem => elem === value) ?? -1
+        if (index === -1) {
+            this.multiSelectForm.patchValue({ selected: [...(this.selected ?? []), value] })
+        } else {
+            this.selected?.splice(index, 1) ?? []
+            this.multiSelectForm.patchValue({ selected: [...this.selected ?? []] })
         }
     }
 
     toggleSelectAll(_: Event): void {
-
+        this.multiSelectForm.reset()
     }
 
 
-    writeValue(selected: number[]): void {
-        this.selected = selected
-        this.selected.forEach(id => { })
-
+    writeValue(selected: string[]): void {
+        this.multiSelectForm.setValue({ selected: selected })
     }
 
     registerOnChange(fn: any): void {

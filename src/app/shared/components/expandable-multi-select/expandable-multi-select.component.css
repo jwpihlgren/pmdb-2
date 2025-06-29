@@ -22,12 +22,20 @@ fieldset {
     flex-direction: column;
     gap: var(--spacing-medium);
     border: none;
+    height: 100px;
+    overflow: hidden;
+}
+
+fieldset.showMore {
+    height: max-content;
 }
 
 label {
     display: flex;
     gap: var(--spacing-small);
     text-transform: capitalize;
+
+    cursor: pointer;
 }
 
 input[type="checkbox"] {
@@ -43,6 +51,7 @@ input[type="checkbox"] {
 
     display: grid;
     place-content: center;
+
 }
 
 input[type="checkbox"]::before {
