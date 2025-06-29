@@ -15,9 +15,8 @@ import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALUE_ACC
         }
     ]
 })
-export class ExpandableMultiSelectComponent implements ControlValueAccessor, OnInit {
+export class ExpandableMultiSelectComponent implements ControlValueAccessor {
 
-    private MAX_WHEN_HIDDEN = 3
     private SHOW_LESS = "show less"
     private SHOW_MORE = "show more"
 
@@ -31,14 +30,15 @@ export class ExpandableMultiSelectComponent implements ControlValueAccessor, OnI
         selected: [[] as string[]]
     })
 
+    onChange: any
+    onTouched: any
+
     get selected() {
         return this.multiSelectForm.value.selected
     }
 
     constructor() {
     }
-
-    ngOnInit(): void { }
 
     toggleShowMore(_: Event): void {
         this.showMore.set(!this.showMore())
@@ -67,12 +67,13 @@ export class ExpandableMultiSelectComponent implements ControlValueAccessor, OnI
         this.multiSelectForm.setValue({ selected: selected })
     }
 
-    registerOnChange(fn: any): void {
 
+    registerOnChange(onChange: any) {
+        this.onChange = onChange
     }
 
     registerOnTouched(fn: any): void {
-
+       this.onTouched = fn 
     }
 
     setDisabledState(isDisabled: boolean): void {
