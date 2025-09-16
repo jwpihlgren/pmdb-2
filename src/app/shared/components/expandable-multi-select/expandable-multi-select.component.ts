@@ -19,11 +19,15 @@ export class ExpandableMultiSelectComponent implements ControlValueAccessor {
 
     private SHOW_LESS = "show less"
     private SHOW_MORE = "show more"
+    private LESS = 3
 
     protected formBuilder = inject(FormBuilder)
     protected showMore = signal(false)
     protected multiSelectState = signal<MultiSelectState>("none")
     protected showMoreDescription = computed(() => this.showMore() ? this.SHOW_LESS : this.SHOW_MORE)
+    protected visibleOptions = computed(() => {
+        return this.showMore() ? [...this.options()] : this.options().slice(0, this.LESS)
+    })
 
     options = input.required<ExpandableSelectOption[]>()
     multiSelectForm = this.formBuilder.group({

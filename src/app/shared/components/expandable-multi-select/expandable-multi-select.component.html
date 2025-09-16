@@ -1,7 +1,7 @@
 <div class="container">
 <fieldset (click)="handleClick($event)" [ngClass]="{'showMore': showMore()}">
-    @for(o of options(); track $index) {
-    @let opt = options()[$index];
+    @for(o of visibleOptions(); track $index) {
+    @let opt = visibleOptions()[$index];
     <label [for]="opt.id"><input type="checkbox" [value]="opt.id" [id]="opt.id">{{opt.name}}</label>
     }
 </fieldset>
