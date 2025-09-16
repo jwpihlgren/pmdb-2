@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, computed, inject, input, signal } from '@angular/core';
+import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
     selector: 'app-expandable-multi-select',
@@ -41,9 +41,6 @@ export class ExpandableMultiSelectComponent implements ControlValueAccessor {
         return this.multiSelectForm.value.selected
     }
 
-    constructor() {
-    }
-
     toggleShowMore(_: Event): void {
         this.showMore.set(!this.showMore())
     }
@@ -77,7 +74,7 @@ export class ExpandableMultiSelectComponent implements ControlValueAccessor {
     }
 
     registerOnTouched(fn: any): void {
-       this.onTouched = fn 
+        this.onTouched = fn
     }
 
     setDisabledState(isDisabled: boolean): void {
