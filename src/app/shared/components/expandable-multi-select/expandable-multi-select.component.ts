@@ -1,5 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -22,17 +23,24 @@ export class ExpandableMultiSelectComponent implements ControlValueAccessor {
     private LESS = 3
 
     protected formBuilder = inject(FormBuilder)
+    multiSelectForm = this.formBuilder.group({
+        selected: this.formBuilder.nonNullable.control<string[]>([])
+    })
+
     protected showMore = signal(false)
-    protected multiSelectState = signal<MultiSelectState>("none")
+    protected selectedSignal = toSignal(this.multiSelectForm.controls.selected.valueChanges, { initialValue: this.multiSelectForm.controls.selected.value })
+    protected multiSelectState = computed<MultiSelectState>(() => {
+
+        if (this.selectedSignal().length === this.options().length) return 'all'
+        if (this.selectedSignal().length === 0) return 'none'
+        return 'indeterminate'
+    })
     protected showMoreDescription = computed(() => this.showMore() ? this.SHOW_LESS : this.SHOW_MORE)
     protected visibleOptions = computed(() => {
         return this.showMore() ? [...this.options()] : this.options().slice(0, this.LESS)
     })
 
     options = input.required<ExpandableSelectOption[]>()
-    multiSelectForm = this.formBuilder.group({
-        selected: [[] as string[]]
-    })
 
     onChange: any
     onTouched: any
