@@ -1,4 +1,4 @@
-import { Component, inject, Signal, } from '@angular/core';
+import { Component, computed, inject, signal, Signal, } from '@angular/core';
 import { DiscoverMoviesService } from '../../../../shared/services/discover-movies.service';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -20,6 +20,7 @@ import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { RoutingService } from '../../../../shared/services/routing.service';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 import { AppEventService } from '../../../../shared/services/app-event.service';
+import { KeywordService } from '../../../../shared/services/keyword.service';
 
 @Component({
     selector: 'app-discover-movies',
@@ -35,6 +36,7 @@ export class DiscoverMoviesComponent {
     protected peopleSearchSevice: SearchPeopleService = inject(SearchPeopleService)
     protected routingService: RoutingService = inject(RoutingService)
     protected appEventService: AppEventService = inject(AppEventService)
+    protected keywordService: KeywordService = inject(KeywordService)
     genres!: Genre[]
 
     listboxParams!: { list: { name: string, value: string | number }[] }
@@ -74,12 +76,22 @@ export class DiscoverMoviesComponent {
         })
     });
 
+
+
     keywordForm = this.formBuilder.group({
-        keyword: ""
+        keyword: this.formBuilder.nonNullable.control("")
     })
 
     voteAverageSignal: Signal<{ lte: number | null, gte: number | null }>
     releaseDateSignal: Signal<{ lte: number | null, gte: number | null }>
+    keywordSearchSignal = toSignal<string>(this.keywordForm.controls.keyword.valueChanges)
+
+    keywordSearchResult = computed(() => {
+        return this.keywordService.search(
+            this.keywordSearchSignal() || "",
+            10,
+            this.withKeywords.controls["keywords"].getRawValue())
+    })
 
     constructor() {
         this.genres = this.configService.movieGenres
@@ -129,6 +141,12 @@ export class DiscoverMoviesComponent {
         if (!formValue) return
         const previousValues = this.withKeywords.getRawValue().keywords
         this.withKeywords.controls["keywords"].setValue([...previousValues, formValue])
+        this.keywordForm.reset()
+    }
+
+    onKeywordSelect(id: number): void {
+        const previousValues = this.withKeywords.getRawValue().keywords
+        this.withKeywords.controls["keywords"].setValue([...previousValues, id])
         this.keywordForm.reset()
     }
 

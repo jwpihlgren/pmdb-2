@@ -65,8 +65,15 @@
         </fieldset>
         <fieldset class="genre">
             <legend>Keywords</legend>
-            <div>
+            <div class="keywords">
                 <input type="text" [formControl]="keywordForm.controls.keyword" />
+                @if(keywordSearchResult().length > 0) {
+                <ul class="keywordSearchResults">
+                    @for(result of keywordSearchResult(); track $index) {
+                    <li (click)="onKeywordSelect(result.id)">{{result.name}}</li>
+                    }
+                </ul>
+                }
                 <button type="button" (click)="onKeywordSubmit()">Lägg till</button>
                 <app-chip-list class="selected">
                     @for(keyword of withKeywords.controls["keywords"].getRawValue(); track $index) {
