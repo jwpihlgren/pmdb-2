@@ -1,7 +1,7 @@
 import { Component, inject, Signal, } from '@angular/core';
 import { DiscoverMoviesService } from '../../../../shared/services/discover-movies.service';
 import { ConfigService } from '../../../../shared/services/config.service';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Genre } from '../../../../shared/models/interfaces/genre';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
@@ -55,38 +55,44 @@ export class DiscoverMoviesComponent {
     }
 
     discoverForm = this.formBuilder.group({
-        voteAverage: this.formBuilder.group({
-            lte: this.formBuilder.control<number[]>([]),
-            gte: this.formBuilder.control<number[]>([])
+        voteAverage: this.formBuilder.nonNullable.group({
+            lte: this.formBuilder.control<number | null>(null),
+            gte: this.formBuilder.control<number | null>(null)
         }),
-        releaseDate: this.formBuilder.group({
-            lte: this.formBuilder.control<number[]>([]),
-            gte: this.formBuilder.control<number[]>([])
+        releaseDate: this.formBuilder.nonNullable.group({
+            lte: this.formBuilder.control<number | null>(null),
+            gte: this.formBuilder.control<number | null>(null)
         }),
-        include: this.formBuilder.group({
-            adult: this.formBuilder.control(false),
-            video: this.formBuilder.control(false)
+        include: this.formBuilder.nonNullable.group({
+            adult: this.formBuilder.nonNullable.control(false),
+            video: this.formBuilder.nonNullable.control(false)
         }),
-        genres: this.formBuilder.control<number[] | string[]>([]),
+        genres: this.formBuilder.nonNullable.control<number[] | string[]>([]),
+        withKeywords: this.formBuilder.nonNullable.group({
+            keywords: this.formBuilder.nonNullable.control<string[]>([]),
+            pipe: this.formBuilder.nonNullable.control<"and" | "or">("and")
+        })
     });
 
-    voteAverageSignal: Signal<{ lte: number | string, gte: number | string }>
-    releaseDateSignal: Signal<{ lte: number | string, gte: number | string }>
+    keywordForm = this.formBuilder.group({
+        keyword: ""
+    })
+
+    voteAverageSignal: Signal<{ lte: number | null, gte: number | null }>
+    releaseDateSignal: Signal<{ lte: number | null, gte: number | null }>
 
     constructor() {
         this.genres = this.configService.movieGenres
         this.listboxParams = { list: this.genres.map(g => { return { name: g.name, value: g.id } }) }
         this.voteAverageSignal = toSignal(this.voteAverage.valueChanges.pipe(
-            map(data => {
-                return { lte: data.lte[0] || "", gte: data.gte[0] || "" }
-            })
-        ), { initialValue: { lte: "", gte: "" } })
+            map(data => { return { lte: data.lte, gte: data.gte } })
+        ), { initialValue: { lte: null, gte: null } })
 
         this.releaseDateSignal = toSignal(this.releaseDate.valueChanges.pipe(
             map(data => {
-                return { lte: data.lte[0], gte: data.gte[0] }
+                return { lte: data.lte, gte: data.gte }
             })
-        ), { initialValue: { lte: "", gte: "" } })
+        ), { initialValue: { lte: null, gte: null } })
         this.onSubmit()
     }
 
@@ -102,21 +108,46 @@ export class DiscoverMoviesComponent {
         return this.discoverForm.get('releaseDate') as FormGroup
     }
 
+
+    get include() {
+        return this.discoverForm.get('include') as FormGroup
+    }
+
+
+    get withKeywords() {
+        return this.discoverForm.get('withKeywords') as FormGroup
+
+    }
     onSubmit(): void {
-        const formValue: DiscoverMovieFormValue = this.discoverForm.getRawValue()
-        this.discoverService.discover(formValue)
+        const formValues = this.discoverForm.getRawValue() satisfies DiscoverMovieFormValue
+        this.discoverService.discover(formValues)
+    }
+
+
+    onKeywordSubmit(): void {
+        const formValue = this.keywordForm.controls["keyword"].getRawValue()
+        if (!formValue) return
+        const previousValues = this.withKeywords.getRawValue().keywords
+        this.withKeywords.controls["keywords"].setValue([...previousValues, formValue])
+        this.keywordForm.reset()
     }
 
     handlePageRequest(page: number) {
-        const formValue: DiscoverMovieFormValue = this.discoverForm.getRawValue()
-        this.discoverService.discover(formValue, page)
-        this.appEventService.emitEvent({type: "PAGINATION", data: undefined})
+        const values = this.discoverForm.getRawValue() satisfies DiscoverMovieFormValue
+        this.discoverService.discover(values, page)
+        this.appEventService.emitEvent({ type: "PAGINATION", data: undefined })
     }
 
     onRemove(value: string): void {
         const selectedGenres = this.selectedGenres.getRawValue()
         const updatedGenres = selectedGenres.filter((genre: string | number) => genre.toString() !== value.toString())
         this.selectedGenres.setValue(updatedGenres)
+    }
+
+    onKeywordRemove(index: number): void {
+        const previousValues = [...this.withKeywords.getRawValue().keywords]
+        previousValues.splice(index, 1)
+        this.withKeywords.get("keywords")!.setValue(previousValues)
     }
 
     parseGenre(id: string | number): string | undefined {
@@ -146,6 +177,20 @@ export class DiscoverMoviesComponent {
         }
 
         return params
+    }
+
+    private getCompleteFormValue<T>(control: any): T {
+        ;
+        if (control instanceof FormGroup) {
+            const rawValue: any = {};
+            Object.keys(control.controls).forEach(key => {
+                const subControl = control.controls[key];
+                rawValue[key] = this.getCompleteFormValue(subControl);
+            });
+            return rawValue;
+        } else {
+            return control.value;
+        }
     }
 
 }

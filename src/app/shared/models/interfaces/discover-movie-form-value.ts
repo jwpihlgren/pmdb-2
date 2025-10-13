@@ -1,6 +1,7 @@
 export interface DiscoverMovieFormValue {
-    genres: number[] | string[] | null
-    include: {adult: boolean | null, video: boolean | null}
-    releaseDate: {lte: number[] | null, gte: number[] | null}
-    voteAverage: {lte: number[] | null, gte: number[] | null}
+    genres: number[] | string[]
+    include: { adult: boolean, video: boolean }
+    releaseDate: { lte: number | null, gte: number | null }
+    voteAverage: { lte: number | null, gte: number| null }
+    withKeywords: { keywords: string[], pipe: "and" | "or" }
 }

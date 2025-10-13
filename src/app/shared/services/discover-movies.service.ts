@@ -39,19 +39,19 @@ export class DiscoverMoviesService {
     }
 
     private request(params: { query: DiscoverMovieFormValue, page?: number }): Observable<ResultMovie[]> {
-        const value = params.query
+        const { include, voteAverage, releaseDate, withKeywords, genres } = params.query
         const page = params.page
-        const genres: string[] = value.genres?.map(value => value.toString()) || []
         const queryBuilder = new MovieDiscoverQueryBuilder(environment.tmdbApiUrl, "discover/movie")
         queryBuilder
             .apiKey(environment.tmdbApiKey)
-            .withGenres(genres)
-        if (value.include.adult !== null) queryBuilder.includeAdult(value.include.adult)
-        if (value.include.video !== null) queryBuilder.includeVideo(value.include.video)
-        if (value.voteAverage.lte && value.voteAverage.lte.length > 0) queryBuilder.voteAverageLte(value.voteAverage.lte[0])
-        if (value.voteAverage.gte && value.voteAverage.gte.length > 0) queryBuilder.voteAverageGte(value.voteAverage.gte[0])
-        if (value.releaseDate.lte) queryBuilder.releaseDateLte([+value.releaseDate.lte, 12, 31])
-        if (value.releaseDate.gte) queryBuilder.releaseDateGte([+value.releaseDate.gte, 1, 1])
+            .withGenres(genres.map(g => g.toString()))
+        if (include.adult) queryBuilder.includeAdult(include.adult)
+        if (include.video) queryBuilder.includeVideo(include.video)
+        if (voteAverage.lte) queryBuilder.voteAverageLte(voteAverage.lte)
+        if (voteAverage.gte) queryBuilder.voteAverageGte(voteAverage.gte)
+        if (releaseDate.lte) queryBuilder.releaseDateLte([+releaseDate.lte, 12, 31])
+        if (releaseDate.gte) queryBuilder.releaseDateGte([+releaseDate.gte, 1, 1])
+        if (withKeywords.keywords.length > 0) queryBuilder.withKeywords(withKeywords.keywords, withKeywords.pipe)
         queryBuilder.page(page)
         const options = {}
 

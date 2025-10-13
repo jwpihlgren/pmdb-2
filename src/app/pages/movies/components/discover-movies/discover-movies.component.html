@@ -63,6 +63,19 @@
                 <input id="include-video" type="checkbox" formControlName="video">
             </div>
         </fieldset>
+        <fieldset class="genre">
+            <legend>Keywords</legend>
+            <div>
+                <input type="text" [formControl]="keywordForm.controls.keyword" />
+                <button type="button" (click)="onKeywordSubmit()">Lägg till</button>
+                <app-chip-list class="selected">
+                    @for(keyword of withKeywords.controls["keywords"].getRawValue(); track $index) {
+                    <app-chip [value]="keyword" [action]="true"
+                        (clickRequest)="onKeywordRemove($index)">{{keyword}}</app-chip>
+                    }
+                </app-chip-list>
+            </div>
+        </fieldset>
         <button class="button button--primary">Discover</button>
     </form>
 </aside>
