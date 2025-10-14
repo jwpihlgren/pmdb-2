@@ -70,15 +70,14 @@
                 @if(keywordSearchResult().length > 0) {
                 <ul class="keywordSearchResults">
                     @for(result of keywordSearchResult(); track $index) {
-                    <li (click)="onKeywordSelect(result.id)">{{result.name}}</li>
+                    <li (click)="onKeywordSelect(result)">{{result.name}}</li>
                     }
                 </ul>
                 }
-                <button type="button" (click)="onKeywordSubmit()">Lägg till</button>
                 <app-chip-list class="selected">
                     @for(keyword of withKeywords.controls["keywords"].getRawValue(); track $index) {
                     <app-chip [value]="keyword" [action]="true"
-                        (clickRequest)="onKeywordRemove($index)">{{keyword}}</app-chip>
+                        (clickRequest)="onKeywordRemove($index)">{{keyword.name}}</app-chip>
                     }
                 </app-chip-list>
             </div>

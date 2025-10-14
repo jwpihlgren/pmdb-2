@@ -39,7 +39,9 @@ export class DiscoverMoviesService {
     }
 
     private request(params: { query: DiscoverMovieFormValue, page?: number }): Observable<ResultMovie[]> {
+        console.log(params.query)
         const { include, voteAverage, releaseDate, withKeywords, genres } = params.query
+        console.log(withKeywords)
         const page = params.page
         const queryBuilder = new MovieDiscoverQueryBuilder(environment.tmdbApiUrl, "discover/movie")
         queryBuilder
@@ -51,7 +53,7 @@ export class DiscoverMoviesService {
         if (voteAverage.gte) queryBuilder.voteAverageGte(voteAverage.gte)
         if (releaseDate.lte) queryBuilder.releaseDateLte([+releaseDate.lte, 12, 31])
         if (releaseDate.gte) queryBuilder.releaseDateGte([+releaseDate.gte, 1, 1])
-        if (withKeywords.keywords.length > 0) queryBuilder.withKeywords(withKeywords.keywords, withKeywords.pipe)
+        if (withKeywords.keywords.length > 0) queryBuilder.withKeywords(withKeywords.keywords.map(k => k.id.toString()), withKeywords.pipe)
         queryBuilder.page(page)
         const options = {}
 

@@ -21,6 +21,7 @@ import { RoutingService } from '../../../../shared/services/routing.service';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 import { AppEventService } from '../../../../shared/services/app-event.service';
 import { KeywordService } from '../../../../shared/services/keyword.service';
+import Keyword from '../../../../shared/models/interfaces/keywords';
 
 @Component({
     selector: 'app-discover-movies',
@@ -71,7 +72,7 @@ export class DiscoverMoviesComponent {
         }),
         genres: this.formBuilder.nonNullable.control<number[] | string[]>([]),
         withKeywords: this.formBuilder.nonNullable.group({
-            keywords: this.formBuilder.nonNullable.control<string[]>([]),
+            keywords: this.formBuilder.nonNullable.control<Keyword[]>([]),
             pipe: this.formBuilder.nonNullable.control<"and" | "or">("and")
         })
     });
@@ -144,9 +145,9 @@ export class DiscoverMoviesComponent {
         this.keywordForm.reset()
     }
 
-    onKeywordSelect(id: number): void {
+    onKeywordSelect(keyword: Keyword): void {
         const previousValues = this.withKeywords.getRawValue().keywords
-        this.withKeywords.controls["keywords"].setValue([...previousValues, id])
+        this.withKeywords.controls["keywords"].setValue([...previousValues, keyword])
         this.keywordForm.reset()
     }
 
