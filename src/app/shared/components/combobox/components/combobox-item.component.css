@@ -1,0 +1,10 @@
+:host.selected {
+    background: var(--clr-accent, red);
+}
+
+:host.disabled {
+    background: var(--clr-background-disabled, gray);
+    color: var(--clr-on-background-disabled, white);
+    cursor: not-allowed;
+
+}

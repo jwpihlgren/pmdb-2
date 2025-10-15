@@ -2,15 +2,18 @@
     <form (ngSubmit)="onSubmit()" [formGroup]="discoverForm">
         <fieldset class="genre">
             <legend>Genre</legend>
-            <app-combobox class="genre--select" [title]="'choose'">
-                <app-listbox class="list" [params]="listboxParams" formControlName="genres"></app-listbox>
-                <app-chip-list class="selected">
-                    @for(chip of discoverForm.value.genres; track $index) {
-                    <app-chip [value]="chip.toString()" [action]="true"
-                        (clickRequest)="onRemove($event)">{{parseGenre(chip)}}</app-chip>
-                    }
-                </app-chip-list>
+            <app-combobox [title]="'Choose'" [multiSelect]="false" formControlName="genres">
+                @for(g of genres; track $index) {
+                <app-combobox-item class="list-item" [value]="g.id.toString()">{{g.name}}</app-combobox-item>
+                }
             </app-combobox>
+            <app-chip-list class="selected">
+                @for(chip of discoverForm.value.genres; track $index) {
+                <app-chip [value]="chip.value" [action]="true"
+                    (clickRequest)="onGenreRemove(chip)">{{chip.name}}</app-chip>
+                }
+            </app-chip-list>
+
         </fieldset>
         <fieldset formGroupName="voteAverage">
             <legend>Vote average</legend>
@@ -18,15 +21,20 @@
                 <label class="range--select" for="vote-average-gte">
                     At least
                     <app-combobox [title]="voteAverageSignal().gte">
-                        <app-listbox class="list" id="vote-average-gte" formControlName="gte"
-                            [params]="voteAverageOptions" [multi]="false"></app-listbox>
+
+                        <div class="trigger-wrapper">
+                            <app-listbox class="list" id="vote-average-gte" formControlName="gte"
+                                [params]="voteAverageOptions" [multi]="false"></app-listbox>
+                        </div>
                     </app-combobox>
                 </label>
                 <label class="range--select" for="vote-average-lte">
                     At most
                     <app-combobox [title]="voteAverageSignal().lte">
-                        <app-listbox class="list" id="vote-average-lte" formControlName="lte"
-                            [params]="voteAverageOptions" [multi]="false"></app-listbox>
+                        <div class="trigger-wrapper">
+                            <app-listbox class="list" id="vote-average-lte" formControlName="lte"
+                                [params]="voteAverageOptions" [multi]="false"></app-listbox>
+                        </div>
                     </app-combobox>
                 </label>
 
@@ -37,15 +45,20 @@
             <label class="range--select" for="release-date-gte">
                 At least
                 <app-combobox [title]="releaseDateSignal().gte">
-                    <app-listbox class="list" id="release-date-gte" formControlName="gte" [params]="yearOptions"
-                        [multi]="false"></app-listbox>
+
+                    <div class="trigger-wrapper">
+                        <app-listbox class="list" id="release-date-gte" formControlName="gte" [params]="yearOptions"
+                            [multi]="false"></app-listbox>
+                    </div>
                 </app-combobox>
             </label>
             <label class="range--select" for="release-date-lte">
                 At most
                 <app-combobox [title]="releaseDateSignal().lte">
-                    <app-listbox class="list" id="release-date-lte" formControlName="lte" [params]="yearOptions"
-                        [multi]="false"></app-listbox>
+                    <div class="trigger-wrapper">
+                        <app-listbox class="list" id="release-date-lte" formControlName="lte" [params]="yearOptions"
+                            [multi]="false"></app-listbox>
+                    </div>
                 </app-combobox>
             </label>
         </fieldset>
@@ -66,13 +79,13 @@
         <fieldset class="genre">
             <legend>Keywords</legend>
             <div class="keywords">
-                <input type="text" [formControl]="keywordForm.controls.keyword" />
+                <input type="text" [formControl]="keywordForm.controls.keyword" #trigger />
                 @if(keywordSearchResult().length > 0) {
-                <ul class="keywordSearchResults">
+                <app-dropdown-list [triggerElement]="trigger">
                     @for(result of keywordSearchResult(); track $index) {
-                    <li (click)="onKeywordSelect(result)">{{result.name}}</li>
+                    <li (click)="onKeywordSelect(result)" class="list-item">{{result.name}}</li>
                     }
-                </ul>
+                </app-dropdown-list>
                 }
                 <app-chip-list class="selected">
                     @for(keyword of withKeywords.controls["keywords"].getRawValue(); track $index) {

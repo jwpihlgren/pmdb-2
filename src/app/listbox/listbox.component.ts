@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, Input, input, InputSignal, output } from '@angular/core';
+import { AfterViewInit, Component, input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({

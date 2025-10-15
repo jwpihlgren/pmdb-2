@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal, Signal, } from '@angular/core';
 import { DiscoverMoviesService } from '../../../../shared/services/discover-movies.service';
 import { ConfigService } from '../../../../shared/services/config.service';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Genre } from '../../../../shared/models/interfaces/genre';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
@@ -22,10 +22,13 @@ import { CardLoadingComponent } from '../../../../shared/components/card-loading
 import { AppEventService } from '../../../../shared/services/app-event.service';
 import { KeywordService } from '../../../../shared/services/keyword.service';
 import Keyword from '../../../../shared/models/interfaces/keywords';
+import { DropdownListComponent } from '../../../../shared/components/drop-down-list/dropdown-list.component';
+import { ComboboxItemComponent } from '../../../../shared/components/combobox/components/combobox-item.component';
+import { Selectable } from '../../../../shared/models/interfaces/selectable';
 
 @Component({
     selector: 'app-discover-movies',
-    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ListboxComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent, CardLoadingComponent],
+    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ListboxComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent, CardLoadingComponent, DropdownListComponent, ComboboxItemComponent],
     templateUrl: './discover-movies.component.html',
     styleUrl: './discover-movies.component.css'
 })
@@ -70,9 +73,9 @@ export class DiscoverMoviesComponent {
             adult: this.formBuilder.nonNullable.control(false),
             video: this.formBuilder.nonNullable.control(false)
         }),
-        genres: this.formBuilder.nonNullable.control<number[] | string[]>([]),
+        genres: this.formBuilder.nonNullable.control<Selectable[]>([]),
         withKeywords: this.formBuilder.nonNullable.group({
-            keywords: this.formBuilder.nonNullable.control<Keyword[]>([]),
+            keywords: this.formBuilder.nonNullable.control<Selectable[]>([]),
             pipe: this.formBuilder.nonNullable.control<"and" | "or">("and")
         })
     });
@@ -157,20 +160,32 @@ export class DiscoverMoviesComponent {
         this.appEventService.emitEvent({ type: "PAGINATION", data: undefined })
     }
 
-    onRemove(value: string): void {
-        const selectedGenres = this.selectedGenres.getRawValue()
-        const updatedGenres = selectedGenres.filter((genre: string | number) => genre.toString() !== value.toString())
-        this.selectedGenres.setValue(updatedGenres)
+
+    onGenreToggle(genre: Genre): void {
+
+        const selectedGenres: Genre[] = this.selectedGenres.getRawValue()
+        const existingIndex = selectedGenres.findIndex(g => g.id === genre.id)
+        if (existingIndex !== -1) {
+            selectedGenres.splice(existingIndex, 1)
+            this.selectedGenres.setValue(selectedGenres)
+            return
+        }
+        this.selectedGenres.setValue(Array.from(new Set([...selectedGenres, genre])))
+    }
+
+    onGenreRemove(genre: Selectable): void {
+        const selectedGenres: Selectable[] = this.selectedGenres.getRawValue()
+        const existingIndex = selectedGenres.findIndex(g => g.value === genre.value)
+        if (existingIndex !== -1) {
+            selectedGenres.splice(existingIndex, 1)
+            this.selectedGenres.setValue(selectedGenres)
+        }
     }
 
     onKeywordRemove(index: number): void {
         const previousValues = [...this.withKeywords.getRawValue().keywords]
         previousValues.splice(index, 1)
         this.withKeywords.get("keywords")!.setValue(previousValues)
-    }
-
-    parseGenre(id: string | number): string | undefined {
-        return this.genres.find(g => g.id === id)?.name
     }
 
     generateNumberRange(start: number, end: number, step: number = 1): number[] {

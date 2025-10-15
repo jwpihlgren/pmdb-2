@@ -1,0 +1,50 @@
+app-dropdown-list {
+    display: block;
+    --dropdown-block-padding: var(--spacing-medium, 1rem);
+    --dropdown-background: var(--clr-surface-elevation-2, #c3c3c3);
+    --dropdown-offset-top: var(--spacing-small, 0, 5rem);
+    --dropdown-box-shadow: var(--shadow-elevation-2);
+    --dropdown-border-radius: var(--radii-small, 0, 25rem);
+
+    --item-inline-padding: var(--spacing-medium, 1:rem);
+    --item-block-padding: var(--spacing-small, 0.5rem);
+    --item-hover-background: var(--clr-surface-elevation-3, #e0e0e0);
+    --item-active-background: var(--clr-surface-elevation-4, #e7e7e7);
+
+    /* Actual styles */
+    background: var(--dropdown-background);
+    padding-block: var(--dropdown-block-padding);
+    box-shadow: var(--dropdown-box-shadow);
+    border-radius: var(--dropdown-border-radius);
+    overflow-y: auto;
+    z-index: 9999;
+}
+
+
+app-dropdown-list.open-up {
+    /* Custom styles when opening upward */
+    transform-origin: top;
+    transform: translateY(calc(-100% - var(--dropdown-offset-top)));
+}
+
+app-dropdown-list.open-down {
+    /* Custom styles when opening downward */
+    transform-origin: top;
+    transform: translateY(var(--dropdown-offset-top));
+}
+
+.list-item {
+    display: block;
+    padding-inline: var(--item-inline-padding);
+    padding-block: var(--item-block-padding);
+    list-style: none;
+    cursor: pointer;
+}
+
+.list-item:hover {
+    background: var(--item-hover-background);
+}
+
+.list-item:active {
+    background: var(--item-active-background);
+}
