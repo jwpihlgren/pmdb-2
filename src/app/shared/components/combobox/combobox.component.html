@@ -3,6 +3,9 @@
     formControlName="comboboxFormControl" #trigger>
     {{title()}}
     <div class="combobox--list" [ngClass]="{'combobox--list__open': open}">
-        <app-dropdown-list [triggerElement]="trigger"><ng-content></ng-content></app-dropdown-list>
+        <app-dropdown-list [triggerElement]="trigger">
+            <app-combobox-item (click)="reset($event)" class="list-item" [value]="undefined">---</app-combobox-item>
+            <ng-content></ng-content>
+        </app-dropdown-list>
     </div>
 </button>

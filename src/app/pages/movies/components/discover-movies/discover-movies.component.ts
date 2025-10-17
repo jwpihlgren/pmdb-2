@@ -7,12 +7,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
-import { ListboxComponent } from '../../../../listbox/listbox.component';
 import { SearchPeopleService } from '../../../../shared/services/search-people.service';
 import { ComboboxComponent } from '../../../../shared/components/combobox/combobox.component';
 import { ChipListComponent } from '../../../../shared/components/chip-list/chip-list.component';
 import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
-import { map } from 'rxjs';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { Pagination } from '../../../../shared/models/interfaces/pagination';
 import { DiscoverMovieFormValue } from '../../../../shared/models/interfaces/discover-movie-form-value';
@@ -28,7 +26,7 @@ import { Selectable } from '../../../../shared/models/interfaces/selectable';
 
 @Component({
     selector: 'app-discover-movies',
-    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ListboxComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent, CardLoadingComponent, DropdownListComponent, ComboboxItemComponent],
+    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent, CardLoadingComponent, DropdownListComponent, ComboboxItemComponent],
     templateUrl: './discover-movies.component.html',
     styleUrl: './discover-movies.component.css'
 })
@@ -62,12 +60,12 @@ export class DiscoverMoviesComponent {
 
     discoverForm = this.formBuilder.group({
         voteAverage: this.formBuilder.nonNullable.group({
-            lte: this.formBuilder.control<number | null>(null),
-            gte: this.formBuilder.control<number | null>(null)
+            lte: this.formBuilder.nonNullable.control<Selectable | undefined>(undefined),
+            gte: this.formBuilder.nonNullable.control<Selectable | undefined>(undefined)
         }),
         releaseDate: this.formBuilder.nonNullable.group({
-            lte: this.formBuilder.control<number | null>(null),
-            gte: this.formBuilder.control<number | null>(null)
+            lte: this.formBuilder.nonNullable.control<Selectable | undefined>(undefined),
+            gte: this.formBuilder.nonNullable.control<Selectable | undefined>(undefined)
         }),
         include: this.formBuilder.nonNullable.group({
             adult: this.formBuilder.nonNullable.control(false),
@@ -86,29 +84,18 @@ export class DiscoverMoviesComponent {
         keyword: this.formBuilder.nonNullable.control("")
     })
 
-    voteAverageSignal: Signal<{ lte: number | null, gte: number | null }>
-    releaseDateSignal: Signal<{ lte: number | null, gte: number | null }>
     keywordSearchSignal = toSignal<string>(this.keywordForm.controls.keyword.valueChanges)
 
     keywordSearchResult = computed(() => {
         return this.keywordService.search(
             this.keywordSearchSignal() || "",
             10,
-            this.withKeywords.controls["keywords"].getRawValue())
+            this.withKeywords.controls["keywords"].getRawValue()).map((k) => ({value: k.id.toString(), name: k.name}) )
     })
 
     constructor() {
         this.genres = this.configService.movieGenres
         this.listboxParams = { list: this.genres.map(g => { return { name: g.name, value: g.id } }) }
-        this.voteAverageSignal = toSignal(this.voteAverage.valueChanges.pipe(
-            map(data => { return { lte: data.lte, gte: data.gte } })
-        ), { initialValue: { lte: null, gte: null } })
-
-        this.releaseDateSignal = toSignal(this.releaseDate.valueChanges.pipe(
-            map(data => {
-                return { lte: data.lte, gte: data.gte }
-            })
-        ), { initialValue: { lte: null, gte: null } })
         this.onSubmit()
     }
 
@@ -124,11 +111,9 @@ export class DiscoverMoviesComponent {
         return this.discoverForm.get('releaseDate') as FormGroup
     }
 
-
     get include() {
         return this.discoverForm.get('include') as FormGroup
     }
-
 
     get withKeywords() {
         return this.discoverForm.get('withKeywords') as FormGroup
@@ -139,7 +124,6 @@ export class DiscoverMoviesComponent {
         this.discoverService.discover(formValues)
     }
 
-
     onKeywordSubmit(): void {
         const formValue = this.keywordForm.controls["keyword"].getRawValue()
         if (!formValue) return
@@ -148,7 +132,7 @@ export class DiscoverMoviesComponent {
         this.keywordForm.reset()
     }
 
-    onKeywordSelect(keyword: Keyword): void {
+    onKeywordSelect(keyword: Selectable): void {
         const previousValues = this.withKeywords.getRawValue().keywords
         this.withKeywords.controls["keywords"].setValue([...previousValues, keyword])
         this.keywordForm.reset()
@@ -226,5 +210,4 @@ export class DiscoverMoviesComponent {
             return control.value;
         }
     }
-
 }

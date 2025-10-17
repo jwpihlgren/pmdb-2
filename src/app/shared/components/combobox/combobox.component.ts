@@ -1,4 +1,4 @@
-import { Component, contentChildren, input, InputSignal, reflectComponentType } from '@angular/core';
+import { Component, contentChildren, input, reflectComponentType } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { Closable } from '../../models/classes/closable.class';
 import { ClickOutsideDirective } from '../../directives/click-outside.directive';
@@ -10,7 +10,7 @@ import { Selectable } from '../../models/interfaces/selectable';
 
 @Component({
     selector: 'app-combobox',
-    imports: [NgClass, ClickOutsideDirective, FocusLostDirective, DropdownListComponent],
+    imports: [NgClass, ClickOutsideDirective, FocusLostDirective, DropdownListComponent, ComboboxItemComponent],
     templateUrl: './combobox.component.html',
     styleUrl: './combobox.component.css',
     providers: [
@@ -30,6 +30,7 @@ export class ComboboxComponent extends Closable implements ControlValueAccessor 
     selectableItems = contentChildren(ComboboxItemComponent)
     mirror = reflectComponentType(ComboboxItemComponent)
     selectedItems: Selectable[] = []
+    selectedItem: Selectable | undefined = undefined
 
     private onChange: (value: any) => void = () => { }
     private onTouched: () => void = () => { }
@@ -43,19 +44,40 @@ export class ComboboxComponent extends Closable implements ControlValueAccessor 
             const selectable = { name: name, value: value }
             const contentChild = this.selectableItems().find(c => c.value()?.toString() === value)
             if (!contentChild) return
+            if (!this.selectableItems()) return
             if (contentChild.disabled()) return
             this.selectableItems().forEach(s => s.setSelected(false))
-            const index = this.selectedItems.findIndex(s => s.value === value)
-            if (index > -1) {
-                this.selectedItems.splice(index, 1)
-            } else if (!this.multiSelect()) {
-                this.selectedItems = [selectable]
-            } else {
-                this.selectedItems = [...this.selectedItems, selectable]
+            if (!this.multiSelect()) {
+                this.selectedItem = selectable
+                this.selectableItems().find(s => s.value() === value)?.setSelected(true)
             }
-            this.selectedItems.forEach(i => this.selectableItems().find(s => s.value() === i.value)?.setSelected(true))
-            this.onChange(this.selectedItems)
+            else {
+                const index = this.selectedItems.findIndex(s => s.value === value)
+                if (index > -1) {
+                    this.selectedItems.splice(index, 1)
+                } else {
+                    this.selectedItems = [...this.selectedItems, selectable]
+                }
+
+                this.selectedItems.forEach(i => this.selectableItems().find(s => s.value() === i.value)?.setSelected(true))
+            }
+            this.onChange(this.multiSelect() ? this.selectedItems : this.selectedItem)
         }
+    }
+
+    reset(_: Event) {
+
+        this.selectableItems().forEach(s => s.setSelected(false))
+        if (this.multiSelect()) {
+            this.selectedItems = []
+            return
+        } else {
+
+            this.selectedItem = undefined
+        }
+
+        this.onChange(this.multiSelect() ? this.selectedItem : this.selectedItem)
+
     }
 
     writeValue(selectedItems: Selectable[]): void {
