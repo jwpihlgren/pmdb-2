@@ -19,14 +19,15 @@ import { RoutingService } from '../../../../shared/services/routing.service';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 import { AppEventService } from '../../../../shared/services/app-event.service';
 import { KeywordService } from '../../../../shared/services/keyword.service';
-import Keyword from '../../../../shared/models/interfaces/keywords';
 import { DropdownListComponent } from '../../../../shared/components/drop-down-list/dropdown-list.component';
 import { ComboboxItemComponent } from '../../../../shared/components/combobox/components/combobox-item.component';
 import { Selectable } from '../../../../shared/models/interfaces/selectable';
+import { ExpandableMultiSelectComponent } from '../../../../shared/components/expandable-multi-select/expandable-multi-select.component';
+import { SelectItemComponent } from '../../../../shared/components/expandable-multi-select/components/select-item/select-item.component';
 
 @Component({
     selector: 'app-discover-movies',
-    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent, CardLoadingComponent, DropdownListComponent, ComboboxItemComponent],
+    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent, CardLoadingComponent, DropdownListComponent, ComboboxItemComponent, ExpandableMultiSelectComponent, SelectItemComponent],
     templateUrl: './discover-movies.component.html',
     styleUrl: './discover-movies.component.css'
 })
@@ -90,7 +91,7 @@ export class DiscoverMoviesComponent {
         return this.keywordService.search(
             this.keywordSearchSignal() || "",
             10,
-            this.withKeywords.controls["keywords"].getRawValue()).map((k) => ({value: k.id.toString(), name: k.name}) )
+            this.withKeywords.controls["keywords"].getRawValue()).map((k) => ({ value: k.id.toString(), name: k.name }))
     })
 
     constructor() {
@@ -119,6 +120,7 @@ export class DiscoverMoviesComponent {
         return this.discoverForm.get('withKeywords') as FormGroup
 
     }
+
     onSubmit(): void {
         const formValues = this.discoverForm.getRawValue() satisfies DiscoverMovieFormValue
         this.discoverService.discover(formValues)

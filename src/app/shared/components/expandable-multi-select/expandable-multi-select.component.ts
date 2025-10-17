@@ -1,95 +1,51 @@
-import { NgClass } from '@angular/common';
-import { Component, computed, inject, input, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, computed, contentChildren, inject, signal } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { SelectItemComponent } from './components/select-item/select-item.component';
 
 @Component({
     selector: 'app-expandable-multi-select',
-    imports: [NgClass],
+    imports: [],
     templateUrl: './expandable-multi-select.component.html',
     styleUrl: './expandable-multi-select.component.css',
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            multi: true,
-            useExisting: ExpandableMultiSelectComponent
-        }
-    ]
 })
-export class ExpandableMultiSelectComponent implements ControlValueAccessor {
+export class ExpandableMultiSelectComponent {
 
+    private contentChildren = contentChildren(SelectItemComponent)
     private SHOW_LESS = "show less"
     private SHOW_MORE = "show more"
     private LESS = 3
 
     protected formBuilder = inject(FormBuilder)
-    multiSelectForm = this.formBuilder.group({
-        selected: this.formBuilder.nonNullable.control<string[]>([])
-    })
-
     protected showMore = signal(false)
-    protected selectedSignal = toSignal(this.multiSelectForm.controls.selected.valueChanges, { initialValue: this.multiSelectForm.controls.selected.value })
-    protected multiSelectState = computed<MultiSelectState>(() => {
-
-        if (this.selectedSignal().length === this.options().length) return 'all'
-        if (this.selectedSignal().length === 0) return 'none'
-        return 'indeterminate'
-    })
     protected showMoreDescription = computed(() => this.showMore() ? this.SHOW_LESS : this.SHOW_MORE)
-    protected visibleOptions = computed(() => {
-        return this.showMore() ? [...this.options()] : this.options().slice(0, this.LESS)
+
+    visibleChildren = computed(() => {
+        const visibleCount = !this.showMore ? this.LESS : this.contentChildren.length
+        console.log(visibleCount)
+        this.contentChildren().forEach(c => c.setVisible(false))
+        this.contentChildren()
+            .slice(0, visibleCount)
+            .forEach(c => c.setVisible(true))
+        return visibleCount
     })
-
-    options = input.required<ExpandableSelectOption[]>()
-
-    onChange: any
-    onTouched: any
-
-    get selected() {
-        return this.multiSelectForm.value.selected
-    }
 
     toggleShowMore(_: Event): void {
         this.showMore.set(!this.showMore())
     }
 
-    handleClick(event: Event): void {
-        const target = event.target as HTMLElement
-        if (target.tagName !== "INPUT") return
-        const value = target.getAttribute("value")
-        if (!value) return
-        const index: number = this.selected?.findIndex(elem => elem === value) ?? -1
-        if (index === -1) {
-            this.multiSelectForm.patchValue({ selected: [...(this.selected ?? []), value] })
-        } else {
-            this.selected?.splice(index, 1) ?? []
-            this.multiSelectForm.patchValue({ selected: [...this.selected ?? []] })
-        }
-    }
-
     toggleSelectAll(_: Event): void {
-        this.multiSelectForm.reset()
+        this.contentChildren().forEach(c => c.setSelected(true))
     }
 
-
-    writeValue(selected: string[]): void {
-        this.multiSelectForm.setValue({ selected: selected })
+    toggleDeslectAll(_: Event): void {
+        this.contentChildren().forEach(c => c.setSelected(false))
     }
 
-
-    registerOnChange(onChange: any) {
-        this.onChange = onChange
-    }
-
-    registerOnTouched(fn: any): void {
-        this.onTouched = fn
-    }
-
-    setDisabledState(isDisabled: boolean): void {
-
+    getCumulativeState(): MultiSelectState {
+        if (this.contentChildren().every(c => c.isSelected)) return "all"
+        if (this.contentChildren().some(c => c.isSelected)) return "indeterminate"
+        return "none"
     }
 
 }
-
-type ExpandableSelectOption = { id: number, name: string }
 type MultiSelectState = "none" | "indeterminate" | "all"

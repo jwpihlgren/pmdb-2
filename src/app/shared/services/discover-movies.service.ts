@@ -49,9 +49,8 @@ export class DiscoverMoviesService {
         if (include.video) queryBuilder.includeVideo(include.video)
         if (voteAverage.lte) queryBuilder.voteAverageLte(+voteAverage.lte.value)
         if (voteAverage.gte) queryBuilder.voteAverageGte(+voteAverage.gte.value)
-        if (releaseDate.lte) queryBuilder.releaseDateLte([+releaseDate.lte, 12, 31])
-        if (releaseDate.gte) queryBuilder.releaseDateGte([+releaseDate.gte, 1, 1])
-        console.log(withKeywords.keywords.length)
+        if (releaseDate.lte) queryBuilder.releaseDateLte([+releaseDate.lte.value, 12, 31])
+        if (releaseDate.gte) queryBuilder.releaseDateGte([+releaseDate.gte.value, 1, 1])
         if (withKeywords.keywords.length > 0) queryBuilder.withKeywords(withKeywords.keywords.map(k => k.value), withKeywords.pipe)
         queryBuilder.page(page)
         const options = {}

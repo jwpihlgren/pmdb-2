@@ -1,11 +1,7 @@
 <div class="container">
-<fieldset (click)="handleClick($event)" [ngClass]="{'showMore': showMore()}">
-
-    <label for="toggle-all"><input type="checkbox" value="" id="toggle-all" [attr.data-toggle-state]="multiSelectState()">Alla</label>
-    @for(o of visibleOptions(); track $index) {
-    @let opt = visibleOptions()[$index];
-    <label [for]="opt.id"><input type="checkbox" [value]="opt.id" [id]="opt.id">{{opt.name}}</label>
-    }
-</fieldset>
-<button class="button button--secondary" (click)="toggleShowMore($event)">{{showMoreDescription()}}</button>
+    <fieldset>
+        <legend>Include</legend>
+        <ng-content></ng-content>
+    </fieldset>
+    <button class="button button--secondary" (click)="toggleShowMore($event)">{{showMoreDescription()}}</button>
 </div>
