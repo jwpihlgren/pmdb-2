@@ -199,18 +199,4 @@ export class DiscoverMoviesComponent {
 
         return params
     }
-
-    private getCompleteFormValue<T>(control: any): T {
-        ;
-        if (control instanceof FormGroup) {
-            const rawValue: any = {};
-            Object.keys(control.controls).forEach(key => {
-                const subControl = control.controls[key];
-                rawValue[key] = this.getCompleteFormValue(subControl);
-            });
-            return rawValue;
-        } else {
-            return control.value;
-        }
-    }
 }
