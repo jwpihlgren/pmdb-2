@@ -1,7 +1,7 @@
-<div class="container">
-    <fieldset>
-        <legend>Include</legend>
-        <ng-content></ng-content>
-    </fieldset>
-    <button class="button button--secondary" (click)="toggleShowMore($event)">{{showMoreDescription()}}</button>
+<div class="options-list">
+    <app-select-item (click)="toggleAll($event)" id="toggle-all" [attr.data-toggle-state]="cumulativeState()" class="visible">Alla</app-select-item>
+    <ng-content></ng-content>
 </div>
+@if(optionsCount() > LESS) {
+<button class="button button--secondary" (click)="toggleShowMore($event)">{{showMoreDescription()}}</button>
+}

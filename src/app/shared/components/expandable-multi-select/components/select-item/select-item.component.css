@@ -3,5 +3,84 @@
 }
 
 :host.visible {
-    display: initial;
+    display: flex;
+    gap: var(--spacing-small);
+}
+
+/* Base checkbox styles */
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--checkbox-bg-color);
+    margin: 0;
+    font: inherit;
+    color: currentColor;
+    width: var(--checkbox-size);
+    height: var(--checkbox-size);
+    border: var(--checkbox-border-size);
+    display: grid;
+    place-content: center;
+    position: relative;
+    border-radius: 0;
+    /* ensure all checkboxes are square by default */
+}
+
+/* Focus style */
+input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--clr-accent);
+}
+
+/* Common ::before pseudo-element for all checkboxes */
+input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--checkbox-size);
+    height: var(--checkbox-size);
+    transform: scale(0);
+    /* hidden by default */
+    transition: transform 0.05s ease;
+    display: block;
+}
+
+/* Normal checkboxes (not toggler) */
+input[type="checkbox"]:not(#toggle-all):checked::before {
+    transform: scale(1);
+    background: var(--clr-accent);
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    border-radius: 0;
+    /* square shape */
+}
+
+/* Toggler (#toggle-all) default hidden */
+:host#toggle-all>input[type="checkbox"]::before {
+    transform: scale(0);
+}
+
+/* Toggler: none → hidden */
+:host#toggle-all[data-toggle-state="none"]>input[type="checkbox"]::before {
+    transform: scale(0);
+    background: none;
+    box-shadow: none;
+}
+
+/* Toggler: indeterminate → small square */
+:host#toggle-all[data-toggle-state="indeterminate"]>input[type="checkbox"]::before {
+    transform: scale(1);
+    background: var(--clr-accent);
+    box-shadow: none;
+    clip-path: polygon(25% 25%,
+            75% 25%,
+            75% 75%,
+            25% 75%);
+    border-radius: 0;
+}
+
+/* Toggler: all → checkmark */
+:host#toggle-all[data-toggle-state="all"]>input[type="checkbox"]::before {
+    transform: scale(1);
+    background: var(--clr-accent);
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    border-radius: 0;
 }

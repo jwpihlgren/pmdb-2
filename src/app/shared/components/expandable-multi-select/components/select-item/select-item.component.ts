@@ -14,20 +14,23 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         }
     ],
     host: {
-        "[class.visible]": 'isVisible()'
+        "[class.visible]": 'isVisible()',
+        "(click)": "onClick()"
     }
 })
 export class SelectItemComponent implements ControlValueAccessor {
 
     isSelected = signal(false)
-    isVisible = signal(true)
+    isVisible = signal(false)
     value = input.required<string>
 
-    onChange!: () => {}
-    onTouched!: () => {}
+
+    onChange: any = () => { }
+    onTouched: any = () => { }
 
     writeValue(selected: boolean): void {
         this.isSelected.set(selected)
+        this.onChange()
     }
 
     registerOnChange(fn: any): void {
@@ -40,9 +43,16 @@ export class SelectItemComponent implements ControlValueAccessor {
 
     setSelected(state: boolean): void {
         this.isSelected.set(state)
+        this.onChange()
     }
 
     setVisible(state: boolean): void {
         this.isVisible.set(state)
     }
+
+    private onClick() {
+        this.setSelected(!this.isSelected())
+        this.onChange()
+    }
+
 }

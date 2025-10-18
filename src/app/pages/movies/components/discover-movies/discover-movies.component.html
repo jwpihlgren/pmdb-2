@@ -64,16 +64,9 @@
         <fieldset class="filter" formGroupName="include">
             <legend>Include</legend>
             <div class="extra">
-                <label class="extra--choice" for="include-adult">
-                    Adult
-                </label>
-                <input id="include-adult" type="checkbox" formControlName="adult">
-                <label class="extra--choice" for="include-video">
-                    Video
-                </label>
-                <input id="include-video" type="checkbox" formControlName="video">
                 <app-expandable-multi-select>
-                    <app-select-item>Adult</app-select-item>
+                    <app-select-item formControlName="adult">Adult</app-select-item>
+                    <app-select-item formControlName="video">Video</app-select-item>
                 </app-expandable-multi-select>
             </div>
         </fieldset>
