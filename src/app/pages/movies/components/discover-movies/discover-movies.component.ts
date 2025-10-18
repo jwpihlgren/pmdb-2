@@ -24,10 +24,11 @@ import { ComboboxItemComponent } from '../../../../shared/components/combobox/co
 import { Selectable } from '../../../../shared/models/interfaces/selectable';
 import { ExpandableMultiSelectComponent } from '../../../../shared/components/expandable-multi-select/expandable-multi-select.component';
 import { SelectItemComponent } from '../../../../shared/components/expandable-multi-select/components/select-item/select-item.component';
+import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
 
 @Component({
     selector: 'app-discover-movies',
-    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent, CardLoadingComponent, DropdownListComponent, ComboboxItemComponent, ExpandableMultiSelectComponent, SelectItemComponent],
+    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent, CardLoadingComponent, DropdownListComponent, ComboboxItemComponent, ExpandableMultiSelectComponent, SelectItemComponent, TextInputComponent],
     templateUrl: './discover-movies.component.html',
     styleUrl: './discover-movies.component.css'
 })

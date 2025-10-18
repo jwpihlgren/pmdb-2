@@ -1,0 +1,16 @@
+:host {
+    background: var(--clr-surface-elevation-2);
+    padding-inline: var(--spacing-medium);
+    padding-block: var(--spacing-small);
+    border: 2px solid var(--clr-primary);
+    border-radius: var(--radii-small);
+    display: flex;
+}
+
+:host:has(input[type="text"]:focus-visible) {
+    border-color: var(--clr-accent);
+}
+
+input[type="text"] {
+    all: unset;
+}

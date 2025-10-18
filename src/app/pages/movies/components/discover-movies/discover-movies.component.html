@@ -73,9 +73,9 @@
         <fieldset class="filter">
             <legend>Keywords</legend>
             <div class="keywords">
-                <input type="text" [formControl]="keywordForm.controls.keyword" #trigger />
+                <app-text-input #trigger [formControl]="keywordForm.controls.keyword"></app-text-input>
                 @if(keywordSearchResult().length > 0) {
-                <app-dropdown-list [triggerElement]="trigger">
+                <app-dropdown-list [triggerElement]="trigger.elementRef">
                     @for(result of keywordSearchResult(); track $index) {
                     <li (click)="onKeywordSelect(result)" class="list-item">{{result.name}}</li>
                     }
