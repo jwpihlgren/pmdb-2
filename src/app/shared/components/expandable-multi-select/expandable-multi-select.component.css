@@ -1,16 +1,9 @@
 :host {
-    --checkbox-size: 1.25rem;
-    --checkbox-border-size: 0.125rem;
-    --checkbox-border-radius: var(--radii-medium);
-    --checkbox-check-color: var(--clr-accent);
-    --checkbox-bg-color: var(--clr-surface-elevation-3);
-    --container-border-color: var(--clr-accent);
-
+    
     display: grid;
     gap: var(--spacing-large);
 }
 
 .options-list {
     display: grid;
-    gap: var(--spacing-medium);
 }

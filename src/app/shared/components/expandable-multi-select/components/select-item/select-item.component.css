@@ -1,5 +1,21 @@
 :host {
+    --checkbox-size: 1.25rem;
+    --checkbox-border-size: 0.125rem;
+    --checkbox-border-radius: var(--radii-medium);
+    --checkbox-check-color: var(--clr-accent);
+    --checkbox-check-scale: 0.75;
+    --checkbox-bg-color: var(--clr-surface-elevation-3);
+    --container-border-color: var(--clr-accent);
+
     display: none;
+    cursor: pointer;
+    padding-inline: var(--spacing-small);
+    padding-block: var(--spacing-small);
+
+}
+
+:host:hover {
+    background: var(--clr-surface-elevation-2);
 }
 
 :host.visible {
@@ -40,13 +56,12 @@ input[type="checkbox"]::before {
     height: var(--checkbox-size);
     transform: scale(0);
     /* hidden by default */
-    transition: transform 0.05s ease;
     display: block;
 }
 
 /* Normal checkboxes (not toggler) */
 input[type="checkbox"]:not(#toggle-all):checked::before {
-    transform: scale(1);
+    transform: scale(var(--checkbox-check-scale));
     background: var(--clr-accent);
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
     border-radius: 0;
@@ -79,7 +94,7 @@ input[type="checkbox"]:not(#toggle-all):checked::before {
 
 /* Toggler: all → checkmark */
 :host#toggle-all[data-toggle-state="all"]>input[type="checkbox"]::before {
-    transform: scale(1);
+    transform: scale(var(--checkbox-check-scale));
     background: var(--clr-accent);
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
     border-radius: 0;
