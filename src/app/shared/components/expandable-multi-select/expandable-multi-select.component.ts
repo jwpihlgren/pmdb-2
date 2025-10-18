@@ -39,7 +39,6 @@ export class ExpandableMultiSelectComponent implements AfterViewInit {
     }
 
     updateCumulativeState() {
-        console.log("click")
         if (this.contentChildren().every(c => c.isSelected())) this.cumulativeState.set("all")
         else if (this.contentChildren().some(c => c.isSelected())) this.cumulativeState.set("indeterminate")
         else this.cumulativeState.set("none")

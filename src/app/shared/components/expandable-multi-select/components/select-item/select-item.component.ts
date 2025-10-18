@@ -25,15 +25,15 @@ export class SelectItemComponent implements ControlValueAccessor {
     value = input.required<string>
 
 
-    onChange: any = () => { }
+    onChange: (state: boolean) => void = () => { }
     onTouched: any = () => { }
 
     writeValue(selected: boolean): void {
         this.isSelected.set(selected)
-        this.onChange()
+        this.onChange(this.isSelected())
     }
 
-    registerOnChange(fn: any): void {
+    registerOnChange(fn: (state: boolean) => void): void {
         this.onChange = fn
     }
 
@@ -43,7 +43,7 @@ export class SelectItemComponent implements ControlValueAccessor {
 
     setSelected(state: boolean): void {
         this.isSelected.set(state)
-        this.onChange()
+        this.onChange(this.isSelected())
     }
 
     setVisible(state: boolean): void {
@@ -52,7 +52,7 @@ export class SelectItemComponent implements ControlValueAccessor {
 
     private onClick() {
         this.setSelected(!this.isSelected())
-        this.onChange()
+        this.onChange(this.isSelected())
     }
 
 }
