@@ -1,8 +1,10 @@
+
 .combobox--toggle {
     all: unset;
-    border: 1px solid var(--clr-on-surface);
+    border: 2px solid var(--clr-accent);
+    border-radius: var(--radii-small);
     background-color: var(--clr-surface-elevation-1);
-    color: var(--clr-on-surface);
+    color: var(--clr-on-surface-);
     padding: var(--spacing-md, 1rem);
     position: relative;
     cursor: pointer;

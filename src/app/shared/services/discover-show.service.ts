@@ -38,20 +38,20 @@ export class DiscoverShowService {
     }
 
     private request(params: { query: DiscoverShowFormValue, page?: number }): Observable<ResultShow[]> {
-        const value = params.query
+        const { include, voteAverage, firstAirDate, withKeywords, genres } = params.query
         const page = params.page
-        const genres: string[] = value.genres?.map(value => value.toString()) || []
         const queryBuilder = new ShowDiscoverQueryBuilder(environment.tmdbApiUrl, "discover/tv")
         queryBuilder
             .apiKey(environment.tmdbApiKey)
-            .withGenres(genres)
-        if (value.include.adult !== null) queryBuilder.includeAdult(value.include.adult)
-        if (value.include.video !== null) queryBuilder.includeVideo(value.include.video)
-        if (value.voteAverage.lte && value.voteAverage.lte.length > 0) queryBuilder.voteAverageLte(value.voteAverage.lte[0])
-        if (value.voteAverage.gte && value.voteAverage.gte.length > 0) queryBuilder.voteAverageGte(value.voteAverage.gte[0])
-        if (value.firstAirDate.lte) queryBuilder.firstAirDateLte([+value.firstAirDate.lte, 12, 31])
-        if (value.firstAirDate.gte) queryBuilder.firstAirDateGte([+value.firstAirDate.gte, 1, 1])
-        queryBuilder.page(page)
+            .withGenres(genres.map(g => g.value))
+        if (include.adult) queryBuilder.includeAdult(include.adult)
+        if (include.video) queryBuilder.includeVideo(include.video)
+        if (voteAverage.lte) queryBuilder.voteAverageLte(+voteAverage.lte.value)
+        if (voteAverage.gte) queryBuilder.voteAverageGte(+voteAverage.gte.value)
+        if (firstAirDate.lte) queryBuilder.firstAirDateLte([+firstAirDate.lte.value, 12, 31])
+        if (firstAirDate.gte) queryBuilder.firstAirDateGte([+firstAirDate.gte.value, 1, 1])
+        if (withKeywords.keywords.length > 0) queryBuilder.withKeywords(withKeywords.keywords.map(k => k.value), withKeywords.pipe)
+            queryBuilder.page(page)
         const options = {}
 
         return this.http.get<TmdbResultShowResponse>(queryBuilder.url, options).pipe(

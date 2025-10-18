@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, Input, input, InputSignal, output } from '@angular/core';
+import { AfterViewInit, Component, input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -17,8 +17,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class ListboxComponent implements ControlValueAccessor {
     selected: number[] = []
-    params: InputSignal<ListboxParams> = input.required()
-    multi: InputSignal<boolean> = input(true)
+    params = input.required<ListboxParams>()
+    multi = input(true)
 
     onChange = (selected: any) => { }
 
@@ -59,7 +59,16 @@ export class ListboxComponent implements ControlValueAccessor {
         }
     }
 
-    writeValue(selected: number[]): void {
+    writeValue(selected: number[] | number): void {
+        if (selected === null) {
+            this.selected = []
+            return
+        }
+        if (typeof selected === "number") {
+            this.selected = [selected]
+            return
+        }
+
         this.selected = selected
     }
 

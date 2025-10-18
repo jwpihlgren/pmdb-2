@@ -42,6 +42,11 @@
     --clr-background: var(--clr-primary);
     --clr-on-background: var(--clr-on-primary);
 
+
+    --clr-background-disabled: var(--clr-petroleum-100);
+    --clr-on-background-disabled: var(--clr-petroleum-80);
+    --clr-disabled: var(--clr-petroleum-80);
+
     --clr-surface-elevation-1: var(--clr-petroleum-95);
     --clr-surface-elevation-2: var(--clr-petroleum-90);
     --clr-surface-elevation-3: var(--clr-petroleum-80);

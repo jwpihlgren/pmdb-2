@@ -1,15 +1,11 @@
-<button 
-    (click)="onToggle($event)" 
-    (keyup)="handleKeyUp($event)" 
-    (appClickOutside)="handleClickOutside($event)" 
+<button (click)="onToggle($event)" (keyup)="handleKeyUp($event)" (appClickOutside)="handleClickOutside($event)"
     (appFocusLost)="handleFocusLost($event)" type="button" class="combobox--toggle"
-    formControlName="comboboxFormControl"
-    >
+    formControlName="comboboxFormControl" #trigger>
     {{title()}}
     <div class="combobox--list" [ngClass]="{'combobox--list__open': open}">
-        <ng-content select=".list"></ng-content>
+        <app-dropdown-list [triggerElement]="trigger">
+            <app-combobox-item (click)="reset($event)" class="list-item" [value]="undefined">---</app-combobox-item>
+            <ng-content></ng-content>
+        </app-dropdown-list>
     </div>
 </button>
-<div class="combobox--selected">
-    <ng-content select=".selected"></ng-content>
-</div>

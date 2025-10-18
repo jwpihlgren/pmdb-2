@@ -13,6 +13,10 @@
     justify-content: flex-start;
 }
 
+a:focus-visible {
+    outline: none;
+}
+
 .nav-primary__list {
     display: flex;
     justify-content: center;

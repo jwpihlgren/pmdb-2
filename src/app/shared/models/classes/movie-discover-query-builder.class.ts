@@ -24,6 +24,12 @@ export default class MovieDiscoverQueryBuilder extends QueryBuilder<MovieDiscove
         return `${value.join(operator)}`
     })
 
+    withKeywords = this.paramFactory<string[], Operator>(this, "with_keywords", (value: string[], options: Operator = "or") => {
+        if (value.length === 0) return ""
+        const operator = options === "or" ? "," : "|"
+        return `${value.join(operator)}`
+    })
+
     voteAverageLte = this.paramFactory<number>(this, "vote_average.lte", (value: number) => {
         const max = 10
         const min = 0
@@ -52,7 +58,7 @@ export default class MovieDiscoverQueryBuilder extends QueryBuilder<MovieDiscove
     })
 
     releaseDateGte = this.paramFactory<[number, number, number]>(this, "release_date.gte", (value: [number, number, number]) => {
-        const [year,month,day] = value
+        const [year, month, day] = value
 
         const minYear = 1900
         const maxYear = new Date().getFullYear()
@@ -60,6 +66,9 @@ export default class MovieDiscoverQueryBuilder extends QueryBuilder<MovieDiscove
         if (year < minYear || year > maxYear) return ""
         return `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`
     })
+
+
+
 }
 
 

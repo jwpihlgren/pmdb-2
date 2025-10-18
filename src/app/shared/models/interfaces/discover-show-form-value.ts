@@ -1,6 +1,9 @@
+import { Selectable } from "./selectable"
+
 export interface DiscoverShowFormValue {
-    genres: number[] | string[] | null
+    genres: Selectable[]
     include: {adult: boolean | null, video: boolean | null}
-    firstAirDate: {lte: number[] | null, gte: number[] | null}
-    voteAverage: {lte: number[] | null, gte: number[] | null}
+    firstAirDate: {lte: Selectable | undefined, gte: Selectable | undefined}
+    voteAverage: {lte: Selectable | undefined, gte: Selectable | undefined}
+    withKeywords: {keywords: Selectable[], pipe: "and" | "or"}
 }

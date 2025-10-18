@@ -1,4 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
 import { AppEventService } from '../../../../shared/services/app-event.service';
@@ -9,21 +9,26 @@ import { RoutingService } from '../../../../shared/services/routing.service';
 import { Genre } from '../../../../shared/models/interfaces/genre';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Pagination } from '../../../../shared/models/interfaces/pagination';
-import { map } from 'rxjs';
 import { DiscoverShowFormValue } from '../../../../shared/models/interfaces/discover-show-form-value';
 import { ResultShow } from '../../../../shared/models/interfaces/result-show';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { DiscoverShowService } from '../../../../shared/services/discover-show.service';
-import { ListboxComponent } from '../../../../listbox/listbox.component';
 import { ComboboxComponent } from '../../../../shared/components/combobox/combobox.component';
 import { ChipListComponent } from '../../../../shared/components/chip-list/chip-list.component';
 import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { ContentShowComponent } from '../../../../shared/components/card/components/content-show/content-show.component';
+import { ComboboxItemComponent } from '../../../../shared/components/combobox/components/combobox-item.component';
+import { DropdownListComponent } from '../../../../shared/components/drop-down-list/dropdown-list.component';
+import { ExpandableMultiSelectComponent } from '../../../../shared/components/expandable-multi-select/expandable-multi-select.component';
+import { Selectable } from '../../../../shared/models/interfaces/selectable';
+import { KeywordService } from '../../../../shared/services/keyword.service';
+import { SelectItemComponent } from '../../../../shared/components/expandable-multi-select/components/select-item/select-item.component';
+import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
 
 @Component({
     selector: 'app-discover-shows',
-    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentShowComponent, ListboxComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent, CardLoadingComponent],
+    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentShowComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent, CardLoadingComponent, ComboboxComponent, ComboboxItemComponent, DropdownListComponent, ExpandableMultiSelectComponent, SelectItemComponent, TextInputComponent],
     templateUrl: './discover-shows.component.html',
     styleUrl: './discover-shows.component.css'
 })
@@ -35,6 +40,7 @@ export class DiscoverShowsComponent {
     protected peopleSearchSevice: SearchPeopleService = inject(SearchPeopleService)
     protected routingService: RoutingService = inject(RoutingService)
     protected appEventService: AppEventService = inject(AppEventService)
+    protected keywordService: KeywordService = inject(KeywordService)
     genres!: Genre[]
 
     listboxParams!: { list: { name: string, value: string | number }[] }
@@ -54,39 +60,45 @@ export class DiscoverShowsComponent {
         })
     }
 
+
     discoverForm = this.formBuilder.group({
-        voteAverage: this.formBuilder.group({
-            lte: this.formBuilder.control<number[]>([]),
-            gte: this.formBuilder.control<number[]>([])
+        voteAverage: this.formBuilder.nonNullable.group({
+            lte: this.formBuilder.nonNullable.control<Selectable | undefined>(undefined),
+            gte: this.formBuilder.nonNullable.control<Selectable | undefined>(undefined)
         }),
-        firstAirDate: this.formBuilder.group({
-            lte: this.formBuilder.control<number[]>([]),
-            gte: this.formBuilder.control<number[]>([])
+        firstAirDate: this.formBuilder.nonNullable.group({
+            lte: this.formBuilder.nonNullable.control<Selectable | undefined>(undefined),
+            gte: this.formBuilder.nonNullable.control<Selectable | undefined>(undefined)
         }),
-        include: this.formBuilder.group({
-            adult: this.formBuilder.control(false),
-            video: this.formBuilder.control(false)
+        include: this.formBuilder.nonNullable.group({
+            adult: this.formBuilder.nonNullable.control(false),
+            video: this.formBuilder.nonNullable.control(false)
         }),
-        genres: this.formBuilder.control<number[] | string[]>([]),
+        genres: this.formBuilder.nonNullable.control<Selectable[]>([]),
+        withKeywords: this.formBuilder.nonNullable.group({
+            keywords: this.formBuilder.nonNullable.control<Selectable[]>([]),
+            pipe: this.formBuilder.nonNullable.control<"and" | "or">("and")
+        })
     });
 
-    voteAverageSignal: Signal<{ lte: number | string, gte: number | string }>
-    firstAirDateSignal: Signal<{ lte: number | string, gte: number | string }>
+
+
+    keywordForm = this.formBuilder.group({
+        keyword: this.formBuilder.nonNullable.control("")
+    })
+
+    keywordSearchSignal = toSignal<string>(this.keywordForm.controls.keyword.valueChanges)
+
+    keywordSearchResult = computed(() => {
+        return this.keywordService.search(
+            this.keywordSearchSignal() || "",
+            10,
+            this.withKeywords.controls["keywords"].getRawValue()).map((k) => ({ value: k.id.toString(), name: k.name }))
+    })
 
     constructor() {
-        this.genres = this.configService.showGenres
+        this.genres = this.configService.movieGenres
         this.listboxParams = { list: this.genres.map(g => { return { name: g.name, value: g.id } }) }
-        this.voteAverageSignal = toSignal(this.voteAverage.valueChanges.pipe(
-            map(data => {
-                return { lte: data.lte[0] || "", gte: data.gte[0] || "" }
-            })
-        ), { initialValue: { lte: "", gte: "" } })
-
-        this.firstAirDateSignal = toSignal(this.firstAirDate.valueChanges.pipe(
-            map(data => {
-                return { lte: data.lte[0], gte: data.gte[0] }
-            })
-        ), { initialValue: { lte: "", gte: "" } })
         this.onSubmit()
     }
 
@@ -102,25 +114,66 @@ export class DiscoverShowsComponent {
         return this.discoverForm.get('firstAirDate') as FormGroup
     }
 
+    get include() {
+        return this.discoverForm.get('include') as FormGroup
+    }
+
+    get withKeywords() {
+        return this.discoverForm.get('withKeywords') as FormGroup
+
+    }
+
     onSubmit(): void {
-        const formValue: DiscoverShowFormValue = this.discoverForm.getRawValue()
-        this.discoverService.discover(formValue)
+        const formValues = this.discoverForm.getRawValue() satisfies DiscoverShowFormValue
+        this.discoverService.discover(formValues)
+    }
+
+    onKeywordSubmit(): void {
+        const formValue = this.keywordForm.controls["keyword"].getRawValue()
+        if (!formValue) return
+        const previousValues = this.withKeywords.getRawValue().keywords
+        this.withKeywords.controls["keywords"].setValue([...previousValues, formValue])
+        this.keywordForm.reset()
+    }
+
+    onKeywordSelect(keyword: Selectable): void {
+        const previousValues = this.withKeywords.getRawValue().keywords
+        this.withKeywords.controls["keywords"].setValue([...previousValues, keyword])
+        this.keywordForm.reset()
     }
 
     handlePageRequest(page: number) {
-        const formValue: DiscoverShowFormValue = this.discoverForm.getRawValue()
-        this.discoverService.discover(formValue, page)
+        const values = this.discoverForm.getRawValue() satisfies DiscoverShowFormValue
+        this.discoverService.discover(values, page)
         this.appEventService.emitEvent({ type: "PAGINATION", data: undefined })
     }
 
-    onRemove(value: string): void {
-        const selectedGenres = this.selectedGenres.getRawValue()
-        const updatedGenres = selectedGenres.filter((genre: string | number) => genre.toString() !== value.toString())
-        this.selectedGenres.setValue(updatedGenres)
+
+    onGenreToggle(genre: Genre): void {
+
+        const selectedGenres: Genre[] = this.selectedGenres.getRawValue()
+        const existingIndex = selectedGenres.findIndex(g => g.id === genre.id)
+        if (existingIndex !== -1) {
+            selectedGenres.splice(existingIndex, 1)
+            this.selectedGenres.setValue(selectedGenres)
+            return
+        }
+        this.selectedGenres.setValue(Array.from(new Set([...selectedGenres, genre])))
     }
 
-    parseGenre(id: string | number): string | undefined {
-        return this.genres.find(g => g.id === id)?.name
+    onGenreRemove(genre: Selectable): void {
+        const selectedGenres: Selectable[] = this.selectedGenres.getRawValue()
+        const existingIndex = selectedGenres.findIndex(g => g.value === genre.value)
+        if (existingIndex !== -1) {
+            selectedGenres.splice(existingIndex, 1)
+            this.selectedGenres.setValue(selectedGenres)
+        }
+    }
+
+    onKeywordRemove(index: number): void {
+        const previousValues = [...this.withKeywords.getRawValue().keywords]
+        previousValues.splice(index, 1)
+        this.withKeywords.get("keywords")!.setValue(previousValues)
     }
 
     generateNumberRange(start: number, end: number, step: number = 1): number[] {
@@ -133,14 +186,16 @@ export class DiscoverShowsComponent {
         return range
     }
 
+
+
     createCardParams(show: ResultShow): CardParams {
         const params: CardParams = {
             imageType: "poster",
             direction: "vertical",
             id: show.id,
-            mediaType: "movie",
+            mediaType: "show",
             imageSrc: show.posterImageUrl,
-            href: ["/", this.routingService.stubs.MOVIE, `${show.id}`],
+            href: ["/", this.routingService.stubs.SHOW, `${show.id}`],
             aspectRatio: { numerator: 2, denominator: 3 }
 
         }

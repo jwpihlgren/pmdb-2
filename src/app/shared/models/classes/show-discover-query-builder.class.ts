@@ -24,6 +24,13 @@ export default class ShowDiscoverQueryBuilder extends QueryBuilder<ShowDiscoverQ
         return `${value.join(operator)}`
     })
 
+    withKeywords = this.paramFactory<string[], Operator>(this, "with_keywords", (value: string[], options: Operator = "or") => {
+        if (value.length === 0) return ""
+        const operator = options === "or" ? "," : "|"
+        return `${value.join(operator)}`
+    })
+
+
     voteAverageLte = this.paramFactory<number>(this, "vote_average.lte", (value: number) => {
         const max = 10
         const min = 0
@@ -52,7 +59,7 @@ export default class ShowDiscoverQueryBuilder extends QueryBuilder<ShowDiscoverQ
     })
 
     firstAirDateGte = this.paramFactory<[number, number, number]>(this, "first_air_date.gte", (value: [number, number, number]) => {
-        const [year,month,day] = value
+        const [year, month, day] = value
 
         const minYear = 1900
         const maxYear = new Date().getFullYear()
