@@ -1,37 +1,12 @@
-<a [routerLink]="['../..']" (click)="goBack($event)">Back</a>
-<h1>Credited {{mediaType()}}</h1>
-@defer(when credited() !== undefined) {
 @let cast = credited()!;
-<ul class="list">
-    @for(r of cast; track $index) {
-    <li class="list__item">
-        <a [routerLink]="['/',mediaType(), r.id]" class="list__item-anchor">
-            <app-image class="list__item-image" [params]="createImageParams(r)"></app-image>
-            <div class="list__item-wrapper">
-                @switch(r.mediaType){
-                @case("show") {
-                <div class="list__item-header">
-                    <span class="label-medium">{{r.title}} (as {{r.character}})</span>
-                    <span class="label-medium">{{r.firstAirDate}}</span>
-                </div>
-                }
-                @case("movie") {
-                <div class="list__item-header">
-                    <span class="label-medium">{{r.title}} (as {{r.character}})</span>
-                    <span class="label-medium">{{r.releaseDate}}</span>
-                </div>
-                }
-
-                }
-                <div class="list__item-content">
-                    <span>{{r.overview}}</span>
-                </div>
-            </div>
-        </a>
-    </li>
-    }
-</ul>
-}
-@placeholder{
-Loading ...
-}
+<app-simple-list-page [options]="createListParams()" [items]="cast" [loaded]="!!credited()">
+    <ng-template listItemImage let-item>
+        <app-image [params]="createImageParams(item)"></app-image>
+    </ng-template>
+    <ng-template listItemTitle let-item>
+        {{item.title}} ({{item.releaseDate ? item.releaseDate : item.firstAirDate}})
+    </ng-template>
+    <ng-template listItemContent let-item>
+        {{item.overview}}
+    </ng-template>
+</app-simple-list-page>

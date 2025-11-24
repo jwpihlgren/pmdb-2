@@ -1,5 +1,5 @@
 import { Component, inject, signal, Signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ConfigService } from '../../../../shared/services/config.service';
 import DetailedPeople from '../../../../shared/models/interfaces/detailed-people';
 import { ImageComponent, ImageParams } from '../../../../shared/components/image/image.component';
@@ -7,10 +7,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { combineLatest, map } from 'rxjs';
 import { Location } from '@angular/common';
 import { CreditedMovie, CreditedMovieActor, CreditedShow, CreditedShowActor } from '../../../../shared/models/interfaces/filmography.interface';
+import { ListItemContentDirective, ListItemImageDirective, ListItemTitleDirective, SimpeListPageOptions, SimpleListPageComponent } from '../../../../shared/pages/simple-list-page/simple-list-page.component';
 
 @Component({
     selector: 'app-detailed-people-recommendations',
-    imports: [RouterLink, ImageComponent],
+    imports: [ImageComponent, SimpleListPageComponent, ListItemContentDirective, ListItemImageDirective, ListItemTitleDirective],
     templateUrl: './detailed-people-recommendations.component.html',
     styleUrl: './detailed-people-recommendations.component.css'
 })
@@ -44,6 +45,16 @@ export class DetailedPeopleRecommendationsComponent {
             src: credit.posterImagePath,
             type: "poster"
         }
+    }
+
+    createListParams(): SimpeListPageOptions {
+        const options: SimpeListPageOptions = {
+            title: `Credited ${this.mediaType() === "movies" ? "movies" : "shows"}`,
+            linkFn: (credit: CreditedShow | CreditedMovie) => {
+                return ["/", this.mediaType() === "movies" ? "movies" : "shows", `${credit.id}`]
+            }
+        }
+        return options
     }
 
     goBack(event: Event): void {
