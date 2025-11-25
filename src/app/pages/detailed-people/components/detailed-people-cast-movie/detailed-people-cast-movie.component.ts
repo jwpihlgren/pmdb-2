@@ -16,7 +16,7 @@ import {
     selector: 'app-detailed-people-cast-movie',
     imports: [ImageComponent, SimpleListPageComponent, ListItemComponent],
     template: `
-<app-simple-list-page [options]="listParams" [loaded]="!!credited()">
+<app-simple-list-page [back]="['../..']" [options]="listParams" [loaded]="!!credited()">
     @for(credit of credited(); track $index) {
     <app-list-item [link]="['/', 'movies', credit.id.toString()]">
         <ng-container slot="image">

@@ -39,10 +39,10 @@ export class ListItemComponent {
 export class SimpleListPageComponent {
     loaded = input.required<boolean>()
     options = input<SimpleListPageOptions>()
+    back = input<string[]>()
 }
 
 
 export interface SimpleListPageOptions {
     title?: string
-    linkFn?: (item: any) => string[]
 }

@@ -15,7 +15,7 @@ import { ConfigService } from '../../../../shared/services/config.service';
     selector: 'app-detailed-people-cast-show',
     imports: [ImageComponent, SimpleListPageComponent, ListItemComponent],
     template: `
-<app-simple-list-page [options]="listParams" [loaded]="!!credited()">
+<app-simple-list-page [back]="['../..']" [options]="listParams" [loaded]="!!credited()">
     @for(credit of credited(); track $index) {
     <app-list-item [link]="['/', 'shows', credit.id.toString()]">
         <ng-container slot="image">

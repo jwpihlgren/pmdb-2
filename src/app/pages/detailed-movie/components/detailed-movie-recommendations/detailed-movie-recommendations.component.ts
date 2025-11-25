@@ -18,7 +18,7 @@ import { ChipListComponent } from "../../../../shared/components/chip-list/chip-
     selector: 'app-detailed-movie-recommendations',
     imports: [ImageComponent, ChipComponent, SimpleListPageComponent, ListItemComponent, ChipListComponent],
     template: `
-<app-simple-list-page [loaded]="!!movie()">
+<app-simple-list-page [back]="['../']" [loaded]="!!movie()">
     @for(recommendation of movie().recommendations.results; track $index) {
     <app-list-item [link]="['/', 'movies', recommendation.id.toString()]">
         <ng-container slot="image">
