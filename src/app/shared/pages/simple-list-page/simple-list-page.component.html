@@ -4,7 +4,8 @@
 <ul class="list">
     @for(item of items(); track $index) {
     <li>
-        <a [routerLink]="options()?.linkFn ? options()!.linkFn!(item): undefined" class="list__item">
+        <a [routerLink]="options()?.linkFn ? options()!.linkFn!(item): undefined" class="list__item"
+            [class.list__item--not-has-image]="!imageSlot()">
             @if(imageSlot()) {
             <ng-container *ngTemplateOutlet="imageSlot()!.template; context: {$implicit: item}">
             </ng-container>
