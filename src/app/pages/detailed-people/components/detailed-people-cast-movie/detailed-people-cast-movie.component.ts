@@ -6,20 +6,35 @@ import { ImageComponent, ImageParams } from '../../../../shared/components/image
 import { toSignal } from '@angular/core/rxjs-interop';
 import { combineLatest, map } from 'rxjs';
 import { Location } from '@angular/common';
-import { CreditedMovie, CreditedMovieActor, CreditedShow, CreditedShowActor } from '../../../../shared/models/interfaces/filmography.interface';
+import { CreditedMovie, CreditedMovieActor } from '../../../../shared/models/interfaces/filmography.interface';
 import { ListItemContentDirective, ListItemImageDirective, ListItemTitleDirective, SimpeListPageOptions, SimpleListPageComponent } from '../../../../shared/pages/simple-list-page/simple-list-page.component';
 
 @Component({
-    selector: 'app-detailed-people-recommendations',
+    selector: 'app-detailed-people-cast-movie',
     imports: [ImageComponent, SimpleListPageComponent, ListItemContentDirective, ListItemImageDirective, ListItemTitleDirective],
-    templateUrl: './detailed-people-recommendations.component.html',
-    styleUrl: './detailed-people-recommendations.component.css'
+    template: `
+    @let cast = credited()!;
+    <app-simple-list-page [options]="createListParams()" [items]="cast" [loaded]="!!credited()">
+    <ng-template listItemImage let-item>
+    <app-image [params]="createImageParams(item)"></app-image>
+    </ng-template>
+    <ng-template listItemTitle let-item>
+        {{item.title}} as {{item.cast}}
+    </ng-template>
+    <ng-template listItemExtra let-item>
+        {{item.releaseDate ? item.releaseDate : item.firstAirDate}})
+    </ng-template>
+
+    <ng-template listItemContent let-item>
+        {{item.overview}}
+    </ng-template>
+    </app-simple-list-page>`,
 })
-export class DetailedPeopleRecommendationsComponent {
+export class DetailedPeopleCastMovieComponent {
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     protected location: Location = inject(Location)
     protected configService: ConfigService = inject(ConfigService)
-    credited: Signal<CreditedMovieActor[] | CreditedShowActor[] | undefined>
+    credited: Signal<CreditedMovieActor[] | undefined>
     mediaType = signal("Unknown media")
 
     constructor() {
@@ -30,16 +45,13 @@ export class DetailedPeopleRecommendationsComponent {
             }
         ).pipe(
             map(forked => {
-                const stub: "movies" | "shows" = forked.url.pop()!.path as unknown as "movies" | "shows"
-                this.mediaType.set(stub)
                 const data = forked.data["people"] as DetailedPeople
-                if (stub === "movies") { return data.filmography.allMovies.filter(movie => Object.hasOwn(movie, "character")) as CreditedMovieActor[] }
-                return data.filmography.allShows.filter(show => Object.hasOwn(show, "character")) as CreditedShowActor[]
+                return data.filmography.allMovies.filter(movie => Object.hasOwn(movie, "character")) as CreditedMovieActor[]
             })
         ))
     }
 
-    createImageParams(credit: CreditedShow | CreditedMovie): ImageParams {
+    createImageParams(credit: CreditedMovie): ImageParams {
         return {
             aspectRatio: { numerator: 2, denominator: 3 },
             src: credit.posterImagePath,
@@ -49,9 +61,9 @@ export class DetailedPeopleRecommendationsComponent {
 
     createListParams(): SimpeListPageOptions {
         const options: SimpeListPageOptions = {
-            title: `Credited ${this.mediaType() === "movies" ? "movies" : "shows"}`,
-            linkFn: (credit: CreditedShow | CreditedMovie) => {
-                return ["/", this.mediaType() === "movies" ? "movies" : "shows", `${credit.id}`]
+            title: `Credited moves`,
+            linkFn: (credit: CreditedMovie) => {
+                return ["/", "movies", `${credit.id}`]
             }
         }
         return options
@@ -61,5 +73,5 @@ export class DetailedPeopleRecommendationsComponent {
         event.preventDefault()
         this.location.back()
     }
-
 }
+

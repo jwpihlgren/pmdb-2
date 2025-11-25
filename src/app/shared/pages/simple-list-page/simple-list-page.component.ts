@@ -22,14 +22,15 @@ export class ListItemExtraDirective { constructor(public template: TemplateRef<a
     styleUrl: './simple-list-page.component.css'
 })
 
-export class SimpleListPageComponent {
+export class SimpleListPageComponent<T> {
     imageSlot = contentChild(ListItemImageDirective);
     titleSlot = contentChild(ListItemTitleDirective);
     contentSlot = contentChild(ListItemContentDirective);
+    extraSlot = contentChild(ListItemExtraDirective);
 
     protected location: Location = inject(Location)
     loaded = input.required<boolean>()
-    items = input.required<any[]>();
+    items = input.required<T[]>();
     options = input<SimpeListPageOptions>()
 
     goBack(event: Event): void {

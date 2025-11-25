@@ -4,7 +4,6 @@ import { MoviesComponent } from './pages/movies/movies.component';
 import { ShowsComponent } from './pages/shows/shows.component';
 import { DetailedMovieComponent } from './pages/detailed-movie/detailed-movie.component';
 import { DetailedShowComponent } from './pages/detailed-show/detailed-show.component';
-import { ColorComponent } from './shared/components/color/color.component';
 import { TrendingMoviesComponent } from './pages/movies/components/trending-movies/trending-movies.component';
 import { PopularMoviesComponent } from './pages/movies/components/popular-movies/popular-movies.component';
 import { DiscoverMoviesComponent } from './pages/movies/components/discover-movies/discover-movies.component';
@@ -21,13 +20,14 @@ import { DetailedShowOverviewComponent } from './pages/detailed-show/components/
 import { DetailedShowCastComponent } from './pages/detailed-show/components/detailed-show-cast/detailed-show-cast.component';
 import { DetailedShowRecommendationsComponent } from './pages/detailed-show/components/detailed-show-recommendations/detailed-show-recommendations.component';
 import { detailedPeopleResolver } from './shared/resolvers/detailed-people.resolver';
-import { DetailedPeopleRecommendationsComponent } from './pages/detailed-people/components/detailed-people-recommendations/detailed-people-recommendations.component';
 import { DetailedPeopleOverviewComponent } from './pages/detailed-people/components/detailed-people-overview/detailed-people-overview.component';
 import { DetailedPeopleImagesComponent } from './pages/detailed-people/components/detailed-people-images/detailed-people-images.component';
 import { SeasonsComponent } from './pages/detailed-show/components/seasons/seasons.component';
 import { DetailedSeasonComponent } from './pages/detailed-show/components/detailed-season/detailed-season.component';
 import { detailedSeasonResolver } from './shared/resolvers/detailed-season.resolver';
 import { TestComponent } from './shared/components/test/test.component';
+import { DetailedPeopleCastMovieComponent } from './pages/detailed-people/components/detailed-people-cast-movie/detailed-people-cast-movie.component';
+import { DetailedPeopleCastShowComponent } from './pages/detailed-people/components/detailed-people-cast-show/detailed-people-cast-show.component';
 
 export const routes: Routes = [
     { path: "", pathMatch: "full", component: HomeComponent },
@@ -72,8 +72,8 @@ export const routes: Routes = [
         path: "people/:id", component: DetailedPeopleComponent, resolve: { people: detailedPeopleResolver }, children: [
             { path: "", component: DetailedPeopleOverviewComponent },
             { path: "images", component: DetailedPeopleImagesComponent },
-            { path: "cast/movies", component: DetailedPeopleRecommendationsComponent },
-            { path: "cast/shows", component: DetailedPeopleRecommendationsComponent },
+            { path: "cast/movies", component: DetailedPeopleCastMovieComponent },
+            { path: "cast/shows", component: DetailedPeopleCastShowComponent },
         ]
     },
     { path: "test", pathMatch: "full", component: TestComponent },

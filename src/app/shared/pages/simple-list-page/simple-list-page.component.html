@@ -18,15 +18,20 @@
                     </ng-container>
                 </span>
                 }
-                @if(contentSlot()) {
-                <span class="body__content">
+                @if(extraSlot()) {
+                <span class="body__extra">
                     <ng-container *ngTemplateOutlet="contentSlot()!.template; context: {$implicit: item}">
                     </ng-container>
                 </span>
 
                 }
+                @if(contentSlot()) {
+                <span class="body__content">
+                    <ng-container *ngTemplateOutlet="contentSlot()!.template; context: {$implicit: item}">
+                    </ng-container>
+                </span>
+                }
             </div>
-
         </a>
     </li>
     }
