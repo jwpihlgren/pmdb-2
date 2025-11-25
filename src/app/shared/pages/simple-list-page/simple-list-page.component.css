@@ -54,6 +54,6 @@
 }
 
 
-.body__content {
+.list__item-content {
     color: var(--clr-on-surface);
 }

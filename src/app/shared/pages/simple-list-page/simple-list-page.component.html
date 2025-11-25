@@ -1,41 +1,10 @@
 @if(loaded()) {
-<a [routerLink]="['../..']" (click)="goBack($event)">Back</a>
+<a [routerLink]="['../..']">Back</a>
 <h1>{{options()?.title}}</h1>
 <ul class="list">
-    @for(item of items(); track $index) {
-    <li>
-        <a [routerLink]="options()?.linkFn ? options()!.linkFn!(item): undefined" class="list__item"
-            [class.list__item--not-has-image]="!imageSlot()">
-            @if(imageSlot()) {
-            <ng-container *ngTemplateOutlet="imageSlot()!.template; context: {$implicit: item}">
-            </ng-container>
-            }
-
-            <div class="list__item-body">
-                @if(titleSlot()) {
-                <span class="label-medium">
-                    <ng-container *ngTemplateOutlet="titleSlot()!.template; context: {$implicit: item}">
-                    </ng-container>
-                </span>
-                }
-                @if(extraSlot()) {
-                <span class="body__extra">
-                    <ng-container *ngTemplateOutlet="contentSlot()!.template; context: {$implicit: item}">
-                    </ng-container>
-                </span>
-
-                }
-                @if(contentSlot()) {
-                <span class="body__content">
-                    <ng-container *ngTemplateOutlet="contentSlot()!.template; context: {$implicit: item}">
-                    </ng-container>
-                </span>
-                }
-            </div>
-        </a>
-    </li>
-    }
+    <ng-content></ng-content>
 </ul>
+
 }
 @else{
 Loading ...
