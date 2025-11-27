@@ -2,7 +2,7 @@
 @let p = detailedPeople()!;
 @let f = p.filmography;
 <main>
-    <div class="container">
+    <app-page-container>
         <section class="hero">
             <app-image class="hero--image" [params]="posterParams"></app-image>
             <div class="hero--about">
@@ -134,7 +134,8 @@
                 </div>
             </aside>
         </section>
-    </div>
+    </app-page-container>
+
 </main>
 
 }

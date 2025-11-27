@@ -5,11 +5,12 @@ import { ImageService } from '../../shared/services/image.service';
 import { DetailedShow } from '../../shared/models/interfaces/detailed-show';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { PageContainerComponent } from '../../shared/components/page-container/page-container.component';
 
 @Component({
   selector: 'app-detailed-show',
   standalone: true,
-  imports: [RouterOutlet, NgOptimizedImage],
+  imports: [RouterOutlet, NgOptimizedImage, PageContainerComponent],
   templateUrl: './detailed-show.component.html',
   styleUrl: './detailed-show.component.css'
 })

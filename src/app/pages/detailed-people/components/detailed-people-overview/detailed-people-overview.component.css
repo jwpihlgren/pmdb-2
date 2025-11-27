@@ -26,14 +26,6 @@ main {
 
 }
 
-.container {
-    min-height: calc(100vh - var(--app-header-height));
-    display: grid;
-    gap: var(--spacing-large, 2rem);
-    padding-inline: var(--spacing-extra-large, 4rem);
-    padding-block-start: var(--spacing-xx-large, 6rem);
-}
-
 .hero {
     display: grid;
     grid-template-columns: minmax(150px, 400px) minmax(300px, 1fr);

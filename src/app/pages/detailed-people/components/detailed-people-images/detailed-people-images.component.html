@@ -2,18 +2,20 @@
 <h1>Images</h1>
 
 <section>
-    <app-lightbox [visible]="lightboxOpen()" (closeRequest)="closeLightbox()" [params]="createLightboxImageParams(detailedPeople().images)"></app-lightbox>
+    <app-lightbox [visible]="lightboxOpen()" (closeRequest)="closeLightbox()"
+        [params]="createLightboxImageParams(detailedPeople().images)"></app-lightbox>
 </section>
 <section class="">
     <div>
-        <ul class="list">
+        <app-simple-grid>
             @for(i of detailedPeople().images; track $index) {
             <li (click)="openLightbox($index)" class="list__item">
                 <app-card [params]="createParams(i)">
                 </app-card>
 
             </li>
+
             }
-        </ul>
+        </app-simple-grid>
     </div>
 </section>

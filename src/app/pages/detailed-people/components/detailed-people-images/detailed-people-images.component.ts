@@ -7,10 +7,11 @@ import { map } from 'rxjs';
 import { Location } from '@angular/common';
 import { Image } from '../../../../shared/models/interfaces/image';
 import { LightboxComponent, LightboxParams } from '../../../../shared/components/lightbox/lightbox.component';
+import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 
 @Component({
     selector: 'app-detailed-people-images',
-    imports: [RouterLink, CardComponent, LightboxComponent],
+    imports: [RouterLink, CardComponent, LightboxComponent, SimpleGridComponent],
     templateUrl: './detailed-people-images.component.html',
     styleUrl: './detailed-people-images.component.css'
 })

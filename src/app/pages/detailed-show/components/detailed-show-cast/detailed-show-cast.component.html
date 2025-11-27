@@ -2,8 +2,7 @@
 <h1>Cast and crew</h1>
 <section>
     <h2>cast</h2>
-    <ul class="list">
-        @for(c of detailedShow().credits.cast; track $index) {
+    <app-simple-grid> @for(c of detailedShow().credits.cast; track $index) {
         <li class="list__item">
             <app-card [params]="createParams(c)">
                 <div class="list--about">
@@ -12,16 +11,14 @@
                     </h5>
                     <span>{{c.name}}</span>
                 </div>
-
             </app-card>
-
         </li>
         }
-    </ul>
+    </app-simple-grid>
 </section>
 <section>
     <h2>crew</h2>
-    <ul class="list">
+    <app-simple-grid>
         @for(c of detailedShow().credits.crew; track $index) {
         <li class="list__item">
             <app-card [params]="createParams(c)">
@@ -34,5 +31,5 @@
             </app-card>
         </li>
         }
-    </ul>
+    </app-simple-grid>
 </section>

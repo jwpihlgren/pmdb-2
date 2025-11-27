@@ -6,10 +6,11 @@ import { map } from 'rxjs';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { Location } from '@angular/common';
 import { AppEventTriggerDirective } from '../../../../shared/directives/app-event-trigger.directive';
+import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 
 @Component({
     selector: 'app-detailed-show-cast',
-    imports: [RouterLink, CardComponent],
+    imports: [RouterLink, CardComponent, SimpleGridComponent],
     templateUrl: './detailed-show-cast.component.html',
     styleUrl: './detailed-show-cast.component.css',
     hostDirectives: [AppEventTriggerDirective]

@@ -12,10 +12,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { environment } from '../../../../../environments/environment.development';
 import { AppEventTriggerDirective } from '../../../../shared/directives/app-event-trigger.directive';
+import { PageContainerComponent } from '../../../../shared/components/page-container/page-container.component';
 
 @Component({
     selector: 'app-detailed-movie-overview',
-    imports: [ImageComponent, ChipComponent, CardComponent, RouterLink, DecimalPipe],
+    imports: [ImageComponent, ChipComponent, CardComponent, RouterLink, DecimalPipe, PageContainerComponent],
     templateUrl: './detailed-movie-overview.component.html',
     styleUrl: './detailed-movie-overview.component.css',
     hostDirectives: [{

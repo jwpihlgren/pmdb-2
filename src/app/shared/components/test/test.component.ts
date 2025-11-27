@@ -12,13 +12,5 @@ export class TestComponent {
 
     options: Selectable[] = [
         { value: "red", name: "red" },
-        { value: "blue", name: "blue" },
-        { value: "green", name: "green" },
-        { value: "red", name: "red" },
-        { value: "blue", name: "blue" },
-        { value: "green", name: "green" },
-        { value: "red", name: "red" },
-        { value: "blue", name: "blue" },
-        { value: "green", name: "green" },
-    ]
+        ]
 }
