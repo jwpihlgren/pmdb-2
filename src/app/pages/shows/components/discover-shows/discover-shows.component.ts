@@ -1,6 +1,5 @@
 import { Component, computed, inject, Signal } from '@angular/core';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
-import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
 import { AppEventService } from '../../../../shared/services/app-event.service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ConfigService } from '../../../../shared/services/config.service';
@@ -25,10 +24,11 @@ import { Selectable } from '../../../../shared/models/interfaces/selectable';
 import { KeywordService } from '../../../../shared/services/keyword.service';
 import { SelectItemComponent } from '../../../../shared/components/expandable-multi-select/components/select-item/select-item.component';
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
+import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 
 @Component({
     selector: 'app-discover-shows',
-    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentShowComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent, CardLoadingComponent, ComboboxComponent, ComboboxItemComponent, DropdownListComponent, ExpandableMultiSelectComponent, SelectItemComponent, TextInputComponent],
+    imports: [ReactiveFormsModule, SimpleGridComponent, CardComponent, ContentShowComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent, CardLoadingComponent, ComboboxComponent, ComboboxItemComponent, DropdownListComponent, ExpandableMultiSelectComponent, SelectItemComponent, TextInputComponent],
     templateUrl: './discover-shows.component.html',
     styleUrl: './discover-shows.component.css'
 })
@@ -42,7 +42,7 @@ export class DiscoverShowsComponent {
     protected appEventService: AppEventService = inject(AppEventService)
     protected keywordService: KeywordService = inject(KeywordService)
     genres!: Genre[]
-
+    cardMaxWidth = "250px"
     listboxParams!: { list: { name: string, value: string | number }[] }
     years: number[] = this.generateNumberRange(new Date().getFullYear(), 1900)
     results = toSignal(this.discoverService.results$)

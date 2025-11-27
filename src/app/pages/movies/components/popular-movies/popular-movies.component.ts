@@ -1,8 +1,7 @@
-import { Component, inject, OnChanges, Signal, SimpleChanges } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
-import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
 import { PopularMoviesService } from '../../../../shared/services/popular-movies.service';
@@ -10,14 +9,15 @@ import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { RoutingService } from '../../../../shared/services/routing.service';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 import { PrefetchService } from '../../../../shared/services/prefetch.service';
-import { first, map, switchMap } from 'rxjs';
+import { map, switchMap } from 'rxjs';
 import { DetailedMovieService } from '../../../../shared/services/detailed-movie.service';
 import { DetailedMovie } from '../../../../shared/models/interfaces/detailed-movie';
 import { AppEventService } from '../../../../shared/services/app-event.service';
+import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 
 @Component({
     selector: 'app-popular-movies',
-    imports: [PaginationComponent, CardComponent, ContentMovieComponent, CardGridComponent, CardLoadingComponent],
+    imports: [PaginationComponent, CardComponent, ContentMovieComponent, CardLoadingComponent, SimpleGridComponent],
     templateUrl: './popular-movies.component.html',
     styleUrl: './popular-movies.component.css',
     standalone: true
@@ -35,6 +35,7 @@ export class PopularMoviesComponent {
     paginationResult
     prefetch: Signal<DetailedMovie | undefined>
     page: Signal<number | undefined>
+    cardMaxWidth = "250px"
 
     constructor() {
         this.prefetch = toSignal(this.prefetchService.prefetch$.pipe(

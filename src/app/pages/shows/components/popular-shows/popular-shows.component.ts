@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { PopularShowsService } from '../../../../shared/services/popular-shows.service';
-import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
 import { ContentShowComponent } from '../../../../shared/components/card/components/content-show/content-show.component';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
@@ -13,10 +12,11 @@ import { AppEventService } from '../../../../shared/services/app-event.service';
 import { DetailedShowService } from '../../../../shared/services/detailed-show.service';
 import { PrefetchService } from '../../../../shared/services/prefetch.service';
 import { first, map } from 'rxjs';
+import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 
 @Component({
     selector: 'app-popular-shows',
-    imports: [CardGridComponent, CardComponent, ContentShowComponent, PaginationComponent, CardLoadingComponent],
+    imports: [SimpleGridComponent, CardComponent, ContentShowComponent, PaginationComponent, CardLoadingComponent],
     templateUrl: './popular-shows.component.html',
     styleUrl: './popular-shows.component.css'
 })
@@ -33,6 +33,7 @@ export class PopularShowsComponent {
     paginationResult: Signal<Pagination>
     prefetchSignal: Signal<number | undefined>
     page: Signal<number | undefined>
+    cardMaxWidth = "250px"
 
 
     constructor() {

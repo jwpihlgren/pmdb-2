@@ -1,12 +1,12 @@
-import { Component, inject, output, Signal } from '@angular/core';
-import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
+import { Component, inject, Signal } from '@angular/core';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { Pagination } from '../../../../shared/models/interfaces/pagination';
 import { TrendingMoviesService } from '../../../../shared/services/trending-movies.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
-import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
+import { ContentMovieComponent } from
+    '../../../../shared/components/card/components/content-movie/content-movie.component';
 import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { RoutingService } from '../../../../shared/services/routing.service';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
@@ -18,7 +18,7 @@ import { SimpleGridComponent } from '../../../../shared/components/simple-grid/s
 
 @Component({
     selector: 'app-trending-movies',
-    imports: [CardGridComponent, PaginationComponent, CardComponent, ContentMovieComponent, CardLoadingComponent, SimpleGridComponent],
+    imports: [PaginationComponent, CardComponent, ContentMovieComponent, CardLoadingComponent, SimpleGridComponent],
     templateUrl: './trending-movies.component.html',
     styleUrl: './trending-movies.component.css',
     standalone: true
@@ -37,6 +37,8 @@ export class TrendingMoviesComponent {
     paginationResult: Signal<Pagination>
     page: Signal<number | undefined>
     prefetch: Signal<number | undefined>
+    cardMaxWidth = "250px"
+
 
     constructor() {
         this.prefetch = toSignal(this.prefetchService.prefetch$.pipe(
@@ -57,7 +59,10 @@ export class TrendingMoviesComponent {
             })
         ))
         this.trendingMovies = toSignal(this.trendingMoviesService.get())
-        this.paginationResult = toSignal(this.trendingMoviesService.getPaginationResults(), { requireSync: true })
+        this.paginationResult = toSignal(this.trendingMoviesService.getPaginationResults(), {
+            requireSync:
+                true
+        })
     }
 
     paginate(page: number): void {

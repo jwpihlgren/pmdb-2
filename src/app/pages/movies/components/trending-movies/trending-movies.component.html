@@ -1,5 +1,5 @@
 @defer(when trendingMovies() !== undefined) {
-<app-simple-grid [maxWidth]="'250px'">
+<app-simple-grid [maxWidth]="cardMaxWidth">
     @for( movie of trendingMovies(); track $index) {
     <app-card (mouseenter)="prefetchService.startIntent(movie.id)" (mouseleave)="prefetchService.clearIntent()"
         [params]="createCardParams(movie)">
@@ -12,7 +12,7 @@
 }
 
 @loading() {
-<app-simple-grid [maxWidth]="'250px'">
+<app-simple-grid [maxWidth]="cardMaxWidth">
     @for(card of [].constructor(20); track $index){
     <app-card-loading></app-card-loading>
     }
@@ -22,7 +22,7 @@
 
 @placeholder {
 
-<app-simple-grid [maxWidth]="'250px'">
+<app-simple-grid [maxWidth]="cardMaxWidth">
     @for(card of [].constructor(20); track $index){
     <app-card-loading></app-card-loading>
     }
