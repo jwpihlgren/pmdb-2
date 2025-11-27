@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TabbedMenuComponent } from '../../shared/components/tabbed-menu/tabbed-menu.component';
+import { PageContainerComponent } from '../../shared/components/page-container/page-container.component';
 
 @Component({
     selector: 'app-shows',
     standalone: true,
-    imports: [RouterOutlet, TabbedMenuComponent],
+    imports: [RouterOutlet, TabbedMenuComponent, PageContainerComponent],
     templateUrl: './shows.component.html',
     styleUrl: './shows.component.css'
 })
