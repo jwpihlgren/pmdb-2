@@ -1,0 +1,5 @@
+.grid-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr))
+}
+
