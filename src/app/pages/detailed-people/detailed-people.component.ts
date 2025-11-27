@@ -18,11 +18,9 @@ export class DetailedPeopleComponent {
     constructor() {
         this.detailedPeople = toSignal(this.activatedRoute.data.pipe(
             map(data => {
-                const people: DetailedPeople  = data["people"] as DetailedPeople
+                const people: DetailedPeople = data["people"] as DetailedPeople
                 return people
             })
-        ), {requireSync: true})
+        ), { requireSync: true })
     }
 }
-
-

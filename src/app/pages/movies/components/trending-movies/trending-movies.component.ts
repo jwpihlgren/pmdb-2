@@ -14,10 +14,11 @@ import { DetailedMovieService } from '../../../../shared/services/detailed-movie
 import { first, map } from 'rxjs';
 import { PrefetchService } from '../../../../shared/services/prefetch.service';
 import { AppEventService } from '../../../../shared/services/app-event.service';
+import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 
 @Component({
     selector: 'app-trending-movies',
-    imports: [CardGridComponent, PaginationComponent, CardComponent, ContentMovieComponent, CardLoadingComponent],
+    imports: [CardGridComponent, PaginationComponent, CardComponent, ContentMovieComponent, CardLoadingComponent, SimpleGridComponent],
     templateUrl: './trending-movies.component.html',
     styleUrl: './trending-movies.component.css',
     standalone: true

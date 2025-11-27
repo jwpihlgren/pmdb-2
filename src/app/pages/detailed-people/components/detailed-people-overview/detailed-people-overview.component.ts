@@ -8,11 +8,10 @@ import { environment } from '../../../../../environments/environment.development
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import Metadata from '../../../../shared/models/interfaces/meta-data.interface';
 import { RoutingService } from '../../../../shared/services/routing.service';
-import { PageContainerComponent } from '../../../../shared/components/page-container/page-container.component';
 
 @Component({
     selector: 'app-detailed-people-overview',
-    imports: [ImageComponent, CardComponent, RouterLink, PageContainerComponent],
+    imports: [ImageComponent, CardComponent, RouterLink],
     templateUrl: './detailed-people-overview.component.html',
     styleUrl: './detailed-people-overview.component.css'
 })

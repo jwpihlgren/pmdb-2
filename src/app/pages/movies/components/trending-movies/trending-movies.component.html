@@ -1,27 +1,31 @@
 @defer(when trendingMovies() !== undefined) {
-<app-card-grid>
+<app-simple-grid [maxWidth]="'250px'">
     @for( movie of trendingMovies(); track $index) {
-    <app-card (mouseenter)="prefetchService.startIntent(movie.id)" (mouseleave)="prefetchService.clearIntent()"  [params]="createCardParams(movie)">
+    <app-card (mouseenter)="prefetchService.startIntent(movie.id)" (mouseleave)="prefetchService.clearIntent()"
+        [params]="createCardParams(movie)">
         <app-content-movie [params]="movie"></app-content-movie>
     </app-card>
     }
-</app-card-grid>
+</app-simple-grid>
+
 <app-pagination (pageRequest)="paginate($event)" [pagination]=paginationResult()></app-pagination>
 }
 
 @loading() {
-<app-card-grid>
+<app-simple-grid [maxWidth]="'250px'">
     @for(card of [].constructor(20); track $index){
     <app-card-loading></app-card-loading>
     }
-</app-card-grid>
+
+</app-simple-grid>
 }
 
 @placeholder {
-<app-card-grid>
+
+<app-simple-grid [maxWidth]="'250px'">
     @for(card of [].constructor(20); track $index){
     <app-card-loading></app-card-loading>
     }
-</app-card-grid>
+</app-simple-grid>
 
 }
