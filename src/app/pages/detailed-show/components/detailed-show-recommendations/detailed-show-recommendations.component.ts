@@ -9,7 +9,7 @@ import { ChipComponent } from '../../../../shared/components/chip-list/component
 import { Genre } from '../../../../shared/models/interfaces/genre';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { Location } from '@angular/common';
-import { SimpleListPageComponent, ListItemComponent } from
+import { SimpleListPageComponent, ListItemComponent, SimpleListPageOptions } from
     "../../../../shared/pages/simple-list-page/simple-list-page.component";
 import { ChipListComponent } from "../../../../shared/components/chip-list/chip-list.component";
 
@@ -17,7 +17,7 @@ import { ChipListComponent } from "../../../../shared/components/chip-list/chip-
     selector: 'app-detailed-show-recommendations',
     imports: [ImageComponent, ChipComponent, SimpleListPageComponent, ListItemComponent, ChipListComponent],
     template: `
-<app-simple-list-page [back]="['../']" [loaded]="!!detailedShow()">
+<app-simple-list-page  [options]="listParams" [back]="['../']" [loaded]="!!detailedShow()">
     @for(recommendation of detailedShow().recommendations; track $index) {
     <app-list-item [link]="['/', 'shows', recommendation.id.toString()]">
         <ng-container slot="image">
@@ -61,6 +61,10 @@ export class DetailedShowRecommendationsComponent {
             src: show.posterPath,
             type: "poster",
         }
+    }
+    
+    listParams: SimpleListPageOptions = {
+        title: "Recommendations"
     }
 
 

@@ -13,7 +13,7 @@ import { SimpleListPageComponent, ListItemComponent, SimpleListPageOptions } fro
     selector: 'app-seasons',
     imports: [ImageComponent, ListItemComponent, SimpleListPageComponent],
     template: `
-<app-simple-list-page [back]="['../..']" [options]="listParams" [loaded]="!!detailedShow()">
+<app-simple-list-page [back]="['../']" [options]="listParams" [loaded]="!!detailedShow()">
     @for(season of detailedShow().seasons; track $index) {
     <app-list-item [link]="['./', season.seasonNumber.toString()]">
         <ng-container slot="image">
