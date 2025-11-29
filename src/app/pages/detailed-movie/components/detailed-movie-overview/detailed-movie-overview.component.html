@@ -1,7 +1,7 @@
 @let m = detailedMovie();
-<section class="hero">
-    <app-image class="hero--image" [params]="posterParams(m)"></app-image>
-    <div class="hero--about">
+<app-content-hero>
+    <app-image ngProjectAs="hero-image" [rounded]="true" [params]="posterParams(m)"></app-image>
+    <ng-container ngProjectAs="hero-about">
         <div class="hero--header">
             <h1 [title]="'Original title: ' + m.originalTitle">{{m.title}}
                 @if(m.status !== "released"){
@@ -27,69 +27,42 @@
             }
         </div>
         <a [href]="imdbUrl(m)" rel="noreferrer" target="_blank">View at imdb</a>
-    </div>
-</section>
-<section class="content">
-    <div class="main">
-        <article class="article cast-and-crew">
-            @let top = topBilled(m);
-            <div class="article__header">
-                <h2>Top billed cast</h2>
-                @if(top.length > 0) {
-                <a [routerLink]="['cast-and-crew']">Show all</a>
-                }
-            </div>
-            @if(top.length > 0) {
-            <ul class="article--grid">
-                @for(top of topBilled(m); track $index){
-                <app-card class="article--item" [params]="createTopCardParams(top)">
-                    <div class="article--about">
-                        <h5 class="article--about__accent">
-                            {{top.character}}
-                        </h5>
-                        <span>{{top.name}}</span>
-                    </div>
-                </app-card>
+    </ng-container>
+</app-content-hero>
 
-                }
-            </ul>
-            } @else {
-            No top billed cast
-            }
-        </article>
-
-        <article class="article recommendations">
-            <div class="article__header">
-                <h2>Recommendations</h2>
-                @if(m.recommendations.results.length > 0) {
-                <a [routerLink]="['recommendations']">Show all</a>
-                }
-            </div>
-            @if(m.recommendations.results.length > 0) {
-            <ul class="article--grid">
-                @for(rec of m.recommendations.results; track $index){
-                <app-card class="article--item" [params]="createRecommendationCardParams(rec)">
-                    <div class="article--about">
-                        <h5 class="article--about__accent">
-                            {{rec.title}}
-                        </h5>
-                        <span>{{rec.releaseDate}}</span>
-                    </div>
-                </app-card>
-                }
-            </ul>
-            }
-            @else{
-            No recommendations
-            }
-        </article>
-    </div>
-    <aside class="content__aside">
+<app-content-with-sidebar>
+    <ng-container ngProjectAs="sidebar-content">
         <h2>Keywords</h2>
         <div class="meta--keywords">
             @for(keyword of m.keywords; track $index) {
             <app-chip [value]="keyword.name">{{keyword.name}}</app-chip>
             }
         </div>
-    </aside>
-</section>
+    </ng-container>
+    <ng-container ngProjectAs="main-content">
+        <app-overflow-row [options]="castOptions()">
+            @for(top of topBilled(m); track $index){
+            <app-card class="article--item" [params]="createTopCardParams(top)">
+                <div class="article--about">
+                    <h5 class="article--about__accent">
+                        {{top.character}}
+                    </h5>
+                    <span>{{top.name}}</span>
+                </div>
+            </app-card>
+            }
+        </app-overflow-row>
+        <app-overflow-row [options]="recommendedOptions()">
+            @for(rec of m.recommendations.results; track $index){
+            <app-card class="article--item" [params]="createRecommendationCardParams(rec)">
+                <div class="article--about">
+                    <h5 class="article--about__accent">
+                        {{rec.title}}
+                    </h5>
+                    <span>{{rec.releaseDate}}</span>
+                </div>
+            </app-card>
+            }
+        </app-overflow-row>
+    </ng-container>
+</app-content-with-sidebar>
