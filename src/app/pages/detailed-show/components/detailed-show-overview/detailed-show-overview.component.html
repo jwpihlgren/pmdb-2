@@ -1,6 +1,9 @@
 @let m = detailedShow();
 <section class="hero">
-    <app-image class="hero--image" [params]="posterParams(m)"></app-image>
+    <div class="hero--image">
+
+        <app-image [rounded]="true" [params]="posterParams(m)"></app-image>
+    </div>
     <div class="hero--about">
         <div class="hero--header">
             <h1 [title]="'Original title: ' + m.originalName">{{m.name}}
