@@ -13,7 +13,7 @@ padding-inline: var(--spacing-extra-large, 4rem);
 padding-block-start: var(--spacing-xx-large, 6rem);
 @media(max-width: 768px) {
 padding-inline: var(--spacing-medium);
-padding-block-start: var(--spacing-large);
+padding-block-start: var(--spacing-large, );
 
 }
 

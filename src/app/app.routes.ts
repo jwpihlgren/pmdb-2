@@ -64,7 +64,7 @@ export const routes: Routes = [
             { path: "cast-and-crew", component: DetailedShowCastComponent, pathMatch: "full" },
             { path: "recommendations", component: DetailedShowRecommendationsComponent, pathMatch: "full" },
             { path: "seasons", component: SeasonsComponent, pathMatch: "full" },
-            { path: "seasons/:seasonId", component: DetailedSeasonComponent, pathMatch: "full", resolve: {season: detailedSeasonResolver} },
+            { path: "seasons/:seasonId", component: DetailedSeasonComponent, pathMatch: "full", resolve: { season: detailedSeasonResolver } },
         ]
     },
     //People

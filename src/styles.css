@@ -146,7 +146,7 @@
 }
 
 
-body-medium {
+.body-medium {
     font-size: var(--fs-body-medium);
     font-weight: var(--fw-body);
     letter-spacing: var(--letter-spacing-body-medium);
@@ -287,6 +287,10 @@ img {
     color: var(--clr-accent);
     border: 2px solid var(--clr-accent);
 
+}
+
+router-outlet {
+    display: contents;
 }
 
 a {
