@@ -32,17 +32,16 @@
         <a [href]="imdbUrl(m)" rel="noreferrer" target="_blank">View at imdb</a>
     </div>
 </section>
-<section class="content">
-    <aside class="content__aside">
+<app-content-with-sidebar>
+    <ng-container ngProjectAs="sidebar-content">
         <h2>Keywords</h2>
         <div class="meta--keywords">
             @for(keyword of m.keywords; track $index) {
             <app-chip [value]="keyword.name">{{keyword.name}}</app-chip>
             }
         </div>
-    </aside>
-
-    <div class="main">
+    </ng-container>
+    <ng-container ngProjectAs="main-content">
         <article class="article seasons">
             <div class="article__header">
                 <h2>Seasons ({{m.numberOfSeasons}})</h2>
@@ -115,5 +114,5 @@
             No recommendations
             }
         </article>
-    </div>
-</section>
+    </ng-container>
+</app-content-with-sidebar>

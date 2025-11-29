@@ -11,10 +11,11 @@ import { environment } from '../../../../../environments/environment';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { RoutingService } from '../../../../shared/services/routing.service';
 import { AppEventTriggerDirective } from '../../../../shared/directives/app-event-trigger.directive';
+import { ContentWithSidebarComponent } from '../../../../shared/components/content-with-sidebar/content-with-sidebar.component';
 
 @Component({
     selector: 'app-detailed-show-overview',
-    imports: [ImageComponent, ChipComponent, DecimalPipe, RouterLink, CardComponent],
+    imports: [ImageComponent, ChipComponent, DecimalPipe, RouterLink, CardComponent, ContentWithSidebarComponent],
     templateUrl: './detailed-show-overview.component.html',
     styleUrl: './detailed-show-overview.component.css',
     hostDirectives: [AppEventTriggerDirective]

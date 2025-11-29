@@ -17,7 +17,7 @@ import { ImageService } from '../../services/image.service';
 })
 export class ImageComponent {
     params = input.required<ImageParams>()
-    rounded = input(true)
+    rounded = input(false)
     protected imageService: ImageService = inject(ImageService)
 
     sanitizeUrl(url: string): string {
