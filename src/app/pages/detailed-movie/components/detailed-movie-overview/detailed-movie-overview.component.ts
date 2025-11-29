@@ -3,7 +3,7 @@ import { ImageComponent, ImageParams } from '../../../../shared/components/image
 import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { DetailedMovie } from '../../../../shared/models/interfaces/detailed-movie';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import Metadata from '../../../../shared/models/interfaces/meta-data.interface';
 import { DecimalPipe } from '@angular/common';
 import { RoutingService } from '../../../../shared/services/routing.service';
@@ -18,7 +18,7 @@ import { ContentWithSidebarComponent } from '../../../../shared/components/conte
 
 @Component({
     selector: 'app-detailed-movie-overview',
-    imports: [ImageComponent, ChipComponent, CardComponent, RouterLink, DecimalPipe, OverflowRowComponent, ContentHeroComponent, ContentWithSidebarComponent],
+    imports: [ImageComponent, ChipComponent, CardComponent, DecimalPipe, OverflowRowComponent, ContentHeroComponent, ContentWithSidebarComponent],
     templateUrl: './detailed-movie-overview.component.html',
     styleUrl: './detailed-movie-overview.component.css',
     hostDirectives: [{

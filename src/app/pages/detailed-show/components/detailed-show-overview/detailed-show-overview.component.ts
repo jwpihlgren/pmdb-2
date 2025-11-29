@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal, Signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { DetailedShow, DetailedShowRecommendation } from '../../../../shared/models/interfaces/detailed-show';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -17,7 +17,7 @@ import { ContentHeroComponent } from '../../../../shared/components/content-hero
 
 @Component({
     selector: 'app-detailed-show-overview',
-    imports: [ImageComponent, ChipComponent, DecimalPipe, RouterLink, CardComponent, ContentWithSidebarComponent, OverflowRowComponent, ContentHeroComponent],
+    imports: [ImageComponent, ChipComponent, DecimalPipe, CardComponent, ContentWithSidebarComponent, OverflowRowComponent, ContentHeroComponent],
     templateUrl: './detailed-show-overview.component.html',
     styleUrl: './detailed-show-overview.component.css',
     hostDirectives: [AppEventTriggerDirective]
