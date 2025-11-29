@@ -2,16 +2,19 @@
 @let s = detailedSeason()!;
 
 <a [routerLink]="['../']" (click)="goBack($event)">Back</a>
-<section class="hero">
-    <app-image class="hero--image" [params]="posterParams(s)"></app-image>
-    <div class="hero--about">
+<app-content-hero>
+
+    <app-image ngProjectAs="hero-image" [rounded]="true" [params]="posterParams(s)"></app-image>
+    <ng-container ngProjectAs="hero-about">
         <div class="hero--header">
             <h1 [title]="'Original title: ' + s.name">{{s.name}}</h1>
             <h5>{{s.voteAverage | number: '1.1-1'}} / 10</h5>
         </div>
         <p>{{s.overview}}</p>
-    </div>
-</section>
+
+    </ng-container>
+</app-content-hero>
+
 <section class="content">
     <div class="main">
         <article class="article episodes">

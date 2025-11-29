@@ -5,10 +5,11 @@ import { map } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ImageComponent, ImageParams } from '../../../../shared/components/image/image.component';
 import { DecimalPipe, Location } from '@angular/common';
+import { ContentHeroComponent } from '../../../../shared/components/content-hero/content-hero.component';
 
 @Component({
     selector: 'app-detailed-season',
-    imports: [ImageComponent, DecimalPipe, RouterLink],
+    imports: [ImageComponent, DecimalPipe, RouterLink, ContentHeroComponent],
     templateUrl: './detailed-season.component.html',
     styleUrl: './detailed-season.component.css'
 })

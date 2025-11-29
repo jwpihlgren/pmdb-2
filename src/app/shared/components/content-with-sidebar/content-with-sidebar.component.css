@@ -31,7 +31,7 @@
     grid-column: span 4;
     order: 1;
 
-    @media(min-width: 1440px) {
+    @media(min-width: 1441px) {
         background: var(--clr-surface-elevation-3);
         padding-inline: var(--spacing-medium);
         border-radius: var(--radii-small);
