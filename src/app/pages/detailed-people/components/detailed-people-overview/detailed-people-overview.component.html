@@ -1,140 +1,110 @@
 @defer(when detailedPeople() !== undefined) {
 @let p = detailedPeople()!;
 @let f = p.filmography;
-<main>
-    <section class="hero">
-        <app-image class="hero--image" [params]="posterParams"></app-image>
-        <div class="hero--about">
-            <div class="hero--header">
-                <h1 [title]="'Also known as: \n' + p.alsoKnownAs.join(',\n')">
-                    {{p.name}}
-                </h1>
-            </div>
-            <div class="hero--meta">
-                @for(data of metadata; track $index){
-                <span>{{data.value}}</span>
-                @if($index !== metadata.length - 1) {
-                <span> | </span>
-                }
-                }
-            </div>
-
-            <p>{{p.biography}}</p>
-            <a [href]="imdbUrl" rel="noreferrer" target="_blank">View at imdb</a>
+<app-content-hero>
+    <app-image ngProjectAs="hero-image" [rounded]="true" [params]="posterParams"></app-image>
+    <ng-container ngProjectAs="hero-about">
+        <div class="hero--header">
+            <h1 [title]="'Also known as: \n' + p.alsoKnownAs.join(',\n')">
+                {{p.name}}
+            </h1>
         </div>
-    </section>
-    <section class="content">
-        <div class="main">
-            <div class="article">
-                @let images = p.images;
-                <div class="article__header">
-                    <h2>Images</h2>
-                    @if(images.length > 0){
-                    <a [routerLink]="['images']">Show all</a>
-                    }
-                </div>
-                @if(images.length > 0) {
-                <div class="article--grid">
-                    @for(image of p.images; track $index) {
-                    <app-card [params]="getPeopleCardParams(image)"></app-card>
-                    }
-                </div>
-                }
-                @else {
-                No images
-                }
-            </div>
-            @let topMovies = f.top10LatestMovies;
-            <div class="article__header">
-                <h2>Movies ({{f.countMovies}})</h2>
-                @if(topMovies.length >= 1) {
-                <a [routerLink]="['cast', 'movies']">Show all</a>
-                }
-            </div>
-            @if(topMovies.length >= 1) {
-            <div class="article--grid">
-                @for(m of topMovies; track $index){
-                <app-card class="article--item" [params]="createCastMoviesCardParams(m)">
-                    <div class="article--about">
-                        <h5 class="article--about__accent">
-                            {{m.title}}
-                        </h5>
-                        <span>{{m.releaseDate}}</span>
-                    </div>
-                </app-card>
-
-                }
-            </div>
+        <div class="hero--meta">
+            @for(data of metadata; track $index){
+            <span>{{data.value}}</span>
+            @if($index !== metadata.length - 1) {
+            <span> | </span>
             }
-
-            @let topShows = f.top10LatestShows;
-            <div class="article__header">
-                <h2>Shows ({{f.countShows}})</h2>
-                @if(topShows.length >= 1) {
-                <a [routerLink]="['cast', 'shows']">Show all</a>
-                }
-            </div>
-            @if(topShows.length >= 1) {
-            <div class="article--grid">
-                @for(m of topShows; track $index){
-                <app-card class="article--item" [params]="createCastShowsCardParams(m)">
-                    <div class="article--about">
-                        <h5 class="article--about__accent">
-                            {{m.title}}
-                        </h5>
-                        <span>{{m.firstAirDate}}</span>
-                    </div>
-                </app-card>
-
-                }
-            </div>
             }
         </div>
-        <aside class="content__aside">
-            <h2>Metadata</h2>
-            <div>
-                <div class="meta--credits">
-                    <h5>Commitments:</h5>
-                    <span>{{f.countMovies + f.countShows}}</span>
 
-                    <h5>Movies:</h5>
-                    <span>{{f.countMovies}}</span>
-                    <h5>Shows:</h5>
-                    <span>{{f.countShows}}</span>
-                </div>
-                <div class="meta--credits">
-                    <h5>Actor:</h5>
-                    <span>{{f.countMovieActor + f.countShowsActor}}</span>
-                    <h5>Crew:</h5>
-                    <span>{{f.countMovieCrew + f.countShowsCrew}}</span>
-                </div>
-                <div class="meta--credits">
+        <p>{{p.biography}}</p>
+        <a [href]="imdbUrl" rel="noreferrer" target="_blank">View at imdb</a>
 
-                    @if(f.countMoviesPerDepartment) {
-                    <h5>Movie crew:</h5>
-                    <span>{{f.countMovieCrew}}</span>
-                    @for(d of f.countMoviesPerDepartment; track $index) {
-                    <h5>{{d.department}}:</h5>
-                    <span>{{d.count}}</span>
-                    }
-                    }
-                </div>
-                <div class="meta--credits">
+    </ng-container>
+</app-content-hero>
+<app-content-with-sidebar>
+    <ng-container ngProjectAs="sidebar-content">
+        <h2>Metadata</h2>
+        <div>
+            <div class="meta--credits">
+                <h5>Commitments:</h5>
+                <span>{{f.countMovies + f.countShows}}</span>
 
-                    @if(f.countShowsPerDepartment.length > 0) {
-                    <h5>Shows crew:</h5>
-                    <span>{{f.countShowsCrew}}</span>
-                    @for(d of f.countShowsPerDepartment; track $index) {
-                    <h5>{{d.department}}:</h5>
-                    <span>{{d.count}}</span>
-                    }
-                    }
-                </div>
+                <h5>Movies:</h5>
+                <span>{{f.countMovies}}</span>
+                <h5>Shows:</h5>
+                <span>{{f.countShows}}</span>
             </div>
-        </aside>
-    </section>
-</main>
+            <div class="meta--credits">
+                <h5>Actor:</h5>
+                <span>{{f.countMovieActor + f.countShowsActor}}</span>
+                <h5>Crew:</h5>
+                <span>{{f.countMovieCrew + f.countShowsCrew}}</span>
+            </div>
+            <div class="meta--credits">
 
+                @if(f.countMoviesPerDepartment) {
+                <h5>Movie crew:</h5>
+                <span>{{f.countMovieCrew}}</span>
+                @for(d of f.countMoviesPerDepartment; track $index) {
+                <h5>{{d.department}}:</h5>
+                <span>{{d.count}}</span>
+                }
+                }
+            </div>
+            <div class="meta--credits">
+
+                @if(f.countShowsPerDepartment.length > 0) {
+                <h5>Shows crew:</h5>
+                <span>{{f.countShowsCrew}}</span>
+                @for(d of f.countShowsPerDepartment; track $index) {
+                <h5>{{d.department}}:</h5>
+                <span>{{d.count}}</span>
+                }
+                }
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container ngProjectAs="main-content">
+        <app-overflow-row [options]="imageOptions()">
+            @for(image of p.images; track $index) {
+            <app-card class="article--item" [params]="getPeopleCardParams(image)"></app-card>
+            }
+        </app-overflow-row>
+
+        @let topMovies = f.top10LatestMovies;
+        <app-overflow-row [options]="topMoviesOptions()">
+            @for(m of topMovies; track $index){
+            <app-card class="article--item" [params]="createCastMoviesCardParams(m)">
+                <div class="article--about">
+                    <h5 class="article--about__accent">
+                        {{m.title}}
+                    </h5>
+                    <span>{{m.releaseDate}}</span>
+                </div>
+            </app-card>
+            }
+        </app-overflow-row>
+
+
+        @let topShows = f.top10LatestShows;
+        <app-overflow-row [options]="topShowsOptions()">
+            @for(m of topShows; track $index){
+            <app-card class="article--item" [params]="createCastShowsCardParams(m)">
+                <div class="article--about">
+                    <h5 class="article--about__accent">
+                        {{m.title}}
+                    </h5>
+                    <span>{{m.firstAirDate}}</span>
+                </div>
+            </app-card>
+
+            }
+        </app-overflow-row>
+    </ng-container>
+</app-content-with-sidebar>
 }
 @placeholder {
 Loading...

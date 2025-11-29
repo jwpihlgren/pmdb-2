@@ -1,4 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import DetailedPeople from '../../../../shared/models/interfaces/detailed-people';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -8,10 +8,13 @@ import { environment } from '../../../../../environments/environment.development
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import Metadata from '../../../../shared/models/interfaces/meta-data.interface';
 import { RoutingService } from '../../../../shared/services/routing.service';
+import OverflowRowOptions, { OverflowRowComponent } from '../../../../shared/components/overflow-row/overflow-row.component';
+import { ContentHeroComponent } from '../../../../shared/components/content-hero/content-hero.component';
+import { ContentWithSidebarComponent } from '../../../../shared/components/content-with-sidebar/content-with-sidebar.component';
 
 @Component({
     selector: 'app-detailed-people-overview',
-    imports: [ImageComponent, CardComponent, RouterLink],
+    imports: [ImageComponent, CardComponent, OverflowRowComponent, ContentHeroComponent, ContentWithSidebarComponent],
     templateUrl: './detailed-people-overview.component.html',
     styleUrl: './detailed-people-overview.component.css'
 })
@@ -27,6 +30,29 @@ export class DetailedPeopleOverviewComponent {
             })
         ), { requireSync: true })
     }
+
+    imageOptions = computed<OverflowRowOptions>(() => ({
+        title: "Images",
+        showMoreLink: ["images"],
+        fallbackText: "No images",
+        fallback: this.detailedPeople().images.length === 0
+    }))
+
+    topMoviesOptions = computed<OverflowRowOptions>(() => ({
+        title: `Movies (${this.detailedPeople().filmography.allMovies.length})`,
+        showMoreLink: ["cast","movies"],
+        fallbackText: "No movies",
+        fallback: this.detailedPeople().images.length === 0
+    }))
+
+    topShowsOptions = computed<OverflowRowOptions>(() => ({
+        title: `Shows (${this.detailedPeople().filmography.allShows.length})`,
+        showMoreLink: ["cast","shows"],
+        fallbackText: "No shows",
+        fallback: this.detailedPeople().images.length === 0
+    }))
+
+
     get people(): DetailedPeople {
         return this.detailedPeople()!
     }
