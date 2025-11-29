@@ -1,0 +1,11 @@
+@if(loaded()) {
+<a [routerLink]="back()">Back</a>
+<h1>{{options()?.title}}</h1>
+<ul class="list">
+    <ng-content></ng-content>
+</ul>
+
+}
+@else{
+Loading ...
+}

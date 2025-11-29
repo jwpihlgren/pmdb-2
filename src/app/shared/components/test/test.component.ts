@@ -1,23 +1,16 @@
-import { Component, computed, input, signal } from '@angular/core';
-import { ExpandableMultiSelectComponent } from '../expandable-multi-select/expandable-multi-select.component';
+import { Component } from '@angular/core';
 import { Selectable } from '../../models/interfaces/selectable';
+import { SimpleGridComponent } from '../simple-grid/simple-grid.component';
 
 @Component({
     selector: 'app-test',
-    imports: [],
+    imports: [SimpleGridComponent],
     templateUrl: './test.component.html',
     styleUrl: './test.component.css'
 })
 export class TestComponent {
 
     options: Selectable[] = [
-        { value: "1", name: "comedy" },
-        { value: "2", name: "drama" },
-        { value: "3", name: "romance" },
-        { value: "4", name: "western" },
-        { value: "5", name: "adventure" },
-        { value: "6", name: "fantasy" },
-        { value: "7", name: "documentary" },
-    ]
+        { value: "red", name: "red" },
+        ]
 }
-

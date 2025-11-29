@@ -1,0 +1,5 @@
+<app-simple-grid>
+    @for(item of options; track $index) {
+    <li [style]="{background: item.value}">{{item.name}}</li>
+    }
+</app-simple-grid>

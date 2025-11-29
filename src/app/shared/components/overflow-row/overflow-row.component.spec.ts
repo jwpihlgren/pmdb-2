@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CardGridComponent } from './card-grid.component';
+import { OverflowRowComponent } from './overflow-row.component';
 
-describe('CardGridComponent', () => {
-  let component: CardGridComponent;
-  let fixture: ComponentFixture<CardGridComponent>;
+describe('OverflowRowComponent', () => {
+  let component: OverflowRowComponent;
+  let fixture: ComponentFixture<OverflowRowComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CardGridComponent]
+      imports: [OverflowRowComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CardGridComponent);
+    fixture = TestBed.createComponent(OverflowRowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

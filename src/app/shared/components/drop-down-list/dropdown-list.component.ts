@@ -1,4 +1,4 @@
-import { afterNextRender, AfterViewInit, Component, DestroyRef, ElementRef, inject, input, signal, ViewEncapsulation } from '@angular/core';
+import { afterNextRender, Component, DestroyRef, ElementRef, inject, input, signal, ViewEncapsulation } from '@angular/core';
 
 @Component({
     selector: 'app-dropdown-list',

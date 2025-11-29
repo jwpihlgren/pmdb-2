@@ -1,29 +1,29 @@
 @defer(when popularShows() !== undefined) {
-<app-card-grid>
+<app-simple-grid [maxWidth]="'250px'">
     @for( show of popularShows(); track $index) {
     <app-card (mouseenter)="prefetchService.startIntent(show.id)" (mouseleave)="prefetchService.clearIntent()" [params]="createCardParams(show)">
         <app-content-show [params]="show"></app-content-show>
     </app-card>
     }
-</app-card-grid>
+</app-simple-grid>
 <app-pagination (pageRequest)="paginate($event)" [pagination]=paginationResult()></app-pagination>
 }
 
 
 @loading() {
-<app-card-grid>
+<app-simple-grid [maxWidth]="'250px'">
     @for(card of [].constructor(20); track $index){
     <app-card-loading></app-card-loading>
     }
-</app-card-grid>
+</app-simple-grid>
 }
 
 @placeholder {
-<app-card-grid>
+<app-simple-grid [maxWidth]="'250px'">
     @for(card of [].constructor(20); track $index){
     <app-card-loading></app-card-loading>
     }
-</app-card-grid>
+</app-simple-grid>
 
 }
 

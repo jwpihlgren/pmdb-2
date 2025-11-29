@@ -10,12 +10,14 @@ import { ImageService } from '../../services/image.service';
     styleUrl: './image.component.css',
     standalone: true,
     host: {
-        '[style.aspect-ratio]': 'params().aspectRatio.numerator+"/"+params().aspectRatio.denominator'
+        '[style.aspect-ratio]': 'params().aspectRatio.numerator+"/"+params().aspectRatio.denominator',
+        '[class.rounded-corners]': 'rounded()'
     }
 
 })
 export class ImageComponent {
     params = input.required<ImageParams>()
+    rounded = input(false)
     protected imageService: ImageService = inject(ImageService)
 
     sanitizeUrl(url: string): string {

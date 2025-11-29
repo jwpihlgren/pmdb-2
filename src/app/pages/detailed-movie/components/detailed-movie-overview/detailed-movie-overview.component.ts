@@ -1,4 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { ImageComponent, ImageParams } from '../../../../shared/components/image/image.component';
 import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
@@ -12,10 +12,13 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { environment } from '../../../../../environments/environment.development';
 import { AppEventTriggerDirective } from '../../../../shared/directives/app-event-trigger.directive';
+import OverflowRowOptions, { OverflowRowComponent } from '../../../../shared/components/overflow-row/overflow-row.component';
+import { ContentHeroComponent } from '../../../../shared/components/content-hero/content-hero.component';
+import { ContentWithSidebarComponent } from '../../../../shared/components/content-with-sidebar/content-with-sidebar.component';
 
 @Component({
     selector: 'app-detailed-movie-overview',
-    imports: [ImageComponent, ChipComponent, CardComponent, RouterLink, DecimalPipe],
+    imports: [ImageComponent, ChipComponent, CardComponent, RouterLink, DecimalPipe, OverflowRowComponent, ContentHeroComponent, ContentWithSidebarComponent],
     templateUrl: './detailed-movie-overview.component.html',
     styleUrl: './detailed-movie-overview.component.css',
     hostDirectives: [{
@@ -32,6 +35,21 @@ export class DetailedMovieOverviewComponent {
             return data["movie"] as DetailedMovie
         })), { requireSync: true })
     }
+
+    castOptions = computed<OverflowRowOptions>(() => ({
+        title: "Top billed cast",
+        showMoreLink: ["cast-and-crew"],
+        fallbackText: "No top bille cast",
+        fallback: this.detailedMovie().credits.cast.length === 0
+    }))
+    recommendedOptions = computed<OverflowRowOptions>(() => ({
+        title: "Recommendations",
+        showMoreLink: ["recommendations"],
+        fallbackText: "No recommendations",
+        fallback: this.detailedMovie().recommendations.results.length === 0
+    }))
+
+
 
     posterParams(detailedMovie: DetailedMovie): ImageParams {
         return { src: detailedMovie.posterImagePath, type: "poster", aspectRatio: { numerator: 2, denominator: 3 } }

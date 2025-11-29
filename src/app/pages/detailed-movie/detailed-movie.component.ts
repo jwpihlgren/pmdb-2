@@ -6,11 +6,12 @@ import { NgIf, NgOptimizedImage } from '@angular/common';
 import { DetailedMovieService } from '../../shared/services/detailed-movie.service';
 import { map } from 'rxjs';
 import { ImageService } from '../../shared/services/image.service';
+import { PageContainerComponent } from '../../shared/components/page-container/page-container.component';
 
 @Component({
     selector: 'app-detailed-movie',
     standalone: true,
-    imports: [NgOptimizedImage, NgIf, RouterOutlet],
+    imports: [NgOptimizedImage, NgIf, RouterOutlet, PageContainerComponent],
     templateUrl: './detailed-movie.component.html',
     providers: [DetailedMovieService],
     styleUrl: './detailed-movie.component.css'

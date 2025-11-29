@@ -3,5 +3,10 @@
     width: 100%;
     height: auto;
     position: relative;
+
 }
 
+:host(.rounded-corners) {
+    border-radius: var(--radii-medium);
+    overflow: hidden
+}

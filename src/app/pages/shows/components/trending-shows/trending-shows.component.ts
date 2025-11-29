@@ -4,19 +4,19 @@ import { Pagination } from '../../../../shared/models/interfaces/pagination';
 import { TrendingShowsService } from '../../../../shared/services/trending-shows.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { ContentShowComponent } from '../../../../shared/components/card/components/content-show/content-show.component';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 import { AppEventService } from '../../../../shared/services/app-event.service';
 import { PrefetchService } from '../../../../shared/services/prefetch.service';
-import { first, map, tap } from 'rxjs';
+import { first, map } from 'rxjs';
 import { DetailedShowService } from '../../../../shared/services/detailed-show.service';
+import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 
 @Component({
     selector: 'app-trending-shows',
-    imports: [CardGridComponent, CardComponent, PaginationComponent, ContentShowComponent, CardLoadingComponent],
+    imports: [CardComponent, PaginationComponent, ContentShowComponent, CardLoadingComponent, SimpleGridComponent],
     templateUrl: './trending-shows.component.html',
     styleUrl: './trending-shows.component.css'
 })
@@ -33,7 +33,7 @@ export class TrendingShowsComponent {
     paginationResult: Signal<Pagination>
     prefetchSignal: Signal<number | undefined>
     page: Signal<number | undefined>
-
+    cardMaxWidth = "250px"
 
 
     constructor() {

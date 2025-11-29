@@ -1,10 +1,9 @@
-import { Component, computed, inject, signal, Signal, } from '@angular/core';
+import { Component, computed, inject, Signal, } from '@angular/core';
 import { DiscoverMoviesService } from '../../../../shared/services/discover-movies.service';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Genre } from '../../../../shared/models/interfaces/genre';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { CardGridComponent } from '../../../../shared/components/card-grid/card-grid.component';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
 import { SearchPeopleService } from '../../../../shared/services/search-people.service';
@@ -25,10 +24,13 @@ import { Selectable } from '../../../../shared/models/interfaces/selectable';
 import { ExpandableMultiSelectComponent } from '../../../../shared/components/expandable-multi-select/expandable-multi-select.component';
 import { SelectItemComponent } from '../../../../shared/components/expandable-multi-select/components/select-item/select-item.component';
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
+import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 
 @Component({
     selector: 'app-discover-movies',
-    imports: [ReactiveFormsModule, CardGridComponent, CardComponent, ContentMovieComponent, ComboboxComponent, ChipListComponent, ChipComponent, PaginationComponent, CardLoadingComponent, DropdownListComponent, ComboboxItemComponent, ExpandableMultiSelectComponent, SelectItemComponent, TextInputComponent],
+    imports: [ReactiveFormsModule, CardComponent, ContentMovieComponent, ComboboxComponent, ChipListComponent,
+        ChipComponent, PaginationComponent, CardLoadingComponent, DropdownListComponent, ComboboxItemComponent,
+        ExpandableMultiSelectComponent, SelectItemComponent, TextInputComponent, SimpleGridComponent],
     templateUrl: './discover-movies.component.html',
     styleUrl: './discover-movies.component.css'
 })
@@ -42,6 +44,8 @@ export class DiscoverMoviesComponent {
     protected appEventService: AppEventService = inject(AppEventService)
     protected keywordService: KeywordService = inject(KeywordService)
     genres!: Genre[]
+
+    cardMaxWidth="250px" 
 
     listboxParams!: { list: { name: string, value: string | number }[] }
     years: number[] = this.generateNumberRange(new Date().getFullYear(), 1900)
@@ -92,12 +96,22 @@ export class DiscoverMoviesComponent {
         return this.keywordService.search(
             this.keywordSearchSignal() || "",
             10,
-            this.withKeywords.controls["keywords"].getRawValue()).map((k) => ({ value: k.id.toString(), name: k.name }))
+            this.withKeywords.controls["keywords"].getRawValue()).map((k) => ({
+                value:
+                    k.id.toString(), name: k.name
+            }))
     })
 
     constructor() {
         this.genres = this.configService.movieGenres
-        this.listboxParams = { list: this.genres.map(g => { return { name: g.name, value: g.id } }) }
+        this.listboxParams = {
+            list: this.genres.map(g => {
+                return {
+                    name: g.name, value:
+                        g.id
+                }
+            })
+        }
         this.onSubmit()
     }
 
@@ -181,10 +195,9 @@ export class DiscoverMoviesComponent {
         const range: number[] = []
         for (let i = start; reverse ? i >= end : i <= end; reverse ? i -= step : i += step) {
             range.push(i)
-        }
-        return range
-    }
+        } return range
 
+    }
     createCardParams(movie: ResultMovie): CardParams {
         const params: CardParams = {
             imageType: "poster",
@@ -193,10 +206,11 @@ export class DiscoverMoviesComponent {
             mediaType: "movie",
             imageSrc: movie.posterImagePath,
             href: ["/", this.routingService.stubs.MOVIE, `${movie.id}`],
-            aspectRatio: { numerator: 2, denominator: 3 }
-
-        }
-
-        return params
+            aspectRatio: {
+                numerator: 2,
+                denominator: 3
+            }
+        };
+        return params;
     }
 }

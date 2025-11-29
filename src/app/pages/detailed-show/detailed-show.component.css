@@ -22,14 +22,5 @@ main {
     backdrop-filter: blur(50px);
     z-index: -1;
     overflow: hidden;
-
-}
-
-.container {
-    min-height: calc(100vh - var(--app-header-height));
-    display: grid;
-    gap: var(--spacing-large, 2rem);
-    padding-inline: var(--spacing-extra-large, 4rem);
-    padding-block-start: var(--spacing-xx-large, 6rem);
 }
 

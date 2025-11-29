@@ -96,29 +96,29 @@
 
 <main>
     @defer(when results() !== undefined) {
-    <app-card-grid>
+    <app-simple-grid [maxWidth]="cardMaxWidth">
         @for( show of results(); track $index) {
         <app-card [params]="createCardParams(show)">
             <app-content-show [params]="show"></app-content-show>
         </app-card>
         }
-    </app-card-grid>
+    </app-simple-grid>
     <app-pagination (pageRequest)=handlePageRequest($event) [pagination]="pagination()"></app-pagination>
     }
     @loading() {
-    <app-card-grid>
+    <app-simple-grid [maxWidth]="cardMaxWidth">
         @for(card of [].constructor(20); track $index){
         <app-card-loading></app-card-loading>
         }
-    </app-card-grid>
+    </app-simple-grid>
     }
 
     @placeholder {
-    <app-card-grid>
+    <app-simple-grid [maxWidth]="cardMaxWidth">
         @for(card of [].constructor(20); track $index){
         <app-card-loading></app-card-loading>
         }
-    </app-card-grid>
+    </app-simple-grid>
 
     }
 </main>

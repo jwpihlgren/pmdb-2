@@ -1,7 +1,7 @@
 <header class="header">
     <div class="header__logo">PMDB</div>
-    <nav class="nav-primary">
-        <ul class="nav-primary__list">
+    <nav>
+        <ul class="nav-primary">
             @for(link of routingService.primaryNavigation; track $index) {
             <li class="nav-primary__listitem" [routerLinkActive]="'nav-primary__listitem--active'"
                 [routerLinkActiveOptions]="{exact: link.exact}">
