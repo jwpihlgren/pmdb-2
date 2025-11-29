@@ -1,11 +1,8 @@
 @let m = detailedShow();
 @if(m) {
-<section class="hero">
-    <div class="hero--image">
-
-        <app-image [rounded]="true" [params]="posterParams(m)"></app-image>
-    </div>
-    <div class="hero--about">
+<app-content-hero>
+    <app-image ngProjectAs="hero-image" [rounded]="true" [params]="posterParams(m)"></app-image>
+    <ng-container ngProjectAs="hero-about">
         <div class="hero--header">
             <h1 [title]="'Original title: ' + m.originalName">{{m.name}}
                 @if(m.status !== "released"){
@@ -31,8 +28,8 @@
             }
         </div>
         <a [href]="imdbUrl(m)" rel="noreferrer" target="_blank">View at imdb</a>
-    </div>
-</section>
+    </ng-container>
+</app-content-hero>
 <app-content-with-sidebar>
     <ng-container ngProjectAs="sidebar-content">
         <h2>Keywords</h2>
@@ -65,7 +62,6 @@
                     <span>{{top.name}}</span>
                 </div>
             </app-card>
-
             }
         </app-overflow-row>
 

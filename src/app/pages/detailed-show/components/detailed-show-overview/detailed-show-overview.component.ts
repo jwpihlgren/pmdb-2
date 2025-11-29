@@ -13,10 +13,11 @@ import { RoutingService } from '../../../../shared/services/routing.service';
 import { AppEventTriggerDirective } from '../../../../shared/directives/app-event-trigger.directive';
 import { ContentWithSidebarComponent } from '../../../../shared/components/content-with-sidebar/content-with-sidebar.component';
 import OverflowRowOptions, { OverflowRowComponent } from '../../../../shared/components/overflow-row/overflow-row.component';
+import { ContentHeroComponent } from '../../../../shared/components/content-hero/content-hero.component';
 
 @Component({
     selector: 'app-detailed-show-overview',
-    imports: [ImageComponent, ChipComponent, DecimalPipe, RouterLink, CardComponent, ContentWithSidebarComponent, OverflowRowComponent],
+    imports: [ImageComponent, ChipComponent, DecimalPipe, RouterLink, CardComponent, ContentWithSidebarComponent, OverflowRowComponent, ContentHeroComponent],
     templateUrl: './detailed-show-overview.component.html',
     styleUrl: './detailed-show-overview.component.css',
     hostDirectives: [AppEventTriggerDirective]
