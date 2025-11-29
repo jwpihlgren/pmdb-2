@@ -1,35 +1,31 @@
 <a [routerLink]="['../']" (click)="goBack($event)">Back</a>
 <h1>Cast and crew</h1>
 <section>
-    <h2>cast</h2>
+    <h2>Cast</h2>
     <app-simple-grid> @for(c of detailedShow().credits.cast; track $index) {
-        <li class="list__item">
-            <app-card [params]="createParams(c)">
-                <div class="list--about">
-                    <h5 class="list--about__accent">
-                        {{c.character}}
-                    </h5>
-                    <span>{{c.name}}</span>
-                </div>
-            </app-card>
-        </li>
+        <app-card [params]="createParams(c)">
+            <div class="list--about">
+                <h5 class="list--about__accent">
+                    {{c.character}}
+                </h5>
+                <span>{{c.name}}</span>
+            </div>
+        </app-card>
         }
     </app-simple-grid>
 </section>
 <section>
-    <h2>crew</h2>
+    <h2>Crew</h2>
     <app-simple-grid>
         @for(c of detailedShow().credits.crew; track $index) {
-        <li class="list__item">
-            <app-card [params]="createParams(c)">
-                <div class="list--about">
-                    <h5 class="list--about__accent">
-                        {{c.job}}
-                    </h5>
-                    <span>{{c.name}}</span>
-                </div>
-            </app-card>
-        </li>
+        <app-card [params]="createParams(c)">
+            <div class="list--about">
+                <h5 class="list--about__accent">
+                    {{c.job}}
+                </h5>
+                <span>{{c.name}}</span>
+            </div>
+        </app-card>
         }
     </app-simple-grid>
 </section>

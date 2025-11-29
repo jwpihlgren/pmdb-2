@@ -6,10 +6,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { AppEventTriggerDirective } from '../../../../shared/directives/app-event-trigger.directive';
+import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 
 @Component({
     selector: 'app-detailed-movie-cast',
-    imports: [RouterLink, CardComponent],
+    imports: [RouterLink, CardComponent, SimpleGridComponent],
     templateUrl: './detailed-movie-cast.component.html',
     styleUrl: './detailed-movie-cast.component.css',
     hostDirectives: [ AppEventTriggerDirective]

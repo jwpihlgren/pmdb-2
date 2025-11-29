@@ -2,29 +2,24 @@
 <h1>Cast and crew</h1>
 
 <section>
-    <h2>cast</h2>
-    <ul class="list">
+    <h2>CAst</h2>
+    <app-simple-grid>
         @for(c of movie().credits.cast; track $index) {
-        <li class="list__item">
-            <app-card [params]="createParams(c)">
-                <div class="list--about">
-                    <h5 class="list--about__accent">
-                        {{c.character}}
-                    </h5>
-                    <span>{{c.name}}</span>
-                </div>
+        <app-card [params]="createParams(c)">
+            <div class="list--about">
+                <h5 class="list--about__accent">
+                    {{c.character}}
+                </h5>
+                <span>{{c.name}}</span>
+            </div>
 
-            </app-card>
-
-        </li>
+        </app-card>
         }
-    </ul>
+    </app-simple-grid>
 </section>
 <section>
-    <h2>crew</h2>
-    <ul class="list">
-        @for(c of movie().credits.crew; track $index) {
-        <li class="list__item">
+    <h2>Crew</h2>
+    <app-simple-grid> @for(c of movie().credits.crew; track $index) {
             <app-card [params]="createParams(c)">
                 <div class="list--about">
                     <h5 class="list--about__accent">
@@ -33,7 +28,6 @@
                     <span>{{c.name}}</span>
                 </div>
             </app-card>
-        </li>
         }
-    </ul>
+    </app-simple-grid>
 </section>
