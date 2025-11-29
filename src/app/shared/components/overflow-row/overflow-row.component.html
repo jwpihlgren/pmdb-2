@@ -1,1 +1,17 @@
-<p>overflow-row works!</p>
+@if(options().fallback) {
+<span>
+    {{options().fallbackText}}
+</span>
+}
+@else{
+<div class="article__header">
+    <h2>{{options().title}}</h2>
+    @if(options().showMoreLink) {
+    <a [routerLink]="options().fallback ? undefined : options().showMoreLink">Show all</a>
+    }
+</div>
+<ul class="article--grid">
+    <ng-content></ng-content>
+</ul>
+
+}

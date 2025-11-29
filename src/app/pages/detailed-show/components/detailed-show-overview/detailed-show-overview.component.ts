@@ -1,4 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, computed, inject, signal, Signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DetailedShow, DetailedShowRecommendation } from '../../../../shared/models/interfaces/detailed-show';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -12,10 +12,11 @@ import { CardComponent, CardParams } from '../../../../shared/components/card/ca
 import { RoutingService } from '../../../../shared/services/routing.service';
 import { AppEventTriggerDirective } from '../../../../shared/directives/app-event-trigger.directive';
 import { ContentWithSidebarComponent } from '../../../../shared/components/content-with-sidebar/content-with-sidebar.component';
+import OverflowRowOptions, { OverflowRowComponent } from '../../../../shared/components/overflow-row/overflow-row.component';
 
 @Component({
     selector: 'app-detailed-show-overview',
-    imports: [ImageComponent, ChipComponent, DecimalPipe, RouterLink, CardComponent, ContentWithSidebarComponent],
+    imports: [ImageComponent, ChipComponent, DecimalPipe, RouterLink, CardComponent, ContentWithSidebarComponent, OverflowRowComponent],
     templateUrl: './detailed-show-overview.component.html',
     styleUrl: './detailed-show-overview.component.css',
     hostDirectives: [AppEventTriggerDirective]
@@ -23,14 +24,14 @@ import { ContentWithSidebarComponent } from '../../../../shared/components/conte
 export class DetailedShowOverviewComponent {
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     protected routingService: RoutingService = inject(RoutingService)
-    detailedShow: Signal<DetailedShow>
+    detailedShow: Signal<DetailedShow | undefined> = signal(undefined)
 
     constructor() {
         this.detailedShow = toSignal(this.activatedRoute.parent!.data.pipe(
             map(data => {
                 return data["show"] as DetailedShow
             })
-        ), { requireSync: true })
+        ))
     }
 
     posterParams(detailedShow: DetailedShow): ImageParams {
@@ -41,6 +42,29 @@ export class DetailedShowOverviewComponent {
             priority: true
         }
     }
+
+    seasonsOptions = computed<OverflowRowOptions>(() => ({
+        title: `Seasons (${this.detailedShow()?.seasons.length})`,
+        showMoreLink: ["seasons"],
+        fallbackText: "No seasons",
+        fallback: this.detailedShow()?.seasons.length === 0
+    })
+    )
+
+    recommendationOptions = computed<OverflowRowOptions>(() => ({
+        title: "Recommendations",
+        showMoreLink: ["recommendations"],
+        fallbackText: "No recommendations",
+        fallback: this.detailedShow()?.recommendations.length === 0
+    })
+    )
+
+    castOptions = computed<OverflowRowOptions>(() => ({
+        title: "Top billed cast",
+        showMoreLink: ["cast"],
+        fallbackText: "No top billed cast",
+        fallback: this.detailedShow()?.credits.cast.length === 0
+    }))
 
     metaData(detailedShow: DetailedShow): Metadata[] {
         const metaData: Metadata[] = []
@@ -87,6 +111,9 @@ export class DetailedShowOverviewComponent {
         return params
     }
 
+
+
+
     createSeasonsCardParams(season: DetailedShow["seasons"][0]): CardParams {
         return {
             imageType: "poster",
@@ -94,7 +121,7 @@ export class DetailedShowOverviewComponent {
             mediaType: "show",
             imageSrc: season.posterImagePath,
             href: ["seasons", `${season.seasonNumber}`],
-            aspectRatio: {numerator: 2, denominator: 3}
+            aspectRatio: { numerator: 2, denominator: 3 }
         }
     }
 
