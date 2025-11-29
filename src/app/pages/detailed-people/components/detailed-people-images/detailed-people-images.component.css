@@ -1,6 +1,7 @@
 :host {
     --list__item-image-width: 120px;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: var(--radii-medium);
 }
 

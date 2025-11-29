@@ -5,19 +5,32 @@
     grid-template-columns: 25% 1fr 25%;
     gap: var(--spacing-extra-large);
     background: var(--clr-surface-elevation-2);
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+
 }
 
 .header__logo {
     display: flex;
     align-items: center;
     justify-content: flex-start;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 }
 
 a:focus-visible {
     outline: none;
 }
 
-.nav-primary__list {
+nav {
+    display: content;
+}
+
+.nav-primary {
     display: flex;
     justify-content: center;
     align-items: center;

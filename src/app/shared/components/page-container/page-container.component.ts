@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
     styles: [
         `:host {
 min-height: calc(100vh - var(--app-header-height));
+max-width: 1440px;
+margin: 0 auto;
 display: grid;
 gap: var(--spacing-large, 2rem);
 padding-inline: var(--spacing-extra-large, 4rem);
