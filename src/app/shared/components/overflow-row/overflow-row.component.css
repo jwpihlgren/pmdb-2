@@ -5,13 +5,16 @@
 }
 
 .article__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    gap: var(--spacing-large);
+
 
     @media (min-width: 1440px) {
         padding-inline-end: var(--spacing-large);
     }
+
+    word-break: break-all;
 }
 
 .article--grid {

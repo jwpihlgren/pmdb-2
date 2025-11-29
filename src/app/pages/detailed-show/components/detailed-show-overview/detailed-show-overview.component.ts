@@ -61,7 +61,7 @@ export class DetailedShowOverviewComponent {
 
     castOptions = computed<OverflowRowOptions>(() => ({
         title: "Top billed cast",
-        showMoreLink: ["cast"],
+        showMoreLink: ["cast-and-crew"],
         fallbackText: "No top billed cast",
         fallback: this.detailedShow()?.credits.cast.length === 0
     }))

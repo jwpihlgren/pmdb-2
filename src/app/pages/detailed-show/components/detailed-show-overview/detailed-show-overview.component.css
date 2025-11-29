@@ -7,11 +7,6 @@ main {
     margin: 0 auto;
 }
 
-h1 {
-    word-break: break-all;
-}
-
-
 .hero {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
