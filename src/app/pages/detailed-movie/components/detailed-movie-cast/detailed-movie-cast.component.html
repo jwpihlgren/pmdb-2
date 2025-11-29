@@ -2,7 +2,7 @@
 <h1>Cast and crew</h1>
 
 <section>
-    <h2>CAst</h2>
+    <h2>Cast</h2>
     <app-simple-grid>
         @for(c of movie().credits.cast; track $index) {
         <app-card [params]="createParams(c)">
