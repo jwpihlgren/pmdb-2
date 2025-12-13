@@ -1,4 +1,4 @@
-import { Component, computed, inject, Signal } from '@angular/core';
+import { Component, computed, inject, signal, Signal } from '@angular/core';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 import { AppEventService } from '../../../../shared/services/app-event.service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +25,7 @@ import { KeywordService } from '../../../../shared/services/keyword.service';
 import { SelectItemComponent } from '../../../../shared/components/expandable-multi-select/components/select-item/select-item.component';
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
 import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
     selector: 'app-discover-shows',
@@ -41,11 +42,26 @@ export class DiscoverShowsComponent {
     protected routingService: RoutingService = inject(RoutingService)
     protected appEventService: AppEventService = inject(AppEventService)
     protected keywordService: KeywordService = inject(KeywordService)
+    protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     genres!: Genre[]
     cardMaxWidth = "250px"
     listboxParams!: { list: { name: string, value: string | number }[] }
     years: number[] = this.generateNumberRange(new Date().getFullYear(), 1900)
     results = toSignal(this.discoverService.results$)
+
+    queryParams = toSignal(this.activatedRoute.queryParamMap)
+
+
+    results = computed(() => {
+        this.patchFormFromParams(this.queryParams())
+        this.onSubmit()
+    })
+
+    patchFormFromParams(map: ParamMap | undefined): void {
+
+    }
+
+
     pagination: Signal<Pagination> = toSignal(this.discoverService.pagination, { requireSync: true })
     voteAverageOptions = {
         list: this.generateNumberRange(1, 10).map(n => {

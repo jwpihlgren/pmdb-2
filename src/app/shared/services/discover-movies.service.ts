@@ -10,6 +10,9 @@ import { DiscoverMovieFormValue } from '../models/interfaces/discover-movie-form
 import { TmdbResultMovieResponse } from '../models/interfaces/tmdb/tmdb-result-movie-response';
 import { TmdbResultMovie } from '../models/classes/tmdb-result-movie';
 import { ResultMovie } from '../models/interfaces/result-movie';
+import { ParamMap } from '@angular/router';
+import { Genre } from '../models/interfaces/genre';
+import { ConfigService } from './config.service';
 
 @Injectable({
     providedIn: 'root'
@@ -17,6 +20,7 @@ import { ResultMovie } from '../models/interfaces/result-movie';
 export class DiscoverMoviesService {
 
     protected http = inject(HttpClient)
+    protected config = inject(ConfigService)
 
     private query$: ReplaySubject<{ query: DiscoverMovieFormValue, page?: number }> = new ReplaySubject()
     private paginationResults$ = new BehaviorSubject<Pagination>(new PlaceholderPagination())
@@ -36,6 +40,42 @@ export class DiscoverMoviesService {
 
     get pagination(): Observable<Pagination> {
         return this.paginationResults$.asObservable()
+    }
+
+
+    keywordsToParams(keywords: string[], operator: "and" | "or"): string {
+        const joined = operator === "and" ? keywords.join("|") : keywords.join(",")
+        return `?withKeywords=${joined}`
+    }
+
+
+    paramsToKeywords(map: ParamMap): DiscoverMovieFormValue {
+        const genres = map.get('genres')
+        const adult = map.get('adult')
+        const video = map.get('video')
+        const releaseDateLte = map.get('releaseDateLte')
+        const releaseDateGte = map.get('releaseDateGte')
+        const voteAverageLte = map.get('voteAverageLte')
+        const voteAverageGte = map.get('voteAveragGGte')
+        const withKeywords = map.get('withKeywords')
+        const values: DiscoverMovieFormValue = {
+            genres: [],
+            include: { adult: false, video: false },
+            releaseDate: { lte: undefined, gte: undefined },
+            voteAverage: { lte: undefined, gte: undefined },
+            withKeywords: { keywords: [], pipe: "and" }
+        }
+
+        genres?.split(",").forEach(g => {
+            const genre = this.config.movieGenres.find(mg => mg.id === +g)
+            if (!genre) return
+            values.genres.push({ name: genre.name, value: genre.id.toString() })
+        })
+        if (adult) values.include.adult = adult === "true" ? true : false
+        if (video) values.include.video = video === "true" ? true : false
+        if (releaseDateLte) values.releaseDate.lte = releaseDateLte
+
+        return values
     }
 
     private request(params: { query: DiscoverMovieFormValue, page?: number }): Observable<ResultMovie[]> {

@@ -8,9 +8,12 @@
                 }
             </app-combobox>
             <app-chip-list class="selected">
-                @for(chip of discoverForm.value.genres; track $index) {
-                <app-chip [value]="chip.value" [action]="true"
-                    (clickRequest)="onGenreRemove(chip)">{{chip.name}}</app-chip>
+                @for(g of discoverForm.value.genres; track $index) {
+                @let chip = getGenre(g);
+                @if(!!chip) {
+                <app-chip [value]="chip!.id.toString()" [action]="true"
+                    (clickRequest)="onGenreRemove(chip!.name)">{{chip!.name}}</app-chip>
+                }
                 }
             </app-chip-list>
 

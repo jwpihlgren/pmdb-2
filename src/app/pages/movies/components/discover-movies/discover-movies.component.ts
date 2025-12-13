@@ -45,7 +45,7 @@ export class DiscoverMoviesComponent {
     protected keywordService: KeywordService = inject(KeywordService)
     genres!: Genre[]
 
-    cardMaxWidth="250px" 
+    cardMaxWidth = "250px"
 
     listboxParams!: { list: { name: string, value: string | number }[] }
     years: number[] = this.generateNumberRange(new Date().getFullYear(), 1900)
@@ -66,20 +66,20 @@ export class DiscoverMoviesComponent {
 
     discoverForm = this.formBuilder.group({
         voteAverage: this.formBuilder.nonNullable.group({
-            lte: this.formBuilder.nonNullable.control<Selectable | undefined>(undefined),
-            gte: this.formBuilder.nonNullable.control<Selectable | undefined>(undefined)
+            lte: this.formBuilder.nonNullable.control<string | undefined>(undefined),
+            gte: this.formBuilder.nonNullable.control<string | undefined>(undefined)
         }),
         releaseDate: this.formBuilder.nonNullable.group({
-            lte: this.formBuilder.nonNullable.control<Selectable | undefined>(undefined),
-            gte: this.formBuilder.nonNullable.control<Selectable | undefined>(undefined)
+            lte: this.formBuilder.nonNullable.control<string | undefined>(undefined),
+            gte: this.formBuilder.nonNullable.control<string | undefined>(undefined)
         }),
         include: this.formBuilder.nonNullable.group({
             adult: this.formBuilder.nonNullable.control(false),
             video: this.formBuilder.nonNullable.control(false)
         }),
-        genres: this.formBuilder.nonNullable.control<Selectable[]>([]),
+        genres: this.formBuilder.nonNullable.control<string[]>([]),
         withKeywords: this.formBuilder.nonNullable.group({
-            keywords: this.formBuilder.nonNullable.control<Selectable[]>([]),
+            keywords: this.formBuilder.nonNullable.control<string[]>([]),
             pipe: this.formBuilder.nonNullable.control<"and" | "or">("and")
         })
     });
@@ -136,6 +136,12 @@ export class DiscoverMoviesComponent {
 
     }
 
+
+    getGenre(id: string): Genre | undefined {
+        const genre = this.configService.movieGenres.find(g => g.id === +id)
+        return genre
+    }
+
     onSubmit(): void {
         const formValues = this.discoverForm.getRawValue() satisfies DiscoverMovieFormValue
         this.discoverService.discover(formValues)
@@ -174,9 +180,9 @@ export class DiscoverMoviesComponent {
         this.selectedGenres.setValue(Array.from(new Set([...selectedGenres, genre])))
     }
 
-    onGenreRemove(genre: Selectable): void {
+    onGenreRemove(genre: string): void {
         const selectedGenres: Selectable[] = this.selectedGenres.getRawValue()
-        const existingIndex = selectedGenres.findIndex(g => g.value === genre.value)
+        const existingIndex = selectedGenres.findIndex(g => g.value === genre)
         if (existingIndex !== -1) {
             selectedGenres.splice(existingIndex, 1)
             this.selectedGenres.setValue(selectedGenres)
