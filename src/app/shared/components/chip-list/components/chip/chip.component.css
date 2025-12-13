@@ -2,6 +2,16 @@
     display: contents;
 }
 
+a {
+    display: content;
+    text-decoration: none;
+}
+
+.showAsLink {
+    cursor: pointer;
+}
+
+
 .chip {
     list-style: none;
     padding-inline: var(--spacing-md, 0.5rem);

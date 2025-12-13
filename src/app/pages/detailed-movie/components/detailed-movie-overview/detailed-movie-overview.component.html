@@ -35,7 +35,9 @@
         <h2>Keywords</h2>
         <div class="meta--keywords">
             @for(keyword of m.keywords; track $index) {
-            <app-chip [value]="keyword.name">{{keyword.name}}</app-chip>
+            <app-chip [value]="keyword.name"
+                [link]="{href:['/', 'movies', 'discover'], queryParams: {withKeyword: keyword.id.toString()}}">{{keyword.name}}
+            </app-chip>
             }
         </div>
     </ng-container>
