@@ -25,6 +25,7 @@ import { ExpandableMultiSelectComponent } from '../../../../shared/components/ex
 import { SelectItemComponent } from '../../../../shared/components/expandable-multi-select/components/select-item/select-item.component';
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
 import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-discover-movies',
@@ -43,6 +44,8 @@ export class DiscoverMoviesComponent {
     protected routingService: RoutingService = inject(RoutingService)
     protected appEventService: AppEventService = inject(AppEventService)
     protected keywordService: KeywordService = inject(KeywordService)
+    protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
+    protected router: Router = inject(Router)
     genres!: Genre[]
 
     cardMaxWidth = "250px"
@@ -50,7 +53,10 @@ export class DiscoverMoviesComponent {
     listboxParams!: { list: { name: string, value: string | number }[] }
     years: number[] = this.generateNumberRange(new Date().getFullYear(), 1900)
     results = toSignal(this.discoverService.results$)
+    paramMap = toSignal(this.activatedRoute.queryParamMap)
+
     pagination: Signal<Pagination> = toSignal(this.discoverService.pagination, { requireSync: true })
+
     voteAverageOptions = {
         list: this.generateNumberRange(1, 10).map(n => {
             return {
@@ -112,7 +118,9 @@ export class DiscoverMoviesComponent {
                 }
             })
         }
-        this.onSubmit()
+        const formValues = this.discoverService.paramsToFormValues(this.paramMap())
+        this.discoverForm.patchValue(this.discoverService.paramsToFormValues(this.paramMap()))
+        this.discoverService.discover(formValues)
     }
 
     get selectedGenres() {
@@ -137,6 +145,11 @@ export class DiscoverMoviesComponent {
     }
 
 
+    lookupKeyword(id: string): string {
+        return this.keywordService.keywordNameById(id) ?? id
+    }
+
+
     getGenre(id: string): Genre | undefined {
         const genre = this.configService.movieGenres.find(g => g.id === +id)
         return genre
@@ -144,6 +157,9 @@ export class DiscoverMoviesComponent {
 
     onSubmit(): void {
         const formValues = this.discoverForm.getRawValue() satisfies DiscoverMovieFormValue
+        const updatedDiscoverUrl = this.discoverService.updatedDiscoverUrl(formValues)
+        console.log(updatedDiscoverUrl)
+        this.router.navigateByUrl(updatedDiscoverUrl)
         this.discoverService.discover(formValues)
     }
 
@@ -155,7 +171,7 @@ export class DiscoverMoviesComponent {
         this.keywordForm.reset()
     }
 
-    onKeywordSelect(keyword: Selectable): void {
+    onKeywordSelect(keyword: string): void {
         const previousValues = this.withKeywords.getRawValue().keywords
         this.withKeywords.controls["keywords"].setValue([...previousValues, keyword])
         this.keywordForm.reset()

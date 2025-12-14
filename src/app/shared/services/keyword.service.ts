@@ -24,6 +24,10 @@ export class KeywordService {
         }
     }
 
+    keywordNameById(id: string): string | undefined {
+        return this.keywords.find(k => k.id.toString() === id)?.name
+    }
+
     search(query: string, limit: number = 50, filter: number[]): Keyword[] {
         if (!this.keywords.length || !query.trim()) return []
         const lower = query.toLowerCase()

@@ -48,16 +48,14 @@ export class DiscoverMoviesService {
         return `?withKeywords=${joined}`
     }
 
+    updatedDiscoverUrl(formvalues: DiscoverMovieFormValue, page?: number): string {
+        const queryBuilder = new MovieDiscoverQueryBuilder("", "movies/discover")
 
-    paramsToKeywords(map: ParamMap): DiscoverMovieFormValue {
-        const genres = map.get('genres')
-        const adult = map.get('adult')
-        const video = map.get('video')
-        const releaseDateLte = map.get('releaseDateLte')
-        const releaseDateGte = map.get('releaseDateGte')
-        const voteAverageLte = map.get('voteAverageLte')
-        const voteAverageGte = map.get('voteAveragGGte')
-        const withKeywords = map.get('withKeywords')
+        return this.createQueryUrl(queryBuilder, formvalues, page)
+    }
+
+
+    paramsToFormValues(map: ParamMap | undefined): DiscoverMovieFormValue {
         const values: DiscoverMovieFormValue = {
             genres: [],
             include: { adult: false, video: false },
@@ -66,40 +64,68 @@ export class DiscoverMoviesService {
             withKeywords: { keywords: [], pipe: "and" }
         }
 
+        if (!map) return values
+        const genres = map.get('genres')
+        const adult = map.get('adult')
+        const video = map.get('video')
+        const releaseDateLte = map.get('releaseDateLte')
+        const releaseDateGte = map.get('releaseDateGte')
+        const voteAverageLte = map.get('voteAverageLte')
+        const voteAverageGte = map.get('voteAverageGte')
+        const withKeywords = map.get('withKeyword')
+
         genres?.split(",").forEach(g => {
             const genre = this.config.movieGenres.find(mg => mg.id === +g)
             if (!genre) return
-            values.genres.push({ name: genre.name, value: genre.id.toString() })
+            values.genres.push(genre.id.toString())
         })
         if (adult) values.include.adult = adult === "true" ? true : false
         if (video) values.include.video = video === "true" ? true : false
         if (releaseDateLte) values.releaseDate.lte = releaseDateLte
+        if (releaseDateGte) values.releaseDate.gte = releaseDateGte
+        if (voteAverageLte) values.voteAverage.lte = voteAverageLte
+        if (voteAverageGte) values.voteAverage.gte = voteAverageGte
+        if (withKeywords) {
+            const withKeywordsAnd = withKeywords.split(",")
+            const withKeywordsOr = withKeywords.split("|")
+            const list = withKeywordsAnd.length >= withKeywordsOr.length ? withKeywordsAnd : withKeywordsOr
+            const pipe = withKeywordsAnd.length >= withKeywordsOr.length ? "and" : "or"
 
+            values.withKeywords.keywords = list
+            values.withKeywords.pipe = pipe
+        }
         return values
     }
 
     private request(params: { query: DiscoverMovieFormValue, page?: number }): Observable<ResultMovie[]> {
-        const { include, voteAverage, releaseDate, withKeywords, genres } = params.query
-        const page = params.page
+
         const queryBuilder = new MovieDiscoverQueryBuilder(environment.tmdbApiUrl, "discover/movie")
-        queryBuilder
             .apiKey(environment.tmdbApiKey)
-            .withGenres(genres.map(g => g.value))
-        if (include.adult) queryBuilder.includeAdult(include.adult)
-        if (include.video) queryBuilder.includeVideo(include.video)
-        if (voteAverage.lte) queryBuilder.voteAverageLte(+voteAverage.lte.value)
-        if (voteAverage.gte) queryBuilder.voteAverageGte(+voteAverage.gte.value)
-        if (releaseDate.lte) queryBuilder.releaseDateLte([+releaseDate.lte.value, 12, 31])
-        if (releaseDate.gte) queryBuilder.releaseDateGte([+releaseDate.gte.value, 1, 1])
-        if (withKeywords.keywords.length > 0) queryBuilder.withKeywords(withKeywords.keywords.map(k => k.value), withKeywords.pipe)
-        queryBuilder.page(page)
+        const url = this.createQueryUrl(queryBuilder, params.query, params.page)
         const options = {}
 
-        return this.http.get<TmdbResultMovieResponse>(queryBuilder.url, options).pipe(
+        return this.http.get<TmdbResultMovieResponse>(url, options).pipe(
             map(data => {
                 this.paginationResults$.next(new TmdbPagination(data))
                 return data.results.map(datum => new TmdbResultMovie(datum))
             }),
         )
+    }
+
+    private createQueryUrl(queryBuilder: MovieDiscoverQueryBuilder, formValues: DiscoverMovieFormValue, page?: number): string {
+        const { include, voteAverage, releaseDate, withKeywords, genres } = formValues
+        queryBuilder
+            .withGenres(genres)
+        if (include.adult) queryBuilder.includeAdult(include.adult)
+        if (include.video) queryBuilder.includeVideo(include.video)
+        if (voteAverage.lte) queryBuilder.voteAverageLte(+voteAverage.lte)
+        if (voteAverage.gte) queryBuilder.voteAverageGte(+voteAverage.gte)
+        if (releaseDate.lte) queryBuilder.releaseDateLte([+releaseDate.lte, 12, 31])
+        if (releaseDate.gte) queryBuilder.releaseDateGte([+releaseDate.gte, 1, 1])
+        if (withKeywords.keywords.length > 0) queryBuilder.withKeywords(withKeywords.keywords, withKeywords.pipe)
+        queryBuilder.page(page)
+
+        return queryBuilder.url
+
     }
 }

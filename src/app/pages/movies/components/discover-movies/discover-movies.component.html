@@ -80,15 +80,16 @@
                 @if(keywordSearchResult().length > 0) {
                 <app-dropdown-list [triggerElement]="trigger.elementRef">
                     @for(result of keywordSearchResult(); track $index) {
-                    <li (click)="onKeywordSelect(result)" class="list-item">{{result.name}}</li>
+                    <li (click)="onKeywordSelect(result.value)" class="list-item">{{result.name}}</li>
                     }
                 </app-dropdown-list>
                 }
             </div>
             <app-chip-list class="selected">
                 @for(keyword of withKeywords.controls["keywords"].getRawValue(); track $index) {
+                @let keywordName = lookupKeyword(keyword);
                 <app-chip [value]="keyword" [action]="true"
-                    (clickRequest)="onKeywordRemove($index)">{{keyword.name}}</app-chip>
+                    (clickRequest)="onKeywordRemove($index)">{{keywordName}}</app-chip>
                 }
             </app-chip-list>
 
