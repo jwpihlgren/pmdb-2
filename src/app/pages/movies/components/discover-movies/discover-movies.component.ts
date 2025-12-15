@@ -113,7 +113,9 @@ export class DiscoverMoviesComponent {
             list: this.genres.map(g => g.id)
         }
         const formValues = this.discoverService.paramsToFormValues(this.paramMap())
+        console.log(this.paramMap())
         this.discoverForm.patchValue(this.discoverService.paramsToFormValues(this.paramMap()))
+        console.log(this.discoverForm.getRawValue())
         this.discoverService.discover(formValues)
     }
 
@@ -144,7 +146,7 @@ export class DiscoverMoviesComponent {
 
 
     getGenre(id: string): Genre | undefined {
-        const genre = this.configService.movieGenres.find(g => g.id.toString() === id)
+        const genre = this.configService.movieGenres.find(g => g.id.toString() === id.toString())
         return genre
     }
 
@@ -193,11 +195,12 @@ export class DiscoverMoviesComponent {
         const selectedGenres: string[] = this.selectedGenres.getRawValue()
         const existingIndex = selectedGenres.findIndex(g => {
             console.log(g, genre)
-           return g === genre.toString()
+            return g.toString() === genre.toString()
         })
         if (existingIndex !== -1) {
             selectedGenres.splice(existingIndex, 1)
             this.selectedGenres.setValue(selectedGenres)
+
         }
     }
 

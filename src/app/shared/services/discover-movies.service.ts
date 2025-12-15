@@ -65,7 +65,7 @@ export class DiscoverMoviesService {
         }
 
         if (!map) return values
-        const genres = map.get('genres')
+        const genres = map.get('with_genres')
         const adult = map.get('adult')
         const video = map.get('video')
         const releaseDateLte = map.get('releaseDateLte')
@@ -75,7 +75,8 @@ export class DiscoverMoviesService {
         const withKeywords = map.get('withKeyword')
 
         genres?.split(",").forEach(g => {
-            const genre = this.config.movieGenres.find(mg => mg.id === g)
+            const genre = this.config.movieGenres.find(mg => mg.id.toString() === g)
+
             if (!genre) return
             values.genres.push(genre.id)
         })

@@ -73,7 +73,7 @@ export class ComboboxComponent extends Closable implements ControlValueAccessor 
             this.selectedItem = undefined
         }
 
-        this.onChange(this.multiSelect() ? this.selectedItem : this.selectedItem)
+        this.onChange(this.multiSelect() ? this.selectedItems : this.selectedItem)
 
     }
 
@@ -94,14 +94,14 @@ export class ComboboxComponent extends Closable implements ControlValueAccessor 
 
             this.selectedItems.forEach(v =>
                 this.selectableItems()
-                    .find(item => item.value() === v)
+                    .find(item => item.value()?.toString() === v)
                     ?.setSelected(true)
             );
         } else {
             this.selectedItem = Array.isArray(value) ? value[0] : value;
 
             this.selectableItems()
-                .find(item => item.value() === this.selectedItem)
+                .find(item => item.value()?.toString() === this.selectedItem)
                 ?.setSelected(true);
         }
     }
