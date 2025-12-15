@@ -6,7 +6,6 @@ import { FocusLostDirective } from '../../directives/focus-lost.directive';
 import { DropdownListComponent } from '../drop-down-list/dropdown-list.component';
 import { ComboboxItemComponent } from './components/combobox-item.component';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Selectable } from '../../models/interfaces/selectable';
 
 @Component({
     selector: 'app-combobox',
@@ -29,8 +28,8 @@ export class ComboboxComponent extends Closable implements ControlValueAccessor 
     multiSelect = input(false)
     selectableItems = contentChildren(ComboboxItemComponent)
     mirror = reflectComponentType(ComboboxItemComponent)
-    selectedItems: Selectable[] = []
-    selectedItem: Selectable | undefined = undefined
+    selectedItems: string[] = []
+    selectedItem: string | undefined = undefined
 
     private onChange: (value: any) => void = () => { }
     private onTouched: () => void = () => { }
@@ -39,27 +38,25 @@ export class ComboboxComponent extends Closable implements ControlValueAccessor 
     onClick(event: Event) {
         const target = event.target as HTMLElement
         if (target.localName === this.mirror?.selector) {
-            const name = target.innerText
             const value = target.getAttribute("value") || "missing_on_attribute"
-            const selectable = { name: name, value: value }
             const contentChild = this.selectableItems().find(c => c.value()?.toString() === value)
             if (!contentChild) return
             if (!this.selectableItems()) return
             if (contentChild.disabled()) return
             this.selectableItems().forEach(s => s.setSelected(false))
             if (!this.multiSelect()) {
-                this.selectedItem = selectable
+                this.selectedItem = value
                 this.selectableItems().find(s => s.value() === value)?.setSelected(true)
             }
             else {
-                const index = this.selectedItems.findIndex(s => s.value === value)
+                const index = this.selectedItems.findIndex(s => s === value)
                 if (index > -1) {
                     this.selectedItems.splice(index, 1)
                 } else {
-                    this.selectedItems = [...this.selectedItems, selectable]
+                    this.selectedItems = [...this.selectedItems, value]
                 }
 
-                this.selectedItems.forEach(i => this.selectableItems().find(s => s.value() === i.value)?.setSelected(true))
+                this.selectedItems.forEach(i => this.selectableItems().find(s => s.value() === i)?.setSelected(true))
             }
             this.onChange(this.multiSelect() ? this.selectedItems : this.selectedItem)
         }
@@ -80,8 +77,33 @@ export class ComboboxComponent extends Closable implements ControlValueAccessor 
 
     }
 
-    writeValue(selectedItems: Selectable[]): void {
-        this.selectedItems = selectedItems
+    writeValue(value: string | string[] | null): void {
+        if (!this.selectableItems()) return;
+
+        // Clear previous selection
+        this.selectableItems().forEach(item => item.setSelected(false));
+
+        if (value == null) {
+            this.selectedItem = undefined;
+            this.selectedItems = [];
+            return;
+        }
+
+        if (this.multiSelect()) {
+            this.selectedItems = Array.isArray(value) ? value : [value];
+
+            this.selectedItems.forEach(v =>
+                this.selectableItems()
+                    .find(item => item.value() === v)
+                    ?.setSelected(true)
+            );
+        } else {
+            this.selectedItem = Array.isArray(value) ? value[0] : value;
+
+            this.selectableItems()
+                .find(item => item.value() === this.selectedItem)
+                ?.setSelected(true);
+        }
     }
 
     registerOnChange(fn: any): void {
@@ -91,8 +113,6 @@ export class ComboboxComponent extends Closable implements ControlValueAccessor 
     registerOnTouched(fn: any): void {
 
     }
-
-
 }
 
 

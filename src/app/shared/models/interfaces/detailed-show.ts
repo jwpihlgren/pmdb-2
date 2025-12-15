@@ -131,7 +131,7 @@ export interface DetailedShowRecommendation {
     overview: string
     posterPath: string
     mediaType: string
-    genreIds: number[]
+    genreIds: string[]
     popularity: number
     firstAirDate: string | undefined
     voteAverage: number

@@ -10,10 +10,8 @@
             <app-chip-list class="selected">
                 @for(g of discoverForm.value.genres; track $index) {
                 @let chip = getGenre(g);
-                @if(!!chip) {
                 <app-chip [value]="chip!.id.toString()" [action]="true"
-                    (clickRequest)="onGenreRemove(chip!.name)">{{chip!.name}}</app-chip>
-                }
+                    (clickRequest)="onGenreRemove(chip!.id)">{{chip!.name}}</app-chip>
                 }
             </app-chip-list>
 

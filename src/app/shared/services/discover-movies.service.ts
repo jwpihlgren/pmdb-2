@@ -75,9 +75,9 @@ export class DiscoverMoviesService {
         const withKeywords = map.get('withKeyword')
 
         genres?.split(",").forEach(g => {
-            const genre = this.config.movieGenres.find(mg => mg.id === +g)
+            const genre = this.config.movieGenres.find(mg => mg.id === g)
             if (!genre) return
-            values.genres.push(genre.id.toString())
+            values.genres.push(genre.id)
         })
         if (adult) values.include.adult = adult === "true" ? true : false
         if (video) values.include.video = video === "true" ? true : false

@@ -20,7 +20,6 @@ import { AppEventService } from '../../../../shared/services/app-event.service';
 import { KeywordService } from '../../../../shared/services/keyword.service';
 import { DropdownListComponent } from '../../../../shared/components/drop-down-list/dropdown-list.component';
 import { ComboboxItemComponent } from '../../../../shared/components/combobox/components/combobox-item.component';
-import { Selectable } from '../../../../shared/models/interfaces/selectable';
 import { ExpandableMultiSelectComponent } from '../../../../shared/components/expandable-multi-select/expandable-multi-select.component';
 import { SelectItemComponent } from '../../../../shared/components/expandable-multi-select/components/select-item/select-item.component';
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
@@ -50,7 +49,7 @@ export class DiscoverMoviesComponent {
 
     cardMaxWidth = "250px"
 
-    listboxParams!: { list: { name: string, value: string | number }[] }
+    listboxParams!: { list: string[] }
     years: number[] = this.generateNumberRange(new Date().getFullYear(), 1900)
     results = toSignal(this.discoverService.results$)
     paramMap = toSignal(this.activatedRoute.queryParamMap)
@@ -111,12 +110,7 @@ export class DiscoverMoviesComponent {
     constructor() {
         this.genres = this.configService.movieGenres
         this.listboxParams = {
-            list: this.genres.map(g => {
-                return {
-                    name: g.name, value:
-                        g.id
-                }
-            })
+            list: this.genres.map(g => g.id)
         }
         const formValues = this.discoverService.paramsToFormValues(this.paramMap())
         this.discoverForm.patchValue(this.discoverService.paramsToFormValues(this.paramMap()))
@@ -141,7 +135,6 @@ export class DiscoverMoviesComponent {
 
     get withKeywords() {
         return this.discoverForm.get('withKeywords') as FormGroup
-
     }
 
 
@@ -151,7 +144,7 @@ export class DiscoverMoviesComponent {
 
 
     getGenre(id: string): Genre | undefined {
-        const genre = this.configService.movieGenres.find(g => g.id === +id)
+        const genre = this.configService.movieGenres.find(g => g.id.toString() === id)
         return genre
     }
 
@@ -184,10 +177,10 @@ export class DiscoverMoviesComponent {
     }
 
 
-    onGenreToggle(genre: Genre): void {
+    onGenreToggle(genre: string): void {
 
-        const selectedGenres: Genre[] = this.selectedGenres.getRawValue()
-        const existingIndex = selectedGenres.findIndex(g => g.id === genre.id)
+        const selectedGenres: string[] = this.selectedGenres.getRawValue()
+        const existingIndex = selectedGenres.findIndex(g => g === genre)
         if (existingIndex !== -1) {
             selectedGenres.splice(existingIndex, 1)
             this.selectedGenres.setValue(selectedGenres)
@@ -197,8 +190,11 @@ export class DiscoverMoviesComponent {
     }
 
     onGenreRemove(genre: string): void {
-        const selectedGenres: Selectable[] = this.selectedGenres.getRawValue()
-        const existingIndex = selectedGenres.findIndex(g => g.value === genre)
+        const selectedGenres: string[] = this.selectedGenres.getRawValue()
+        const existingIndex = selectedGenres.findIndex(g => {
+            console.log(g, genre)
+           return g === genre.toString()
+        })
         if (existingIndex !== -1) {
             selectedGenres.splice(existingIndex, 1)
             this.selectedGenres.setValue(selectedGenres)
