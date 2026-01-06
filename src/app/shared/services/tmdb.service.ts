@@ -1,3 +1,4 @@
+import { M } from '@angular/cdk/keycodes';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -9,7 +10,15 @@ export class TmdbService {
 
 
     filtersToQueryParams(filters: Record<MovieFilter, any>[]): string {
-
+        const params = filters.map(f => {
+            const [key, value] = Object.entries(f)
+            switch (f) {
+                case f.certification:
+                    return "";
+                default:
+                    return ""
+            }
+        })
     }
 
 
@@ -18,9 +27,10 @@ export class TmdbService {
     }
 
 
-    private parseList(list: string[], operator: string): string {
+    private parseList<T>(list: T[], operator: string): string {
         return list.join(operator)
     }
+
 
 }
 
@@ -46,14 +56,109 @@ const movieSort = {
     }
 }
 
+const FilterTypes = {
+    DATE: "date",
+    STRING: "string",
+    NUMBER: "number",
+    BOOLEAN: "boolean"
+} as const
+
+type FilterType = typeof FilterTypes[keyof typeof FilterTypes]
+
+type FilterValueTypes = {
+    [FilterTypes.DATE]: Date,
+    [FilterTypes.STRING]: string,
+    [FilterTypes.NUMBER]: number,
+    [FilterTypes.BOOLEAN]: boolean,
+}
+
+type FilterValueType = keyof FilterValueTypes
+
+const FilterValueOperator = {
+    "and": "and",
+    "or": "or"
+} as const
+
+type FilterValueOperatorType = keyof typeof FilterValueOperator
+
+interface Filter<K extends FilterValueType, Key extends string = string> {
+    readonly key: Key
+    readonly type: K
+    readonly multiple: boolean
+    readonly operator?: FilterValueOperatorType
+    readonly allowedValues?: FilterValueTypes[K][]
+}
+
+type FilterParams<K extends FilterValueType, Key extends string = string> =
+    | {
+        key: Key
+        multiple: false
+        operator?: never
+        allowedValues?: FilterValueTypes[K][]
+    }
+    | {
+        key: Key
+        multiple: true
+        operator?: FilterValueOperatorType
+        allowedValues?: FilterValueTypes[K][]
+    }
+
+abstract class BaseFilter<K extends FilterValueType> implements Filter<K> {
+    readonly abstract type: K
+    readonly key!: string
+    readonly multiple!: boolean
+    readonly operator?: FilterValueOperatorType
+    readonly allowedValues?: FilterValueTypes[K][]
+
+    protected values: FilterValueTypes[K][] = []
+
+    constructor(params: FilterParams<K>) {
+        Object.assign(this, params)
+    }
+
+    getValues() {
+        return [...this.values]
+    }
+
+}
+
+class DateFilter extends BaseFilter<typeof FilterTypes.DATE> { type = FilterTypes.DATE }
+class StringFilter extends BaseFilter<typeof FilterTypes.STRING> { type = FilterTypes.STRING }
+class NumberFilter extends BaseFilter<typeof FilterTypes.NUMBER> { type = FilterTypes.NUMBER }
+class BooleanFilter extends BaseFilter<typeof FilterTypes.BOOLEAN> { type = FilterTypes.BOOLEAN }
+
+
+class FilterFactory {
+    static dateFilter(params: FilterParams<typeof FilterTypes.DATE>) {
+        return new DateFilter(params)
+    }
+
+    static stringFilter(params: FilterParams<typeof FilterTypes.STRING>) {
+        return new StringFilter(params)
+    }
+
+    static numberFilter(params: FilterParams<typeof FilterTypes.NUMBER>) {
+        return new NumberFilter(params)
+    }
+    static booleanFilter(params: FilterParams<typeof FilterTypes.BOOLEAN>) {
+        return new BooleanFilter(params)
+    }
+}
+
+const movieFilterSet: Map<string, Filter<keyof FilterValueTypes>> = new Map()
+movieFilterSet
+    .set("with_companies", FilterFactory.stringFilter({ key: "with_companies", multiple: false, allowedValues: ["1"] }))
+
+
+
 const movieFilters = {
-    certification: { key: "certification" }, //use in conjunction with region
-    certificationGte: { key: "certification.gte" }, //use in conjunction with region
+    certification: { key: "certification" }, //string use in conjunction with region
+    certificationGte: { key: "certification.gte" }, //string use in conjunction with region
     certificationLte: { key: "certification.lte" }, //use in conjunction with region
-    certificationCountry: { key: "certification_country" }, //use in conjunction with the certification, certification.gte and certification.lte filters
-    includeAdult: { key: "include_adult" }, //Defaults to false
-    includeVideo: { key: "include_video" }, //Defaults to false
-    language: { key: "language" }, //Defaults to en- US
+    certificationCountry: { key: "certification_country" }, // string use in conjunction with the certification, certification.gte and certification.lte filters
+    includeAdult: { key: "include_adult" }, //boolean Defaults to false
+    includeVideo: { key: "include_video" }, //boolean Defaults to false
+    language: { key: "language" }, //string Defaults to en- US
     page: { key: "page" }, //int32 Defaults to 1
     primaryReleaseYear: { key: "primary_release_year" }, //int32
     primaryReleaseDateGte: { key: "primary_release_date.gte" }, // date

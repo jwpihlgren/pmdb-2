@@ -1,4 +1,4 @@
 export default interface Keyword {
-    id: number
+    id: string
     name: string
 }

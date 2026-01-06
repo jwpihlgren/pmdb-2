@@ -28,7 +28,7 @@ export class KeywordService {
         return this.keywords.find(k => k.id.toString() === id)?.name
     }
 
-    search(query: string, limit: number = 50, filter: number[]): Keyword[] {
+    search(query: string, limit: number = 50, filter: string[]): Keyword[] {
         if (!this.keywords.length || !query.trim()) return []
         const lower = query.toLowerCase()
         const filteredKeywords = this.keywords.filter(k => !filter.includes(k.id))

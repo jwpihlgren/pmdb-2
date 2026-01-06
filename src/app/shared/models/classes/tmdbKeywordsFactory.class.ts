@@ -5,7 +5,7 @@ export class TmdbKeywordsFactory {
     static create(data: TmdbKeywordsResponse): Keyword[] {
         let keywords = data.keywords ?? data.results!
         return keywords.map(keyword => {
-            return{name: keyword.name, id: keyword.id}
+            return { name: keyword.name, id: keyword.id.toString() }
         })
     }
 }

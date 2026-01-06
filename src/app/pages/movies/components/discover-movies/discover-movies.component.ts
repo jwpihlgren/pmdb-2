@@ -1,9 +1,9 @@
-import { Component, computed, inject, Signal, } from '@angular/core';
-import { DiscoverMoviesService } from '../../../../shared/services/discover-movies.service';
+import { Component, computed, inject, } from '@angular/core';
+import { DiscoverMovieResult, DiscoverMoviesService } from '../../../../shared/services/discover-movies.service';
 import { ConfigService } from '../../../../shared/services/config.service';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Genre } from '../../../../shared/models/interfaces/genre';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
 import { SearchPeopleService } from '../../../../shared/services/search-people.service';
@@ -11,8 +11,6 @@ import { ComboboxComponent } from '../../../../shared/components/combobox/combob
 import { ChipListComponent } from '../../../../shared/components/chip-list/chip-list.component';
 import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
-import { Pagination } from '../../../../shared/models/interfaces/pagination';
-import { DiscoverMovieFormValue } from '../../../../shared/models/interfaces/discover-movie-form-value';
 import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { RoutingService } from '../../../../shared/services/routing.service';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
@@ -25,6 +23,8 @@ import { SelectItemComponent } from '../../../../shared/components/expandable-mu
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
 import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormValues } from '../../../../shared/adapters/filterForm/filterForm.adapter';
+import { DiscoverMovieFilters } from '../../../../shared/models/interfaces/discover-movie-filters';
 
 @Component({
     selector: 'app-discover-movies',
@@ -51,10 +51,7 @@ export class DiscoverMoviesComponent {
 
     listboxParams!: { list: string[] }
     years: number[] = this.generateNumberRange(new Date().getFullYear(), 1900)
-    results = toSignal(this.discoverService.results$)
-    paramMap = toSignal(this.activatedRoute.queryParamMap)
-
-    pagination: Signal<Pagination> = toSignal(this.discoverService.pagination, { requireSync: true })
+    results = toSignal<DiscoverMovieResult>(this.discoverService.results)
 
     voteAverageOptions = {
         list: this.generateNumberRange(1, 10).map(n => {
@@ -70,26 +67,26 @@ export class DiscoverMoviesComponent {
     }
 
     discoverForm = this.formBuilder.group({
-        voteAverage: this.formBuilder.nonNullable.group({
-            lte: this.formBuilder.nonNullable.control<string | undefined>(undefined),
-            gte: this.formBuilder.nonNullable.control<string | undefined>(undefined)
+        // Scalar values
+        includeAdult: this.formBuilder.control<boolean | null>(null),
+        includeVideo: this.formBuilder.control<boolean | null>(null),
+        sortBy: this.formBuilder.control<string | undefined>(undefined),
+        page: this.formBuilder.control<number | undefined>(undefined),
+        releaseDateLte: this.formBuilder.control<string | undefined>(undefined),
+        releaseDateGte: this.formBuilder.control<string | undefined>(undefined),
+        voteAverageLte: this.formBuilder.control<string | undefined>(undefined),
+        voteAverageGte: this.formBuilder.control<string | undefined>(undefined),
+
+        // Multi-value filters with operator
+        withGenres: this.formBuilder.group({
+            values: this.formBuilder.control<string[]>([]),
+            operator: this.formBuilder.control<"and" | "or">("and")  // ⚠️ "operator" not "delimiter"
         }),
-        releaseDate: this.formBuilder.nonNullable.group({
-            lte: this.formBuilder.nonNullable.control<string | undefined>(undefined),
-            gte: this.formBuilder.nonNullable.control<string | undefined>(undefined)
-        }),
-        include: this.formBuilder.nonNullable.group({
-            adult: this.formBuilder.nonNullable.control(false),
-            video: this.formBuilder.nonNullable.control(false)
-        }),
-        genres: this.formBuilder.nonNullable.control<string[]>([]),
-        withKeywords: this.formBuilder.nonNullable.group({
-            keywords: this.formBuilder.nonNullable.control<string[]>([]),
-            pipe: this.formBuilder.nonNullable.control<"and" | "or">("and")
+        withKeywords: this.formBuilder.group({
+            values: this.formBuilder.control<string[]>([]),
+            operator: this.formBuilder.control<"and" | "or">("and")
         })
     });
-
-
 
     keywordForm = this.formBuilder.group({
         keyword: this.formBuilder.nonNullable.control("")
@@ -98,45 +95,26 @@ export class DiscoverMoviesComponent {
     keywordSearchSignal = toSignal<string>(this.keywordForm.controls.keyword.valueChanges)
 
     keywordSearchResult = computed(() => {
+
         return this.keywordService.search(
             this.keywordSearchSignal() || "",
             10,
-            this.withKeywords.controls["keywords"].getRawValue()).map((k) => ({
+            this.discoverForm.controls.withKeywords.controls.values.getRawValue() ?? []).map((k) => ({
                 value:
                     k.id.toString(), name: k.name
             }))
     })
 
+
     constructor() {
-        this.genres = this.configService.movieGenres
-        this.listboxParams = {
-            list: this.genres.map(g => g.id)
-        }
-        const formValues = this.discoverService.paramsToFormValues(this.paramMap())
-        console.log(this.paramMap())
-        this.discoverForm.patchValue(this.discoverService.paramsToFormValues(this.paramMap()))
-        console.log(this.discoverForm.getRawValue())
-        this.discoverService.discover(formValues)
-    }
+        this.genres = this.configService.movieGenres;
+        this.listboxParams = { list: this.genres.map(g => g.id) };
 
-    get selectedGenres() {
-        return this.discoverForm.get('genres') as FormControl
-    }
-
-    get voteAverage() {
-        return this.discoverForm.get('voteAverage') as FormGroup
-    }
-
-    get releaseDate() {
-        return this.discoverForm.get('releaseDate') as FormGroup
-    }
-
-    get include() {
-        return this.discoverForm.get('include') as FormGroup
-    }
-
-    get withKeywords() {
-        return this.discoverForm.get('withKeywords') as FormGroup
+        this.activatedRoute.queryParamMap
+            .pipe(takeUntilDestroyed())
+            .subscribe(() => {
+                this.discoverService.adoptFromUrl(this.activatedRoute.snapshot, this.discoverForm);
+            });
     }
 
 
@@ -151,63 +129,56 @@ export class DiscoverMoviesComponent {
     }
 
     onSubmit(): void {
-        const formValues = this.discoverForm.getRawValue() satisfies DiscoverMovieFormValue
-        const updatedDiscoverUrl = this.discoverService.updatedDiscoverUrl(formValues)
-        console.log(updatedDiscoverUrl)
-        this.router.navigateByUrl(updatedDiscoverUrl)
-        this.discoverService.discover(formValues)
+        this.discoverService.setFilters(this.discoverForm.getRawValue())
+    }
+
+    onUpdateAndSubmit(page: number): void {
+        this.discoverForm.controls.page.setValue(page)
+        this.onSubmit()
     }
 
     onKeywordSubmit(): void {
         const formValue = this.keywordForm.controls["keyword"].getRawValue()
         if (!formValue) return
-        const previousValues = this.withKeywords.getRawValue().keywords
-        this.withKeywords.controls["keywords"].setValue([...previousValues, formValue])
+        const previousValues = this.discoverForm.controls.withKeywords.controls["values"].getRawValue() ?? []
+        this.discoverForm.controls.withKeywords.controls.values.setValue([...previousValues, formValue])
         this.keywordForm.reset()
     }
 
     onKeywordSelect(keyword: string): void {
-        const previousValues = this.withKeywords.getRawValue().keywords
-        this.withKeywords.controls["keywords"].setValue([...previousValues, keyword])
+        const previousValues = this.discoverForm.controls.withKeywords.controls["values"].getRawValue() ?? []
+        this.discoverForm.controls.withKeywords.controls.values.setValue([...previousValues, keyword])
         this.keywordForm.reset()
     }
 
-    handlePageRequest(page: number) {
-        const values = this.discoverForm.getRawValue() satisfies DiscoverMovieFormValue
-        this.discoverService.discover(values, page)
-        this.appEventService.emitEvent({ type: "PAGINATION", data: undefined })
-    }
-
-
     onGenreToggle(genre: string): void {
-
-        const selectedGenres: string[] = this.selectedGenres.getRawValue()
+        const selectedGenres: string[] = this.discoverForm.controls.withGenres.get("values")?.getRawValue()
         const existingIndex = selectedGenres.findIndex(g => g === genre)
         if (existingIndex !== -1) {
             selectedGenres.splice(existingIndex, 1)
-            this.selectedGenres.setValue(selectedGenres)
+            this.discoverForm.controls.withGenres.get("values")?.setValue(selectedGenres)
             return
         }
-        this.selectedGenres.setValue(Array.from(new Set([...selectedGenres, genre])))
+        this.discoverForm.controls.withGenres.get("values")?.setValue(Array.from(new Set([...selectedGenres, genre])))
     }
 
     onGenreRemove(genre: string): void {
-        const selectedGenres: string[] = this.selectedGenres.getRawValue()
+        const selectedGenres: string[] = this.discoverForm.controls.withGenres.get("values")?.getRawValue()
         const existingIndex = selectedGenres.findIndex(g => {
             console.log(g, genre)
             return g.toString() === genre.toString()
         })
         if (existingIndex !== -1) {
             selectedGenres.splice(existingIndex, 1)
-            this.selectedGenres.setValue(selectedGenres)
+            this.discoverForm.controls.withGenres.get("values")?.setValue(selectedGenres)
 
         }
     }
 
     onKeywordRemove(index: number): void {
-        const previousValues = [...this.withKeywords.getRawValue().keywords]
+        const previousValues = [...this.discoverForm.controls.withKeywords.controls.values.getRawValue() ?? []]
         previousValues.splice(index, 1)
-        this.withKeywords.get("keywords")!.setValue(previousValues)
+        this.discoverForm.controls.withKeywords.controls.values.setValue(previousValues)
     }
 
     generateNumberRange(start: number, end: number, step: number = 1): number[] {

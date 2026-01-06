@@ -1,132 +1,151 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { BehaviorSubject, map, Observable, ReplaySubject, switchMap, } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import MovieDiscoverQueryBuilder from '../models/classes/movie-discover-query-builder.class';
-import { PlaceholderPagination } from '../models/classes/placeholder-pagination';
-import { Pagination } from '../models/interfaces/pagination';
+import { BehaviorSubject, Observable, Subject, take, tap, } from 'rxjs';
 import { TmdbPagination } from '../models/classes/tmdb-pagination';
-import { DiscoverMovieFormValue } from '../models/interfaces/discover-movie-form-value';
 import { TmdbResultMovieResponse } from '../models/interfaces/tmdb/tmdb-result-movie-response';
 import { TmdbResultMovie } from '../models/classes/tmdb-result-movie';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { Pagination } from '../models/interfaces/pagination';
 import { ResultMovie } from '../models/interfaces/result-movie';
-import { ParamMap } from '@angular/router';
-import { Genre } from '../models/interfaces/genre';
-import { ConfigService } from './config.service';
+import { DiscoverMovieFilterDefinitions } from './tmdb-discover-movie-filter-config.service';
+import { FilterDefinitions, FilterSet } from '../models/filter.model';
+import { HttpClient } from '@angular/common/http';
+import { discoverMovieFilters, DiscoverMovieFilters } from '../models/interfaces/discover-movie-filters';
+import { FilterUrlAdapter } from '../adapters/filterUrl/filter-url.adapter';
+import { UrlBuilder } from '../models/classes/url-builder/url-builder';
+import { TmdbDiscoverMovieAdapter } from '../adapters/tmdb/tmdb-discover-movie-filter.adapter';
+import { FilterFormAdapter, FormValues } from '../adapters/filterForm/filterForm.adapter';
+import { FormGroup } from '@angular/forms';
+
+export interface DiscoverMovieResult { result: ResultMovie[], pagination: Pagination }
 
 @Injectable({
     providedIn: 'root'
 })
 export class DiscoverMoviesService {
 
-    protected http = inject(HttpClient)
-    protected config = inject(ConfigService)
+    private readonly filters_ = new BehaviorSubject<DiscoverMovieFilters>(this.createFilterSet())
+    readonly filters = this.filters_.asObservable()
+    private readonly defintions: FilterDefinitions<DiscoverMovieFilters> = inject(DiscoverMovieFilterDefinitions)
+    private http: HttpClient = inject(HttpClient)
+    private router: Router = inject(Router)
+    private results$: Subject<DiscoverMovieResult> = new Subject<DiscoverMovieResult>()
+    private tmdbAdapter = new TmdbDiscoverMovieAdapter()
+    private readonly filterFormAdapter = new FilterFormAdapter<DiscoverMovieFilters>(this.defintions)
+    // Dedupe keys (URL is source of truth)
+    private lastAdoptedUrlKey: string | null = null;
+    private lastRequestedKey: string | null = null;
+    private inFlight?: import('rxjs').Subscription;
 
-    private query$: ReplaySubject<{ query: DiscoverMovieFormValue, page?: number }> = new ReplaySubject()
-    private paginationResults$ = new BehaviorSubject<Pagination>(new PlaceholderPagination())
-    results$: Observable<ResultMovie[]>
 
-    constructor() {
-        this.results$ = this.query$.pipe(
-            switchMap(data => {
-                return this.request(data)
-            })
-        )
+    constructor() { }
+
+    get results(): Observable<DiscoverMovieResult> {
+        return this.results$.asObservable()
     }
 
-    discover(value: DiscoverMovieFormValue, page?: number): void {
-        this.query$.next({ query: value, page: page })
+    private createFilterSet(): DiscoverMovieFilters {
+        return Object
+            .fromEntries(Object
+                .keys(discoverMovieFilters)
+                .map(k => [k, undefined])
+            ) as DiscoverMovieFilters
     }
 
-    get pagination(): Observable<Pagination> {
-        return this.paginationResults$.asObservable()
-    }
+    setFilters(formValues: FormValues<DiscoverMovieFilters>): void {
+        const filterSet = this.filterFormAdapter.decode(formValues);
+        const nextKey = this.toCanonicalUrlKey(filterSet);
+        if (this.lastAdoptedUrlKey === nextKey) return;
 
-
-    keywordsToParams(keywords: string[], operator: "and" | "or"): string {
-        const joined = operator === "and" ? keywords.join("|") : keywords.join(",")
-        return `?withKeywords=${joined}`
-    }
-
-    updatedDiscoverUrl(formvalues: DiscoverMovieFormValue, page?: number): string {
-        const queryBuilder = new MovieDiscoverQueryBuilder("", "movies/discover")
-
-        return this.createQueryUrl(queryBuilder, formvalues, page)
+        const queryParams = FilterUrlAdapter.encode(filterSet);
+        this.router.navigate([], { queryParams });
     }
 
 
-    paramsToFormValues(map: ParamMap | undefined): DiscoverMovieFormValue {
-        const values: DiscoverMovieFormValue = {
-            genres: [],
-            include: { adult: false, video: false },
-            releaseDate: { lte: undefined, gte: undefined },
-            voteAverage: { lte: undefined, gte: undefined },
-            withKeywords: { keywords: [], pipe: "and" }
+    adoptFromUrl(route: ActivatedRouteSnapshot, form: FormGroup): void {
+        const paramMap = route.queryParamMap;
+        if (!paramMap) return;
+
+        // URL -> FilterSet (starting from a clean base)
+        const base = this.createFilterSet();
+        const parseResult = FilterUrlAdapter.decode(paramMap, this.defintions, base);
+
+        // If URL is structurally invalid, repair URL and exit.
+        // The subsequent URL emission will call adoptFromUrl again with repaired params.
+        if (parseResult.structuralErrors.length > 0) {
+            this.router.navigate([], {
+                queryParams: FilterUrlAdapter.encode(this.createFilterSet()),
+                replaceUrl: true
+            });
+            return;
+        }
+        const filterSet = parseResult.filterSet;
+
+        // Build a stable key that represents the URL-equivalent state.
+        // We canonicalize via encoded query params sorted by key + values.
+        const adoptedUrlKey = this.toCanonicalUrlKey(filterSet);
+
+        // If we've already adopted this exact URL state, do nothing (prevents loops).
+        if (this.lastAdoptedUrlKey === adoptedUrlKey) {
+            return;
+        }
+        this.lastAdoptedUrlKey = adoptedUrlKey;
+
+        // Update internal state (for other consumers / UI)
+        this.filters_.next(filterSet);
+
+        // Patch form to reflect URL (make sure your adapter uses emitEvent: false internally if needed)
+        this.filterFormAdapter.encode(filterSet, form);
+
+        // Trigger request exactly once per effective filter set
+        if (this.lastRequestedKey !== adoptedUrlKey) {
+            this.lastRequestedKey = adoptedUrlKey;
+            this.request(filterSet);
+        }
+    }
+
+    private request(filterSet: FilterSet<DiscoverMovieFilters>): void {
+        this.inFlight?.unsubscribe();
+
+        const { result } = this.tmdbAdapter.encode(filterSet);
+
+        const urlBuilder = UrlBuilder.new(`${environment.tmdbApiUrl}discover/movie`)
+            .setParam("api_key", environment.tmdbApiKey);
+
+        const params = Object.entries(result)
+            .filter(([k, v]) => k && v !== undefined && v !== null && String(v).trim() !== "")
+            .map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`)
+            .join("&");
+
+        if (params) {
+            urlBuilder.appendParams(params);
         }
 
-        if (!map) return values
-        const genres = map.get('with_genres')
-        const adult = map.get('adult')
-        const video = map.get('video')
-        const releaseDateLte = map.get('releaseDateLte')
-        const releaseDateGte = map.get('releaseDateGte')
-        const voteAverageLte = map.get('voteAverageLte')
-        const voteAverageGte = map.get('voteAverageGte')
-        const withKeywords = map.get('withKeyword')
+        const url = urlBuilder.build();
 
-        genres?.split(",").forEach(g => {
-            const genre = this.config.movieGenres.find(mg => mg.id.toString() === g)
-
-            if (!genre) return
-            values.genres.push(genre.id)
-        })
-        if (adult) values.include.adult = adult === "true" ? true : false
-        if (video) values.include.video = video === "true" ? true : false
-        if (releaseDateLte) values.releaseDate.lte = releaseDateLte
-        if (releaseDateGte) values.releaseDate.gte = releaseDateGte
-        if (voteAverageLte) values.voteAverage.lte = voteAverageLte
-        if (voteAverageGte) values.voteAverage.gte = voteAverageGte
-        if (withKeywords) {
-            const withKeywordsAnd = withKeywords.split(",")
-            const withKeywordsOr = withKeywords.split("|")
-            const list = withKeywordsAnd.length >= withKeywordsOr.length ? withKeywordsAnd : withKeywordsOr
-            const pipe = withKeywordsAnd.length >= withKeywordsOr.length ? "and" : "or"
-
-            values.withKeywords.keywords = list
-            values.withKeywords.pipe = pipe
-        }
-        return values
-    }
-
-    private request(params: { query: DiscoverMovieFormValue, page?: number }): Observable<ResultMovie[]> {
-
-        const queryBuilder = new MovieDiscoverQueryBuilder(environment.tmdbApiUrl, "discover/movie")
-            .apiKey(environment.tmdbApiKey)
-        const url = this.createQueryUrl(queryBuilder, params.query, params.page)
-        const options = {}
-
-        return this.http.get<TmdbResultMovieResponse>(url, options).pipe(
-            map(data => {
-                this.paginationResults$.next(new TmdbPagination(data))
-                return data.results.map(datum => new TmdbResultMovie(datum))
+        this.inFlight = this.http.get<TmdbResultMovieResponse>(url).pipe(
+            tap(data => {
+                this.results$.next({
+                    result: data.results.map(d => new TmdbResultMovie(d)),
+                    pagination: new TmdbPagination(data)
+                });
             }),
-        )
+            take(1)
+        ).subscribe();
     }
 
-    private createQueryUrl(queryBuilder: MovieDiscoverQueryBuilder, formValues: DiscoverMovieFormValue, page?: number): string {
-        const { include, voteAverage, releaseDate, withKeywords, genres } = formValues
-        queryBuilder
-            .withGenres(genres)
-        if (include.adult) queryBuilder.includeAdult(include.adult)
-        if (include.video) queryBuilder.includeVideo(include.video)
-        if (voteAverage.lte) queryBuilder.voteAverageLte(+voteAverage.lte)
-        if (voteAverage.gte) queryBuilder.voteAverageGte(+voteAverage.gte)
-        if (releaseDate.lte) queryBuilder.releaseDateLte([+releaseDate.lte, 12, 31])
-        if (releaseDate.gte) queryBuilder.releaseDateGte([+releaseDate.gte, 1, 1])
-        if (withKeywords.keywords.length > 0) queryBuilder.withKeywords(withKeywords.keywords, withKeywords.pipe)
-        queryBuilder.page(page)
+    private toCanonicalUrlKey(filterSet: FilterSet<DiscoverMovieFilters>): string {
+        const qp = FilterUrlAdapter.encode(filterSet);
 
-        return queryBuilder.url
+        const keys = Object.keys(qp).sort();
+        const normalized = keys.map(k => {
+            const v = qp[k];
+            const values = Array.isArray(v) ? [...v].map(String).sort() : [String(v)];
+            return `${k}=${values.join(",")}`;
+        });
 
+        return normalized.join("&");
     }
 }
+
+
