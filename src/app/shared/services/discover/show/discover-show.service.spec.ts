@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
+
 import { DiscoverShowService } from './discover-show.service';
 
-
-describe('DiscoverTvService', () => {
+describe('DiscoverShowService', () => {
   let service: DiscoverShowService;
 
   beforeEach(() => {

@@ -1,17 +1,17 @@
 import { inject, Injectable } from '@angular/core';
 import { map, Observable, } from 'rxjs';
-import { TmdbPagination } from '../models/classes/tmdb-pagination';
-import { TmdbResultMovieResponse } from '../models/interfaces/tmdb/tmdb-result-movie-response';
-import { TmdbResultMovie } from '../models/classes/tmdb-result-movie';
-import { ResultMovie } from '../models/interfaces/result-movie';
-import { FilterDefinitions } from '../models/filter.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { discoverMovieFilters, DiscoverMovieFilters } from '../models/interfaces/discover-movie-filters';
-import { TmdbDiscoverMovieAdapter } from '../adapters/tmdb/tmdb-discover-movie-filter.adapter';
-import { FilterFormAdapter } from '../adapters/filterForm/filterForm.adapter';
-import { DiscoverBaseService } from './discover/discover-base.class';
-import { DiscoverResult } from './discover/discover.types';
-import { DiscoverMovieFilterDefinitions } from './discover/movie/discover-movie-filter-definitions.service';
+import { DiscoverMovieFilterDefinitions } from './discover-movie-filter-definitions.service';
+import { FilterFormAdapter } from '../../../adapters/filterForm/filterForm.adapter';
+import { TmdbDiscoverMovieAdapter } from '../../../adapters/tmdb/tmdb-discover-movie-filter.adapter';
+import { TmdbPagination } from '../../../models/classes/tmdb-pagination';
+import { TmdbResultMovie } from '../../../models/classes/tmdb-result-movie';
+import { FilterDefinitions } from '../../../models/filter.model';
+import { DiscoverMovieFilters, discoverMovieFilters } from '../../../models/interfaces/discover-movie-filters';
+import { ResultMovie } from '../../../models/interfaces/result-movie';
+import { TmdbResultMovieResponse } from '../../../models/interfaces/tmdb/tmdb-result-movie-response';
+import { DiscoverBaseService } from '../discover-base.class';
+import { DiscoverResult } from '../discover.types';
 
 export type DiscoverMovieResult = DiscoverResult<ResultMovie>
 

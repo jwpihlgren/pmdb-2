@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { FilterDefinition, filterTypes } from '../models/filter.model';
-import { DiscoverMovieFilters } from '../models/interfaces/discover-movie-filters';
+import { FilterDefinition, filterTypes } from '../../../models/filter.model';
+import { DiscoverShowFilters } from './discover-show-filters.interface';
 
 @Injectable({
     providedIn: 'root'
 })
-export class DiscoverMovieFilterDefinitions {
-    readonly filters: Record<keyof DiscoverMovieFilters, FilterDefinition> = {
+export class DiscoverShowFilterDefinitionsService {
+
+    readonly filters: Record<keyof DiscoverShowFilters, FilterDefinition> = {
         "sortBy": {
             multi: false,
             type: filterTypes.STRING,
@@ -30,12 +31,12 @@ export class DiscoverMovieFilterDefinitions {
         "includeAdult": { type: filterTypes.BOOLEAN, multi: false },
         "includeVideo": { type: filterTypes.BOOLEAN, multi: false },
         "page": { type: filterTypes.NUMBER, multi: false },
-        "releaseDateGte": { type: filterTypes.DATE, multi: false },
-        "releaseDateLte": { type: filterTypes.DATE, multi: false },
+        "firstAirDateGte": { type: filterTypes.DATE, multi: false },
+        "firstAirDateLte": { type: filterTypes.DATE, multi: false },
         "voteAverageGte": { type: filterTypes.NUMBER, multi: false },
         "voteAverageLte": { type: filterTypes.NUMBER, multi: false },
         "withGenres": { type: filterTypes.STRING, multi: true },
         "withKeywords": { type: filterTypes.STRING, multi: true }
     } as const
-}
 
+}

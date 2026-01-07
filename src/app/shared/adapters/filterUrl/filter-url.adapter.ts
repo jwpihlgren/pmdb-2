@@ -42,7 +42,7 @@ export class FilterUrlAdapter {
 
     static decode<K extends Record<string, unknown>>(
         map: ParamMap,
-        config: FilterDefinitions<K>,
+        filterDefinitions: FilterDefinitions<K>,
         base: FilterSet<K>
     ): ParamMapToFilterSetResponse<K> {
         const structuralErrors: string[] = [];
@@ -57,7 +57,7 @@ export class FilterUrlAdapter {
             const [rawKey, rawOp] = paramKey.split(".");
             const key = rawKey as keyof K;
 
-            const def = config.filters[key];
+            const def = filterDefinitions.filters[key];
             if (!def) {
                 structuralErrors.push(`Unknown filter key: ${String(key)}`);
                 continue;

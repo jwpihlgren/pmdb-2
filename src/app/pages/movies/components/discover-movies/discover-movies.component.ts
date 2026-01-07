@@ -6,7 +6,6 @@ import { Genre } from '../../../../shared/models/interfaces/genre';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
-import { SearchPeopleService } from '../../../../shared/services/search-people.service';
 import { ComboboxComponent } from '../../../../shared/components/combobox/combobox.component';
 import { ChipListComponent } from '../../../../shared/components/chip-list/chip-list.component';
 import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
@@ -23,8 +22,6 @@ import { SelectItemComponent } from '../../../../shared/components/expandable-mu
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
 import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormValues } from '../../../../shared/adapters/filterForm/filterForm.adapter';
-import { DiscoverMovieFilters } from '../../../../shared/models/interfaces/discover-movie-filters';
 
 @Component({
     selector: 'app-discover-movies',
@@ -39,7 +36,6 @@ export class DiscoverMoviesComponent {
     protected formBuilder = inject(FormBuilder)
     protected discoverService: DiscoverMoviesService = inject(DiscoverMoviesService)
     protected configService: ConfigService = inject(ConfigService)
-    protected peopleSearchSevice: SearchPeopleService = inject(SearchPeopleService)
     protected routingService: RoutingService = inject(RoutingService)
     protected appEventService: AppEventService = inject(AppEventService)
     protected keywordService: KeywordService = inject(KeywordService)
@@ -67,7 +63,6 @@ export class DiscoverMoviesComponent {
     }
 
     discoverForm = this.formBuilder.group({
-        // Scalar values
         includeAdult: this.formBuilder.control<boolean | null>(null),
         includeVideo: this.formBuilder.control<boolean | null>(null),
         sortBy: this.formBuilder.control<string | undefined>(undefined),
@@ -76,11 +71,9 @@ export class DiscoverMoviesComponent {
         releaseDateGte: this.formBuilder.control<string | undefined>(undefined),
         voteAverageLte: this.formBuilder.control<string | undefined>(undefined),
         voteAverageGte: this.formBuilder.control<string | undefined>(undefined),
-
-        // Multi-value filters with operator
         withGenres: this.formBuilder.group({
             values: this.formBuilder.control<string[]>([]),
-            operator: this.formBuilder.control<"and" | "or">("and")  // ⚠️ "operator" not "delimiter"
+            operator: this.formBuilder.control<"and" | "or">("and")
         }),
         withKeywords: this.formBuilder.group({
             values: this.formBuilder.control<string[]>([]),
@@ -95,7 +88,6 @@ export class DiscoverMoviesComponent {
     keywordSearchSignal = toSignal<string>(this.keywordForm.controls.keyword.valueChanges)
 
     keywordSearchResult = computed(() => {
-
         return this.keywordService.search(
             this.keywordSearchSignal() || "",
             10,
@@ -190,6 +182,7 @@ export class DiscoverMoviesComponent {
         } return range
 
     }
+
     createCardParams(movie: ResultMovie): CardParams {
         const params: CardParams = {
             imageType: "poster",
