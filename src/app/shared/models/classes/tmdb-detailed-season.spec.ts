@@ -1,4 +1,4 @@
-import { TmdbDetailedSeason } from './tmdb-detailed-season';
+import { TmdbDetailedSeason } from "./tmdb-detailed-season";
 
 describe('TmdbDetailedSeason', () => {
   it('should create an instance', () => {

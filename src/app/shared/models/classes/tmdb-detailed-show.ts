@@ -160,8 +160,8 @@ export class TmdbDetailedShow implements DetailedShow {
         })
     }
 
-    mapLastEpisode(data: TmdbDetailedShowResponse["last_episode_to_air"]): TmdbDetailedShow["lastEpisodeToAir"] | undefined{
-        if(!data) return undefined
+    mapLastEpisode(data: TmdbDetailedShowResponse["last_episode_to_air"]): TmdbDetailedShow["lastEpisodeToAir"] | undefined {
+        if (!data) return undefined
         return {
             id: data.id,
             name: data.name,
@@ -221,9 +221,9 @@ export class TmdbDetailedShow implements DetailedShow {
                 episodeCount: datum.episode_count,
                 posterImagePath: datum.poster_path,
                 special: datum.name.includes("special") ? true : false
-                
+
             }
-        }).sort((a,b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+        }).sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
     }
 
     mapSpokenLanguages(data: TmdbDetailedShowResponse["spoken_languages"]): TmdbDetailedShow["spokenLanguages"] {
@@ -305,7 +305,7 @@ class TmdbRecommendation implements DetailedShowRecommendation {
     popularity: number;
     firstAirDate: string | undefined;
     posterPath: string;
-    genreIds: number[];
+    genreIds: string[];
     overview: string;
     mediaType: string;
     voteCount: number;
@@ -322,7 +322,7 @@ class TmdbRecommendation implements DetailedShowRecommendation {
         this.popularity = raw.popularity
         this.firstAirDate = raw.first_air_date ?? undefined
         this.posterPath = raw.poster_path
-        this.genreIds = raw.genre_ids
+        this.genreIds = raw.genre_ids.map(g => g.toString())
         this.overview = raw.overview
         this.mediaType = raw.media_type
         this.voteCount = raw.vote_count

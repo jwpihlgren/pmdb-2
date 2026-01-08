@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { DiscoverShowService } from './discover-show.service';
 
+import { TmdbService } from './tmdb.service';
 
-describe('DiscoverTvService', () => {
-  let service: DiscoverShowService;
+describe('TmdbService', () => {
+  let service: TmdbService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(DiscoverShowService);
+    service = TestBed.inject(TmdbService);
   });
 
   it('should be created', () => {

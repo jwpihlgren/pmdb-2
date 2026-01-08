@@ -23,6 +23,7 @@ export class ConfigService {
 
     protected http = inject(HttpClient)
     protected storage = inject(StorageService)
+
     initialize(): Observable<boolean> {
         const config: TmdbConfig | null = this.storage.getSessionItem(this.configStorageKey)
         const movieGenres: Genre[] | null = this.storage.getSessionItem(this.movieGenresStorageKey)

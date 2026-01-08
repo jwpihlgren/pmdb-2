@@ -25,6 +25,7 @@
             @for(genre of m.genres; track $index) {
             <app-chip [value]="genre.name">{{genre.name}}</app-chip>
             }
+            <a [routerLink]="discoverGenres(m.genres)">More like this</a>
         </div>
         <a [href]="imdbUrl(m)" rel="noreferrer" target="_blank">View at imdb</a>
     </ng-container>
@@ -37,6 +38,7 @@
             @for(keyword of m.keywords; track $index) {
             <app-chip [value]="keyword.name">{{keyword.name}}</app-chip>
             }
+
         </div>
     </ng-container>
     <ng-container ngProjectAs="main-content">

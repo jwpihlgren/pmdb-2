@@ -8,7 +8,7 @@ export interface ResultMovie {
     overview: string
     posterImagePath: string
     mediaType: string
-    genreIds: number[]
+    genreIds: string[]
     popularity: number
     releaseDate: string
     hasVideo: boolean

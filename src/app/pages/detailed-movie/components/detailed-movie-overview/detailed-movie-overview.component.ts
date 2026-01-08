@@ -3,7 +3,7 @@ import { ImageComponent, ImageParams } from '../../../../shared/components/image
 import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { DetailedMovie } from '../../../../shared/models/interfaces/detailed-movie';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, UrlTree } from '@angular/router';
 import Metadata from '../../../../shared/models/interfaces/meta-data.interface';
 import { DecimalPipe } from '@angular/common';
 import { RoutingService } from '../../../../shared/services/routing.service';
@@ -15,10 +15,12 @@ import { AppEventTriggerDirective } from '../../../../shared/directives/app-even
 import OverflowRowOptions, { OverflowRowComponent } from '../../../../shared/components/overflow-row/overflow-row.component';
 import { ContentHeroComponent } from '../../../../shared/components/content-hero/content-hero.component';
 import { ContentWithSidebarComponent } from '../../../../shared/components/content-with-sidebar/content-with-sidebar.component';
+import { DiscoverMoviesService } from '../../../../shared/services/discover/movie/discover-movies.service';
+import Keyword from '../../../../shared/models/interfaces/keywords';
 
 @Component({
     selector: 'app-detailed-movie-overview',
-    imports: [ImageComponent, ChipComponent, CardComponent, DecimalPipe, OverflowRowComponent, ContentHeroComponent, ContentWithSidebarComponent],
+    imports: [ImageComponent, ChipComponent, CardComponent, DecimalPipe, OverflowRowComponent, ContentHeroComponent, ContentWithSidebarComponent, RouterLink],
     templateUrl: './detailed-movie-overview.component.html',
     styleUrl: './detailed-movie-overview.component.css',
     hostDirectives: [{
@@ -28,6 +30,8 @@ import { ContentWithSidebarComponent } from '../../../../shared/components/conte
 export class DetailedMovieOverviewComponent {
     protected routingService = inject(RoutingService)
     protected activatedRoute = inject(ActivatedRoute)
+    protected router = inject(Router)
+    protected discoverService = inject(DiscoverMoviesService)
     detailedMovie: Signal<DetailedMovie>
 
     constructor() {
@@ -100,6 +104,13 @@ export class DetailedMovieOverviewComponent {
 
         return params
     }
+
+    discoverGenres(genres: { id: number, name: string }[]): UrlTree {
+        const builder = this.discoverService.discoverMovieQueryBuilder()
+        builder.with("withGenres", { values: genres.map(k => k.id.toString()), operator: "and" })
+        return builder.buildUrlTree(this.router)
+    }
+
 
 
 

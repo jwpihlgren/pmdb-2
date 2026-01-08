@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal, Signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, UrlTree } from '@angular/router';
 import { DetailedShow, DetailedShowRecommendation } from '../../../../shared/models/interfaces/detailed-show';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -14,10 +14,11 @@ import { AppEventTriggerDirective } from '../../../../shared/directives/app-even
 import { ContentWithSidebarComponent } from '../../../../shared/components/content-with-sidebar/content-with-sidebar.component';
 import OverflowRowOptions, { OverflowRowComponent } from '../../../../shared/components/overflow-row/overflow-row.component';
 import { ContentHeroComponent } from '../../../../shared/components/content-hero/content-hero.component';
+import { DiscoverShowService } from '../../../../shared/services/discover/show/discover-show.service';
 
 @Component({
     selector: 'app-detailed-show-overview',
-    imports: [ImageComponent, ChipComponent, DecimalPipe, CardComponent, ContentWithSidebarComponent, OverflowRowComponent, ContentHeroComponent],
+    imports: [ImageComponent, ChipComponent, DecimalPipe, CardComponent, ContentWithSidebarComponent, OverflowRowComponent, ContentHeroComponent, RouterLink],
     templateUrl: './detailed-show-overview.component.html',
     styleUrl: './detailed-show-overview.component.css',
     hostDirectives: [AppEventTriggerDirective]
@@ -25,6 +26,8 @@ import { ContentHeroComponent } from '../../../../shared/components/content-hero
 export class DetailedShowOverviewComponent {
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     protected routingService: RoutingService = inject(RoutingService)
+    protected router = inject(Router)
+    protected discoverService = inject(DiscoverShowService)
     detailedShow: Signal<DetailedShow | undefined> = signal(undefined)
 
     constructor() {
@@ -124,6 +127,11 @@ export class DetailedShowOverviewComponent {
             href: ["seasons", `${season.seasonNumber}`],
             aspectRatio: { numerator: 2, denominator: 3 }
         }
+    }
+    discoverGenres(genres: { id: number, name: string }[]): UrlTree {
+        const builder = this.discoverService.discoverShowQueryBuilder()
+        builder.with("withGenres", { values: genres.map(k => k.id.toString()), operator: "and" })
+        return builder.buildUrlTree(this.router)
     }
 
 

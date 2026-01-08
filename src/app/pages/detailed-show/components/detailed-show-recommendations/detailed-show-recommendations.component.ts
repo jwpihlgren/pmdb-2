@@ -68,7 +68,7 @@ export class DetailedShowRecommendationsComponent {
     }
 
 
-    getGenres(show: number[]): Genre[] {
-        return this.configService.showGenres.filter(genre => show.includes(genre.id))
+    getGenres(genres: string[]): Genre[] {
+        return this.configService.showGenres.filter(genre => genres.includes(genre.id))
     }
 }

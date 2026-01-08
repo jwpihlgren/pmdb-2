@@ -1,6 +1,9 @@
-<li class=chip>
-    <ng-content></ng-content>
-    @if(action()) {
-    <button (click)=onClick(value()) (keyup)="handleKeyup({value: value(), event: $event})" type="button" class="chip--button">X</button>
-    }
-</li>
+<a [routerLink]="link() ? link()!.href : undefined" [queryParams]="link() ? link()!.queryParams : undefined">
+    <li class=chip [ngClass]="{'showAsLink': !!link()}">
+        <ng-content></ng-content>
+        @if(action()) {
+        <button (click)=onClick(value()) (keyup)="handleKeyup({value: value(), event: $event})" type="button"
+            class="chip--button">X</button>
+        }
+    </li>
+</a>

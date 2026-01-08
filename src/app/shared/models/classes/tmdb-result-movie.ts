@@ -12,7 +12,7 @@ export class TmdbResultMovie implements ResultMovie {
     overview: string
     posterImagePath: string
     mediaType: string
-    genreIds: number[]
+    genreIds: string[]
     popularity: number
     releaseDate: string
     hasVideo: boolean
@@ -29,7 +29,7 @@ export class TmdbResultMovie implements ResultMovie {
         this.overview = data.overview
         this.posterImagePath = data.poster_path
         this.mediaType = data.media_type
-        this.genreIds = data.genre_ids
+        this.genreIds = data.genre_ids.map(g => g.toString())
         this.popularity = data.popularity
         this.releaseDate = data.release_date
         this.hasVideo = data.video
