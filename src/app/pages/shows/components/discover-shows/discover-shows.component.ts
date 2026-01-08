@@ -17,7 +17,6 @@ import { ContentShowComponent } from '../../../../shared/components/card/compone
 import { ComboboxItemComponent } from '../../../../shared/components/combobox/components/combobox-item.component';
 import { DropdownListComponent } from '../../../../shared/components/drop-down-list/dropdown-list.component';
 import { ExpandableMultiSelectComponent } from '../../../../shared/components/expandable-multi-select/expandable-multi-select.component';
-import { Selectable } from '../../../../shared/models/interfaces/selectable';
 import { KeywordService } from '../../../../shared/services/keyword.service';
 import { SelectItemComponent } from '../../../../shared/components/expandable-multi-select/components/select-item/select-item.component';
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
@@ -116,7 +115,7 @@ export class DiscoverShowsComponent {
 
 
     getGenre(id: string): Genre | undefined {
-        const genre = this.configService.movieGenres.find(g => g.id.toString() === id.toString())
+        const genre = this.configService.showGenres.find(g => g.id.toString() === id.toString())
         return genre
     }
 

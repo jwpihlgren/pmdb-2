@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { DiscoverBaseService } from '../discover-base.class';
+import { DiscoverBaseQueryBuilder, DiscoverBaseService } from '../discover-base.class';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { FilterFormAdapter } from '../../../adapters/filterForm/filterForm.adapter';
 import { TmdbPagination } from '../../../models/classes/tmdb-pagination';
-import { FilterDefinitions } from '../../../models/filter.model';
+import { Filter, FilterDefinitions, FilterSet } from '../../../models/filter.model';
 import { ResultShow } from '../../../models/interfaces/result-show';
 import { DiscoverResult } from '../discover.types';
 import { TmdbResultShow } from '../../../models/classes/tmdb-result-show';
@@ -20,12 +20,12 @@ export type DiscoverShowResult = DiscoverResult<ResultShow>
     providedIn: 'root'
 })
 export class DiscoverShowService extends DiscoverBaseService<DiscoverShowFilters, ResultShow> {
-    protected readonly defintions: FilterDefinitions<DiscoverShowFilters> = inject(DiscoverShowFilterDefinitionsService)
-    protected filterFormAdapter = new FilterFormAdapter<DiscoverShowFilters>(this.defintions)
-    protected requestUrl = "discover/movie"
+    protected definitionsService = inject(DiscoverShowFilterDefinitionsService)
+    protected definitions = this.definitionsService
+    protected filterFormAdapter = new FilterFormAdapter<DiscoverShowFilters>(this.definitionsService)
     protected http = inject(HttpClient)
     protected requestStrategy = {
-        endpoint: "discover/movie",
+        endpoint: "discover/tv",
         toHttpParams(encoded: Record<string, string | string[]>) {
             let p = new HttpParams();
 
@@ -47,9 +47,43 @@ export class DiscoverShowService extends DiscoverBaseService<DiscoverShowFilters
             );
         }
     }
+    discoverShowQueryBuilder() {
+        const builder = DiscoverShowQueryBuilder.create(
+            ["/", "shows", "discover"],
+            this.createFilterSet(this.filterSetKeys),
+            this.definitionsService)
+        return builder
+    }
+
 
 
     constructor() {
         super(discoverShowFilters, new TmdbDiscoverShowAdapter())
     }
 }
+
+
+type ShowFiltersMap = typeof DiscoverShowFilterDefinitionsService.prototype.filters;
+
+class DiscoverShowQueryBuilder extends DiscoverBaseQueryBuilder<
+    DiscoverShowFilters,
+    ShowFiltersMap
+> {
+    static create(
+        url: string[],
+        newEmptyFilterSet: FilterSet<DiscoverShowFilters>,
+        defsSvc: DiscoverShowFilterDefinitionsService
+    ) {
+        return new DiscoverShowQueryBuilder(url, newEmptyFilterSet, { filters: defsSvc.filters });
+    }
+
+    private constructor(
+        url: string[],
+        newEmptyFilterSet: FilterSet<DiscoverShowFilters>,
+        defs: { filters: ShowFiltersMap }
+    ) {
+        super(url, newEmptyFilterSet, defs);
+    }
+}
+
+

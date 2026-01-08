@@ -54,7 +54,7 @@
                 </label>
                 <label>
                     At most
-                    <app-combobox [title]="discoverForm.controls.firstAirDateLte.getRawValue()"
+                    <app-combobox [title]="discoverForm.controls.firstAirDateLte.getRawValue() ?? '---'"
                         formControlName="firstAirDateLte">
                         @for(i of yearOptions.list; track $index) {
                         <app-combobox-item class="list-item" [value]="i.value.toString()">{{i.name}}</app-combobox-item>

@@ -7,7 +7,7 @@ import { DiscoverShowFilters } from './discover-show-filters.interface';
 })
 export class DiscoverShowFilterDefinitionsService {
 
-    readonly filters: Record<keyof DiscoverShowFilters, FilterDefinition> = {
+    readonly filters = {
         "sortBy": {
             multi: false,
             type: filterTypes.STRING,
@@ -37,6 +37,8 @@ export class DiscoverShowFilterDefinitionsService {
         "voteAverageLte": { type: filterTypes.NUMBER, multi: false },
         "withGenres": { type: filterTypes.STRING, multi: true },
         "withKeywords": { type: filterTypes.STRING, multi: true }
-    } as const
+    } as const satisfies Record<keyof DiscoverShowFilters, FilterDefinition>
+
+    readonly definitions = { filters: this.filters } as const
 
 }

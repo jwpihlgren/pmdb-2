@@ -6,7 +6,7 @@ import { DiscoverMovieFilters } from '../../../models/interfaces/discover-movie-
     providedIn: 'root'
 })
 export class DiscoverMovieFilterDefinitions {
-    readonly filters: Record<keyof DiscoverMovieFilters, FilterDefinition> = {
+    readonly filters = {
         "sortBy": {
             multi: false,
             type: filterTypes.STRING,
@@ -36,6 +36,9 @@ export class DiscoverMovieFilterDefinitions {
         "voteAverageLte": { type: filterTypes.NUMBER, multi: false },
         "withGenres": { type: filterTypes.STRING, multi: true },
         "withKeywords": { type: filterTypes.STRING, multi: true }
-    } as const
+    } as const satisfies Record<keyof DiscoverMovieFilters, FilterDefinition>
+
+    readonly definitions = { filters: this.filters } as const
+
 }
 

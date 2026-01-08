@@ -1,5 +1,4 @@
 import { Component, computed, inject, } from '@angular/core';
-import { DiscoverMovieResult, DiscoverMoviesService } from '../../../../shared/services/discover-movies.service';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Genre } from '../../../../shared/models/interfaces/genre';
@@ -22,6 +21,7 @@ import { SelectItemComponent } from '../../../../shared/components/expandable-mu
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
 import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DiscoverMovieResult, DiscoverMoviesService } from '../../../../shared/services/discover/movie/discover-movies.service';
 
 @Component({
     selector: 'app-discover-movies',

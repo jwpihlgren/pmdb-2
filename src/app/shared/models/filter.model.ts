@@ -49,3 +49,6 @@ export interface FilterDefinitions<K extends Record<string, unknown>> {
     readonly filters: Record<keyof K, FilterDefinition>
 }
 
+
+
+
