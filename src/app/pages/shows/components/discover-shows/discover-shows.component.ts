@@ -1,12 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 import { AppEventService } from '../../../../shared/services/app-event.service';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { RoutingService } from '../../../../shared/services/routing.service';
 import { Genre } from '../../../../shared/models/interfaces/genre';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { DiscoverShowFormValue } from '../../../../shared/models/interfaces/discover-show-form-value';
 import { ResultShow } from '../../../../shared/models/interfaces/result-show';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { ComboboxComponent } from '../../../../shared/components/combobox/combobox.component';
