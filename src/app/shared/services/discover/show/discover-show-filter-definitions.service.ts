@@ -36,7 +36,8 @@ export class DiscoverShowFilterDefinitionsService {
         "voteAverageGte": { type: filterTypes.NUMBER, multi: false },
         "voteAverageLte": { type: filterTypes.NUMBER, multi: false },
         "withGenres": { type: filterTypes.STRING, multi: true },
-        "withKeywords": { type: filterTypes.STRING, multi: true }
+        "withKeywords": { type: filterTypes.STRING, multi: true },
+        "withPeople": { type: filterTypes.STRING, multi: true }
     } as const satisfies Record<keyof DiscoverShowFilters, FilterDefinition>
 
     readonly definitions = { filters: this.filters } as const

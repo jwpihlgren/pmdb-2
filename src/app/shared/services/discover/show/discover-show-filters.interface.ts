@@ -3,6 +3,7 @@ import { Filter } from "../../../models/filter.model"
 export const discoverShowFilters = {
     withGenres: "withGenres",
     withKeywords: "withKeywords",
+    withPeople: "withPeople",
     includeVideo: "includeVideo",
     includeAdult: "includeAdult",
     firstAirDateLte: "firstAirDateLte",

@@ -19,6 +19,13 @@ export class TmdbDiscoverShowAdapter implements FilterAdapter<DiscoverShowFilter
             join: { and: ",", or: "|" },
             allowedValues: []
         },
+        withPeople: {
+            externalKey: "with_people",
+            type: tmdbMappingTypes.STRING,
+            multi: true,
+            join: { and: ",", or: "|" },
+            allowedValues: []
+        },
         includeVideo: { type: tmdbMappingTypes.BOOLEAN, externalKey: "include_video", multi: false },
         includeAdult: { type: tmdbMappingTypes.BOOLEAN, externalKey: "include_adult", multi: false },
         firstAirDateGte: { type: tmdbMappingTypes.DATE, externalKey: "release_date.gte", multi: false, allowedValues: [] },
