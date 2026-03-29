@@ -154,13 +154,13 @@ export class DiscoverShowsComponent {
         this.onSubmit()
     }
 
-    onKeywordSubmit(): void {
-        const formValue = this.keywordForm.controls["keyword"].getRawValue()
-        if (!formValue) return
-        const previousValues = this.discoverForm.controls.withKeywords.controls["values"].getRawValue() ?? []
-        this.discoverForm.controls.withKeywords.controls.values.setValue([...previousValues, formValue])
-        this.keywordForm.reset()
-    }
+    // onKeywordSubmit(): void {
+    //     const formValue = this.keywordForm.controls["keyword"].getRawValue()
+    //     if (!formValue) return
+    //     const previousValues = this.discoverForm.controls.withKeywords.controls["values"].getRawValue() ?? []
+    //     this.discoverForm.controls.withKeywords.controls.values.setValue([...previousValues, formValue])
+    //     this.keywordForm.reset()
+    // }
 
     onKeywordSelect(keyword: string): void {
         const previousValues = this.discoverForm.controls.withKeywords.controls["values"].getRawValue() ?? []
@@ -209,7 +209,6 @@ export class DiscoverShowsComponent {
         const previousValues = [...this.discoverForm.controls.withOriginCountries.controls.values.getRawValue() ?? []]
         previousValues.splice(index, 1)
         this.discoverForm.controls.withOriginCountries.controls.values.setValue(previousValues)
-
     }
 
     generateNumberRange(start: number, end: number, step: number = 1): number[] {

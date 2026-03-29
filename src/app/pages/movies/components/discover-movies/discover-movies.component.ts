@@ -22,6 +22,7 @@ import { TextInputComponent } from '../../../../shared/components/text-input/tex
 import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DiscoverMovieResult, DiscoverMoviesService } from '../../../../shared/services/discover/movie/discover-movies.service';
+import { IsoCountryService } from '../../../../shared/services/iso-country.service';
 
 @Component({
     selector: 'app-discover-movies',
@@ -40,6 +41,7 @@ export class DiscoverMoviesComponent {
     protected appEventService: AppEventService = inject(AppEventService)
     protected keywordService: KeywordService = inject(KeywordService)
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
+    protected isoCountryService: IsoCountryService = inject(IsoCountryService)
     protected router: Router = inject(Router)
     genres!: Genre[]
 
@@ -78,12 +80,23 @@ export class DiscoverMoviesComponent {
         withKeywords: this.formBuilder.group({
             values: this.formBuilder.control<string[]>([]),
             operator: this.formBuilder.control<"and" | "or">("and")
+        }),
+        withOriginCountries: this.formBuilder.group({
+            values: this.formBuilder.control<string[]>([]),
+            operator: this.formBuilder.control<"and" | "or">("and")
         })
+
     });
 
     keywordForm = this.formBuilder.group({
         keyword: this.formBuilder.nonNullable.control("")
     })
+
+    withOriginCountryForm = this.formBuilder.group({
+        country: this.formBuilder.nonNullable.control("")
+    })
+
+
 
     keywordSearchSignal = toSignal<string>(this.keywordForm.controls.keyword.valueChanges)
 
@@ -96,6 +109,17 @@ export class DiscoverMoviesComponent {
                     k.id.toString(), name: k.name
             }))
     })
+
+    withOriginCountrySearchSignal = toSignal<string>(this.withOriginCountryForm.controls.country.valueChanges)
+    withOriginCountrySearchResult = computed(() => {
+        return this.isoCountryService.search(
+            this.withOriginCountrySearchSignal() || "",
+            10,
+            this.discoverForm.controls.withOriginCountries.controls.values.getRawValue() ?? []).map(k => ({
+                value: k.cca2, name: k.name.common
+            }))
+    })
+
 
 
     constructor() {
@@ -114,6 +138,9 @@ export class DiscoverMoviesComponent {
         return this.keywordService.keywordNameById(id) ?? id
     }
 
+    lookupIsoCountry(cca2: string): string {
+        return this.isoCountryService.commonNameByIsoCode(cca2) ?? cca2
+    }
 
     getGenre(id: string): Genre | undefined {
         const genre = this.configService.movieGenres.find(g => g.id.toString() === id.toString())
@@ -143,6 +170,13 @@ export class DiscoverMoviesComponent {
         this.keywordForm.reset()
     }
 
+    onOriginCountrySelect(country: string): void {
+        const previousValues = this.discoverForm.controls.withOriginCountries.controls["values"].getRawValue() ?? []
+        this.discoverForm.controls.withOriginCountries.controls.values.setValue([...previousValues, country])
+        this.withOriginCountryForm.reset()
+
+    }
+
     onGenreToggle(genre: string): void {
         const selectedGenres: string[] = this.discoverForm.controls.withGenres.get("values")?.getRawValue()
         const existingIndex = selectedGenres.findIndex(g => g === genre)
@@ -163,7 +197,6 @@ export class DiscoverMoviesComponent {
         if (existingIndex !== -1) {
             selectedGenres.splice(existingIndex, 1)
             this.discoverForm.controls.withGenres.get("values")?.setValue(selectedGenres)
-
         }
     }
 
@@ -171,6 +204,12 @@ export class DiscoverMoviesComponent {
         const previousValues = [...this.discoverForm.controls.withKeywords.controls.values.getRawValue() ?? []]
         previousValues.splice(index, 1)
         this.discoverForm.controls.withKeywords.controls.values.setValue(previousValues)
+    }
+
+    onOriginCountryRemove(index: number): void {
+        const previousValues = [...this.discoverForm.controls.withOriginCountries.controls.values.getRawValue() ?? []]
+        previousValues.splice(index, 1)
+        this.discoverForm.controls.withOriginCountries.controls.values.setValue(previousValues)
     }
 
     generateNumberRange(start: number, end: number, step: number = 1): number[] {

@@ -35,7 +35,8 @@ export class DiscoverMovieFilterDefinitions {
         "voteAverageGte": { type: filterTypes.NUMBER, multi: false },
         "voteAverageLte": { type: filterTypes.NUMBER, multi: false },
         "withGenres": { type: filterTypes.STRING, multi: true },
-        "withKeywords": { type: filterTypes.STRING, multi: true }
+        "withKeywords": { type: filterTypes.STRING, multi: true },
+        "withOriginCountries": { type: filterTypes.STRING, multi: true }
     } as const satisfies Record<keyof DiscoverMovieFilters, FilterDefinition>
 
     readonly definitions = { filters: this.filters } as const

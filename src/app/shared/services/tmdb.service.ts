@@ -188,7 +188,7 @@ const movieFilters = {
     withKeywords: { // string can be a comma(AND) or pipe(OR) separated query
         key: "with_keywords", operators: operators
     },
-    withOriginCountry: { key: "with_origin_country" }, //string
+    withOriginCountries: { key: "with_origin_country" }, //string
     withOriginalLanguage: { key: "with_original_language" }, // string
     withPeople: {//string can be a comma(AND) or pipe(OR) separated query
         key: "with_people", operators: operators
