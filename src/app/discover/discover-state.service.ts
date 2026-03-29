@@ -6,17 +6,26 @@ import { DISCOVER_SOURCE, QUERY_FACTORY } from './discover.tokens';
 
 
 @Injectable()
-export class DiscoverStateService<T extends QueryObject<T>> {
+export class DiscoverStateService<T extends QueryObject<T>, R> {
 
     private route = inject(ActivatedRoute)
     private router = inject(Router)
     private factory = inject<QueryObjectStatic<T>>(QUERY_FACTORY)
-    private source = inject<(query: T) => Observable<any>>(DISCOVER_SOURCE)
+    private source = inject<(query: T) => Observable<R>>(DISCOVER_SOURCE)
 
-    readonly query$: Observable<T> = this.route.queryParams.pipe(
+    private readonly parse$ = this.route.queryParams.pipe(
         map(params => this.factory.fromParams(params)),
+        shareReplay(1)
+    )
+
+    readonly query$ = this.parse$.pipe(
+        map(result => result.query),
         distinctUntilChanged(this.isEqual),
         shareReplay(1)
+    )
+
+    readonly violations$ = this.parse$.pipe(
+        map(result => result.violations)
     )
 
     readonly result$ = this.query$.pipe(

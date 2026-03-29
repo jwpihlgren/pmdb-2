@@ -1,15 +1,13 @@
-import { Component, computed, inject, } from '@angular/core';
+import { Component, inject, } from '@angular/core';
 import { ConfigService } from '../../../../shared/services/config.service';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Genre } from '../../../../shared/models/interfaces/genre';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
+import { CardComponent } from '../../../../shared/components/card/card.component';
 import { ContentMovieComponent } from '../../../../shared/components/card/components/content-movie/content-movie.component';
 import { ComboboxComponent } from '../../../../shared/components/combobox/combobox.component';
 import { ChipListComponent } from '../../../../shared/components/chip-list/chip-list.component';
 import { ChipComponent } from '../../../../shared/components/chip-list/components/chip/chip.component';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
-import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { RoutingService } from '../../../../shared/services/routing.service';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 import { AppEventService } from '../../../../shared/services/app-event.service';
@@ -20,8 +18,11 @@ import { ExpandableMultiSelectComponent } from '../../../../shared/components/ex
 import { SelectItemComponent } from '../../../../shared/components/expandable-multi-select/components/select-item/select-item.component';
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
 import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DiscoverMovieResult, DiscoverMoviesService } from '../../../../shared/services/discover/movie/discover-movies.service';
+import { DISCOVER_SOURCE, DiscoverStateService, QUERY_FACTORY } from '@app/discover';
+import { MovieDiscoverQuery, MovieDiscoverQueryFactory } from '../../discover/movie-discover-query';
+import { MoviesService } from '../../movies.service';
+import PaginatedResult from '@app/shared/models/types/paginated-result.type';
+import { ResultMovie } from '@app/shared/models/interfaces/result-movie';
 
 @Component({
     selector: 'app-discover-movies',
@@ -29,173 +30,32 @@ import { DiscoverMovieResult, DiscoverMoviesService } from '../../../../shared/s
         ChipComponent, PaginationComponent, CardLoadingComponent, DropdownListComponent, ComboboxItemComponent,
         ExpandableMultiSelectComponent, SelectItemComponent, TextInputComponent, SimpleGridComponent],
     templateUrl: './discover-movies.component.html',
-    styleUrl: './discover-movies.component.css'
+    styleUrl: './discover-movies.component.css',
+    providers: [
+        DiscoverStateService,
+        {
+            provide: QUERY_FACTORY,
+            useValue: MovieDiscoverQueryFactory
+        },
+        {
+            provide: DISCOVER_SOURCE,
+            useFactory: (svc: MoviesService) => (query: MovieDiscoverQuery) => svc.discover(query),
+            deps: [MoviesService]
+        }
+    ]
+
 })
 export class DiscoverMoviesComponent {
 
-    protected formBuilder = inject(FormBuilder)
-    protected discoverService: DiscoverMoviesService = inject(DiscoverMoviesService)
     protected configService: ConfigService = inject(ConfigService)
     protected routingService: RoutingService = inject(RoutingService)
     protected appEventService: AppEventService = inject(AppEventService)
     protected keywordService: KeywordService = inject(KeywordService)
-    protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
-    protected router: Router = inject(Router)
+    protected state = inject<DiscoverStateService<MovieDiscoverQuery, PaginatedResult<ResultMovie>>>(DiscoverStateService)
     genres!: Genre[]
 
     cardMaxWidth = "250px"
 
-    listboxParams!: { list: string[] }
-    years: number[] = this.generateNumberRange(new Date().getFullYear(), 1900)
-    results = toSignal<DiscoverMovieResult>(this.discoverService.results)
-
-    voteAverageOptions = {
-        list: this.generateNumberRange(1, 10).map(n => {
-            return {
-                name: n + "", value: n
-            }
-        })
-    }
-    yearOptions = {
-        list: this.generateNumberRange(new Date().getFullYear(), 1900).map(n => {
-            return { name: n + "", value: n }
-        })
-    }
-
-    discoverForm = this.formBuilder.group({
-        includeAdult: this.formBuilder.control<boolean | null>(null),
-        includeVideo: this.formBuilder.control<boolean | null>(null),
-        sortBy: this.formBuilder.control<string | undefined>(undefined),
-        page: this.formBuilder.control<number | undefined>(undefined),
-        releaseDateLte: this.formBuilder.control<string | undefined>(undefined),
-        releaseDateGte: this.formBuilder.control<string | undefined>(undefined),
-        voteAverageLte: this.formBuilder.control<string | undefined>(undefined),
-        voteAverageGte: this.formBuilder.control<string | undefined>(undefined),
-        withGenres: this.formBuilder.group({
-            values: this.formBuilder.control<string[]>([]),
-            operator: this.formBuilder.control<"and" | "or">("and")
-        }),
-        withKeywords: this.formBuilder.group({
-            values: this.formBuilder.control<string[]>([]),
-            operator: this.formBuilder.control<"and" | "or">("and")
-        })
-    });
-
-    keywordForm = this.formBuilder.group({
-        keyword: this.formBuilder.nonNullable.control("")
-    })
-
-    keywordSearchSignal = toSignal<string>(this.keywordForm.controls.keyword.valueChanges)
-
-    keywordSearchResult = computed(() => {
-        return this.keywordService.search(
-            this.keywordSearchSignal() || "",
-            10,
-            this.discoverForm.controls.withKeywords.controls.values.getRawValue() ?? []).map((k) => ({
-                value:
-                    k.id.toString(), name: k.name
-            }))
-    })
 
 
-    constructor() {
-        this.genres = this.configService.movieGenres;
-        this.listboxParams = { list: this.genres.map(g => g.id) };
-
-        this.activatedRoute.queryParamMap
-            .pipe(takeUntilDestroyed())
-            .subscribe(() => {
-                this.discoverService.adoptFromUrl(this.activatedRoute.snapshot, this.discoverForm);
-            });
-    }
-
-
-    lookupKeyword(id: string): string {
-        return this.keywordService.keywordNameById(id) ?? id
-    }
-
-
-    getGenre(id: string): Genre | undefined {
-        const genre = this.configService.movieGenres.find(g => g.id.toString() === id.toString())
-        return genre
-    }
-
-    onSubmit(): void {
-        this.discoverService.setFilters(this.discoverForm.getRawValue())
-    }
-
-    onUpdateAndSubmit(page: number): void {
-        this.discoverForm.controls.page.setValue(page)
-        this.onSubmit()
-    }
-
-    onKeywordSubmit(): void {
-        const formValue = this.keywordForm.controls["keyword"].getRawValue()
-        if (!formValue) return
-        const previousValues = this.discoverForm.controls.withKeywords.controls["values"].getRawValue() ?? []
-        this.discoverForm.controls.withKeywords.controls.values.setValue([...previousValues, formValue])
-        this.keywordForm.reset()
-    }
-
-    onKeywordSelect(keyword: string): void {
-        const previousValues = this.discoverForm.controls.withKeywords.controls["values"].getRawValue() ?? []
-        this.discoverForm.controls.withKeywords.controls.values.setValue([...previousValues, keyword])
-        this.keywordForm.reset()
-    }
-
-    onGenreToggle(genre: string): void {
-        const selectedGenres: string[] = this.discoverForm.controls.withGenres.get("values")?.getRawValue()
-        const existingIndex = selectedGenres.findIndex(g => g === genre)
-        if (existingIndex !== -1) {
-            selectedGenres.splice(existingIndex, 1)
-            this.discoverForm.controls.withGenres.get("values")?.setValue(selectedGenres)
-            return
-        }
-        this.discoverForm.controls.withGenres.get("values")?.setValue(Array.from(new Set([...selectedGenres, genre])))
-    }
-
-    onGenreRemove(genre: string): void {
-        const selectedGenres: string[] = this.discoverForm.controls.withGenres.get("values")?.getRawValue()
-        const existingIndex = selectedGenres.findIndex(g => {
-            console.log(g, genre)
-            return g.toString() === genre.toString()
-        })
-        if (existingIndex !== -1) {
-            selectedGenres.splice(existingIndex, 1)
-            this.discoverForm.controls.withGenres.get("values")?.setValue(selectedGenres)
-
-        }
-    }
-
-    onKeywordRemove(index: number): void {
-        const previousValues = [...this.discoverForm.controls.withKeywords.controls.values.getRawValue() ?? []]
-        previousValues.splice(index, 1)
-        this.discoverForm.controls.withKeywords.controls.values.setValue(previousValues)
-    }
-
-    generateNumberRange(start: number, end: number, step: number = 1): number[] {
-
-        const reverse: boolean = start > end
-        const range: number[] = []
-        for (let i = start; reverse ? i >= end : i <= end; reverse ? i -= step : i += step) {
-            range.push(i)
-        } return range
-
-    }
-
-    createCardParams(movie: ResultMovie): CardParams {
-        const params: CardParams = {
-            imageType: "poster",
-            direction: "vertical",
-            id: movie.id,
-            mediaType: "movie",
-            imageSrc: movie.posterImagePath,
-            href: ["/", this.routingService.stubs.MOVIE, `${movie.id}`],
-            aspectRatio: {
-                numerator: 2,
-                denominator: 3
-            }
-        };
-        return params;
-    }
 }

@@ -13,7 +13,7 @@ export class MovieDiscoverQuery implements QueryObject<MovieDiscoverQuery>, Movi
     readonly releaseDateLte: Date | null
     readonly voteAverageGte: number | null
     readonly voteAverageLte: number | null
-    readonly sortOrder: string | null
+    readonly sortOrder: MovieSortOrder | null
 
     static fromParams: QueryObjectStatic<MovieDiscoverFilters>
 
@@ -68,7 +68,7 @@ export const MovieDiscoverQueryFactory: QueryObjectStatic<MovieDiscoverFilters> 
             voteAverageLte: validVote(params["voteAverageLte"], { key: "voteAverageLte", violations }),
             includeAdult: validBoolean(params["includeAdult"], { key: "includeAdult", violations }),
             includeVideo: validBoolean(params["includeVideo"], { key: "includeVideo", violations }),
-            sortOrder: validOption(params["sortOrder"], [...MOVIE_SORT_OPTIONS], { key: "sortOrder", violations })
+            sortOrder: validOption<MovieSortOrder>(params["sortOrder"], MOVIE_SORT_OPTIONS, { key: "sortOrder", violations })
         }
 
         filters = resolveConflict(filters, "genresAll", "genresAny", { key: "genresAll", violations })
