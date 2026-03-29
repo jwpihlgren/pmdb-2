@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { FilterFormAdapter } from '../../../adapters/filterForm/filterForm.adapter';
 import { TmdbPagination } from '../../../models/classes/tmdb-pagination';
-import { Filter, FilterDefinitions, FilterSet } from '../../../models/filter.model';
+import { FilterSet } from '../../../models/filter.model';
 import { ResultShow } from '../../../models/interfaces/result-show';
 import { DiscoverResult } from '../discover.types';
 import { TmdbResultShow } from '../../../models/classes/tmdb-result-show';

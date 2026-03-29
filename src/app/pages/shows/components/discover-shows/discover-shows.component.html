@@ -76,9 +76,9 @@
         <fieldset class="filter">
             <legend>Keywords</legend>
             <div class="keywords">
-                <app-text-input #trigger [formControl]="keywordForm.controls.keyword"></app-text-input>
+                <app-text-input #keywordTrigger [formControl]="keywordForm.controls.keyword"></app-text-input>
                 @if(keywordSearchResult().length > 0) {
-                <app-dropdown-list [triggerElement]="trigger.elementRef">
+                <app-dropdown-list [triggerElement]="keywordTrigger.elementRef">
                     @for(result of keywordSearchResult(); track $index) {
                     <li (click)="onKeywordSelect(result.value)" class="list-item">{{result.name}}</li>
                     }
@@ -86,14 +86,38 @@
                 }
             </div>
             <app-chip-list class="selected">
-                @for(keyword of discoverForm.controls.withKeywords.controls.values.getRawValue(); track $index) {
-                @let keywordName = lookupKeyword(keyword);
-                <app-chip [value]="keyword" [action]="true"
+                @for(originCountry of discoverForm.controls.withKeywords.controls.values.getRawValue(); track
+                $index) {
+                @let keywordName = lookupKeyword(originCountry);
+                <app-chip [value]="keywordName" [action]="true"
                     (clickRequest)="onKeywordRemove($index)">{{keywordName}}</app-chip>
                 }
             </app-chip-list>
 
         </fieldset>
+        <fieldset class="filter">
+            <legend>Origin country</legend>
+            <div class="keywords">
+                <app-text-input #originCountryTrigger
+                    [formControl]="withOriginCountryForm.controls.country"></app-text-input>
+                @if(withOriginCountrySearchResult().length > 0) {
+                <app-dropdown-list [triggerElement]="originCountryTrigger.elementRef">
+                    @for(result of withOriginCountrySearchResult(); track $index) {
+                    <li (click)="onOriginCountrySelect(result.value)" class="list-item">{{result.name}}</li>
+                    }
+                </app-dropdown-list>
+                }
+            </div>
+            <app-chip-list class="selected">
+                @for(country of discoverForm.controls.withOriginCountries.controls.values.getRawValue(); track $index) {
+                @let countryName = lookupIsoCountry(country);
+                <app-chip [value]="country" [action]="true"
+                    (clickRequest)="onOriginCountryRemove($index)">{{countryName}}</app-chip>
+                }
+            </app-chip-list>
+
+        </fieldset>
+
         <button class="button button--primary">Discover</button>
     </form>
 </aside>

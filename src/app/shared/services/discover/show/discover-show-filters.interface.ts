@@ -9,6 +9,7 @@ export const discoverShowFilters = {
     firstAirDateGte: "firstAirDateGte",
     voteAverageLte: "voteAverageLte",
     voteAverageGte: "voteAverageGte",
+    withOriginCountries: "withOriginCountries",
     sortBy: "sortBy",
     page: "page"
 

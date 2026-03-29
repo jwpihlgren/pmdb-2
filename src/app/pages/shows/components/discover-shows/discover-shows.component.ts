@@ -1,12 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
 import { CardLoadingComponent } from '../../../../shared/components/card-loading/card-loading.component';
 import { AppEventService } from '../../../../shared/services/app-event.service';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ConfigService } from '../../../../shared/services/config.service';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ConfigService, IsoCountry } from '../../../../shared/services/config.service';
 import { RoutingService } from '../../../../shared/services/routing.service';
 import { Genre } from '../../../../shared/models/interfaces/genre';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { DiscoverShowFormValue } from '../../../../shared/models/interfaces/discover-show-form-value';
 import { ResultShow } from '../../../../shared/models/interfaces/result-show';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import { ComboboxComponent } from '../../../../shared/components/combobox/combobox.component';
@@ -23,6 +22,8 @@ import { TextInputComponent } from '../../../../shared/components/text-input/tex
 import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DiscoverShowResult, DiscoverShowService } from '../../../../shared/services/discover/show/discover-show.service';
+import { IsoCountryService } from '../../../../shared/services/iso-country.service';
+import { tap } from 'rxjs';
 
 @Component({
     selector: 'app-discover-shows',
@@ -38,6 +39,7 @@ export class DiscoverShowsComponent {
     protected routingService: RoutingService = inject(RoutingService)
     protected appEventService: AppEventService = inject(AppEventService)
     protected keywordService: KeywordService = inject(KeywordService)
+    protected isoCountryService: IsoCountryService = inject(IsoCountryService)
     protected activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     protected router: Router = inject(Router)
 
@@ -78,13 +80,22 @@ export class DiscoverShowsComponent {
         withKeywords: this.formBuilder.group({
             values: this.formBuilder.control<string[]>([]),
             operator: this.formBuilder.control<"and" | "or">("and")
+        }),
+        withOriginCountries: this.formBuilder.group({
+            values: this.formBuilder.control<string[]>([]),
+            operator: this.formBuilder.control<"and" | "or">("and")
         })
+
     });
 
 
 
     keywordForm = this.formBuilder.group({
         keyword: this.formBuilder.nonNullable.control("")
+    })
+
+    withOriginCountryForm = this.formBuilder.group({
+        country: this.formBuilder.nonNullable.control("")
     })
 
     keywordSearchSignal = toSignal<string>(this.keywordForm.controls.keyword.valueChanges)
@@ -95,6 +106,17 @@ export class DiscoverShowsComponent {
             this.discoverForm.controls.withKeywords.controls.values.getRawValue() ?? []).map((k) => ({
                 value:
                     k.id.toString(), name: k.name
+            }))
+    })
+
+    withOriginCountrySearchSignal = toSignal<string>(this.withOriginCountryForm.controls.country.valueChanges.pipe(
+        tap(d => console.log(d, "search"))))
+    withOriginCountrySearchResult = computed(() => {
+        return this.isoCountryService.search(
+            this.withOriginCountrySearchSignal() || "",
+            10,
+            this.discoverForm.controls.withOriginCountries.controls.values.getRawValue() ?? []).map(k => ({
+                value: k.cca2, name: k.name.common
             }))
     })
 
@@ -111,6 +133,10 @@ export class DiscoverShowsComponent {
 
     lookupKeyword(id: string): string {
         return this.keywordService.keywordNameById(id) ?? id
+    }
+
+    lookupIsoCountry(cca2: string): string {
+        return this.isoCountryService.commonNameByIsoCode(cca2) ?? cca2
     }
 
 
@@ -142,6 +168,13 @@ export class DiscoverShowsComponent {
         this.keywordForm.reset()
     }
 
+    onOriginCountrySelect(country: string): void {
+        const previousValues = this.discoverForm.controls.withOriginCountries.controls["values"].getRawValue() ?? []
+        this.discoverForm.controls.withOriginCountries.controls.values.setValue([...previousValues, country])
+        this.withOriginCountryForm.reset()
+
+    }
+
     onGenreToggle(genre: string): void {
         const selectedGenres: string[] = this.discoverForm.controls.withGenres.get("values")?.getRawValue()
         const existingIndex = selectedGenres.findIndex(g => g === genre)
@@ -170,6 +203,13 @@ export class DiscoverShowsComponent {
         const previousValues = [...this.discoverForm.controls.withKeywords.controls.values.getRawValue() ?? []]
         previousValues.splice(index, 1)
         this.discoverForm.controls.withKeywords.controls.values.setValue(previousValues)
+    }
+
+    onOriginCountryRemove(index: number): void {
+        const previousValues = [...this.discoverForm.controls.withOriginCountries.controls.values.getRawValue() ?? []]
+        previousValues.splice(index, 1)
+        this.discoverForm.controls.withOriginCountries.controls.values.setValue(previousValues)
+
     }
 
     generateNumberRange(start: number, end: number, step: number = 1): number[] {
