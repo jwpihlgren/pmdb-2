@@ -3,6 +3,7 @@ import { Filter } from "../filter.model"
 export const discoverMovieFilters = {
     withGenres: "withGenres",
     withKeywords: "withKeywords",
+    withOriginCountries: "withOriginCounty",
     includeVideo: "includeVideo",
     includeAdult: "includeAdult",
     releaseDateLte: "releaseDateLte",

@@ -19,6 +19,14 @@ export class TmdbDiscoverMovieAdapter implements FilterAdapter<DiscoverMovieFilt
             join: { and: ",", or: "|" },
             allowedValues: []
         },
+        withOriginCountries: {
+            externalKey: "with_origin_country",
+            type: tmdbMappingTypes.STRING,
+            multi: true,
+            join: { and: ",", or: "|" },
+            allowedValues: []
+        },
+
         includeVideo: { type: tmdbMappingTypes.BOOLEAN, externalKey: "include_video", multi: false },
         includeAdult: { type: tmdbMappingTypes.BOOLEAN, externalKey: "include_adult", multi: false },
         releaseDateGte: { type: tmdbMappingTypes.DATE, externalKey: "release_date.gte", multi: false, allowedValues: [] },

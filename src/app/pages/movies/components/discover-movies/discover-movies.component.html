@@ -92,8 +92,30 @@
                     (clickRequest)="onKeywordRemove($index)">{{keywordName}}</app-chip>
                 }
             </app-chip-list>
+        </fieldset>
+        <fieldset class="filter">
+            <legend>Origin country</legend>
+            <div class="keywords">
+                <app-text-input #originCountryTrigger
+                    [formControl]="withOriginCountryForm.controls.country"></app-text-input>
+                @if(withOriginCountrySearchResult().length > 0) {
+                <app-dropdown-list [triggerElement]="originCountryTrigger.elementRef">
+                    @for(result of withOriginCountrySearchResult(); track $index) {
+                    <li (click)="onOriginCountrySelect(result.value)" class="list-item">{{result.name}}</li>
+                    }
+                </app-dropdown-list>
+                }
+            </div>
+            <app-chip-list class="selected">
+                @for(country of discoverForm.controls.withOriginCountries.controls.values.getRawValue(); track $index) {
+                @let countryName = lookupIsoCountry(country);
+                <app-chip [value]="country" [action]="true"
+                    (clickRequest)="onOriginCountryRemove($index)">{{countryName}}</app-chip>
+                }
+            </app-chip-list>
 
         </fieldset>
+
         <button class="button button--primary">Discover</button>
     </form>
 </aside>
@@ -107,8 +129,7 @@
         </app-card>
         }
     </app-simple-grid>
-    <app-pagination (pageRequest)=onUpdateAndSubmit($event)
-        [pagination]="results()!.pagination"></app-pagination>
+    <app-pagination (pageRequest)=onUpdateAndSubmit($event) [pagination]="results()!.pagination"></app-pagination>
     }
     @loading() {
     <app-simple-grid [maxWidth]="cardMaxWidth">
