@@ -28,6 +28,7 @@ import { detailedSeasonResolver } from './shared/resolvers/detailed-season.resol
 import { TestComponent } from './shared/components/test/test.component';
 import { DetailedPeopleCastMovieComponent } from './pages/detailed-people/components/detailed-people-cast-movie/detailed-people-cast-movie.component';
 import { DetailedPeopleCastShowComponent } from './pages/detailed-people/components/detailed-people-cast-show/detailed-people-cast-show.component';
+import { PostersComponent } from './pages/detailed-movie/components/posters/posters.component';
 
 export const routes: Routes = [
     { path: "", pathMatch: "full", component: HomeComponent },
@@ -45,6 +46,7 @@ export const routes: Routes = [
             { path: "", component: DetailedMovieOverviewComponent, pathMatch: "full" },
             { path: "cast-and-crew", component: DetailedMovieCastComponent, pathMatch: "full" },
             { path: "recommendations", component: DetailedMovieRecommendationsComponent, pathMatch: "full" },
+            { path: "posters", component: PostersComponent },
         ]
     },
     //Shows

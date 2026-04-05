@@ -66,5 +66,12 @@
             </app-card>
             }
         </app-overflow-row>
+        <app-overflow-row [options]="postersOptions()">
+            @for(img of m.images.posters; track $index){
+            <app-card class="article--item" [params]="createPosterCardParams(img)">
+            </app-card>
+            }
+        </app-overflow-row>
+
     </ng-container>
 </app-content-with-sidebar>
