@@ -16,7 +16,7 @@ import OverflowRowOptions, { OverflowRowComponent } from '../../../../shared/com
 import { ContentHeroComponent } from '../../../../shared/components/content-hero/content-hero.component';
 import { ContentWithSidebarComponent } from '../../../../shared/components/content-with-sidebar/content-with-sidebar.component';
 import { DiscoverMoviesService } from '../../../../shared/services/discover/movie/discover-movies.service';
-import Keyword from '../../../../shared/models/interfaces/keywords';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-detailed-movie-overview',
@@ -51,6 +51,13 @@ export class DetailedMovieOverviewComponent {
         showMoreLink: ["recommendations"],
         fallbackText: "No recommendations",
         fallback: this.detailedMovie().recommendations.results.length === 0
+    }))
+
+    postersOptions = computed<OverflowRowOptions>(() => ({
+        title: "Posters",
+        showMoreLink: ["posters"],
+        fallbackText: "No posters",
+        fallback: false
     }))
 
 
@@ -99,6 +106,17 @@ export class DetailedMovieOverviewComponent {
             mediaType: "movie",
             imageSrc: rec.posterImagePath,
             href: ["/", this.routingService.stubs.MOVIE, `${rec.id}`],
+            aspectRatio: { numerator: 2, denominator: 3 }
+        }
+
+        return params
+    }
+
+    createPosterCardParams(img: DetailedMovie['images']['posters'][0]): CardParams {
+        const params: CardParams = {
+            imageType: "poster",
+            direction: "vertical",
+            imageSrc: img.filePath,
             aspectRatio: { numerator: 2, denominator: 3 }
         }
 

@@ -1,6 +1,7 @@
 import Gender from "../types/gender"
 import { CustomPageTitle } from "./custom-page-title"
 import Keyword from "./keywords"
+import { Image } from "./image"
 
 export interface DetailedShow extends CustomPageTitle {
     adult: boolean
@@ -16,6 +17,11 @@ export interface DetailedShow extends CustomPageTitle {
     credits: DetailedShowCredits
     episodeRunTime: number[]
     firstAirDate: string | undefined
+    images: {
+        backdrops: Image[]
+        logos: Image[]
+        posters: Image[]
+    }
     genres: {
         id: number
         name: string
