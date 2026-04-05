@@ -61,7 +61,15 @@ export class DetailedShowOverviewComponent {
         fallbackText: "No recommendations",
         fallback: this.detailedShow()?.recommendations.length === 0
     })
+
     )
+    postersOptions = computed<OverflowRowOptions>(() => ({
+        title: "Posters",
+        showMoreLink: ["posters"],
+        fallbackText: "No posters",
+        fallback: false
+    }))
+
 
     castOptions = computed<OverflowRowOptions>(() => ({
         title: "Top billed cast",
@@ -128,6 +136,19 @@ export class DetailedShowOverviewComponent {
             aspectRatio: { numerator: 2, denominator: 3 }
         }
     }
+
+    createPosterCardParams(img: DetailedShow['images']['posters'][0]): CardParams {
+        const params: CardParams = {
+            imageType: "poster",
+            direction: "vertical",
+            imageSrc: img.filePath,
+            aspectRatio: { numerator: 2, denominator: 3 }
+        }
+
+        return params
+    }
+
+
     discoverGenres(genres: { id: number, name: string }[]): UrlTree {
         const builder = this.discoverService.discoverShowQueryBuilder()
         builder.with("withGenres", { values: genres.map(k => k.id.toString()), operator: "and" })

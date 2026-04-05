@@ -1,3 +1,4 @@
+import TmdbImage from "./tmdb-image"
 import TmdbKeywordsResponse from "./tmdb-keywords-response"
 import TmdbResponseWrapper from "./tmdb-response-wrapper"
 
@@ -30,6 +31,11 @@ export interface TmdbDetailedShowResponse {
         id: number
         name: string
     }[]
+    images: {
+        posters: TmdbImage[],
+        logos: TmdbImage[],
+        backdrops: TmdbImage[]
+    }
     homepage: string
     id: number
     in_production: boolean

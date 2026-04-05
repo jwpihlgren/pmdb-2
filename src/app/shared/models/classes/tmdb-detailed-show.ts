@@ -1,4 +1,6 @@
+import AspectRatioFunctions from "../../utils/aspect-ratio.class";
 import { DetailedShow, DetailedShowCredits, DetailedShowRecommendation } from "../interfaces/detailed-show";
+import { Image } from "../interfaces/image";
 import Keyword from "../interfaces/keywords";
 import { TmdbDetailedShowCreditsResponse, TmdbDetailedShowRecommendationsResponse, TmdbDetailedShowResponse } from "../interfaces/tmdb/tmdb-detailed-show-response";
 import TmdbKeywordsResponse from "../interfaces/tmdb/tmdb-keywords-response";
@@ -30,6 +32,7 @@ export class TmdbDetailedShow implements DetailedShow {
     inProduction: boolean
     languages: string[]
     lastAirDate: string | undefined
+    images: { backdrops: Image[]; logos: Image[]; posters: Image[]; };
     lastEpisodeToAir: {
         id: number
         name: string
@@ -132,11 +135,46 @@ export class TmdbDetailedShow implements DetailedShow {
         this.type = data.type
         this.voteAverage = data.vote_average
         this.voteCount = data.vote_count
+        this.images = this.mapImages(data.images)
 
     }
 
     mapKeywords(data: TmdbKeywordsResponse): Keyword[] {
         return TmdbKeywordsFactory.create(data)
+    }
+
+
+    mapImages(data: TmdbDetailedShowResponse["images"]) {
+        const images: DetailedShow["images"] = {
+            posters: data.posters.map(i => ({
+                aspectRatio: AspectRatioFunctions.getAspectRatioFromSize(i.width, i.height),
+                filePath: i.file_path,
+                height: i.height,
+                voteAverage: i.vote_average,
+                voteCount: i.vote_count,
+                width: i.width,
+                iso6391: i.iso_639_1
+            })),
+            backdrops: data.backdrops.map(i => ({
+                aspectRatio: AspectRatioFunctions.getAspectRatioFromSize(i.width, i.height),
+                filePath: i.file_path,
+                height: i.height,
+                voteAverage: i.vote_average,
+                voteCount: i.vote_count,
+                width: i.width,
+                iso6391: i.iso_639_1
+            })),
+            logos: data.logos.map(i => ({
+                aspectRatio: AspectRatioFunctions.getAspectRatioFromSize(i.width, i.height),
+                filePath: i.file_path,
+                height: i.height,
+                voteAverage: i.vote_average,
+                voteCount: i.vote_count,
+                width: i.width,
+                iso6391: i.iso_639_1
+            }))
+        }
+        return images
     }
 
     mapCreatedBy(data: TmdbDetailedShowResponse["created_by"]): TmdbDetailedShow["createdBy"] {

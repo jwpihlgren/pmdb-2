@@ -1,13 +1,13 @@
-import { Component, inject, signal, Signal, WritableSignal } from '@angular/core';
+import { Component, inject, Signal, signal, WritableSignal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Location } from '@angular/common';
 import { map } from 'rxjs';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
-import { Image } from '../../../../shared/models/interfaces/image';
 import { LightboxComponent, LightboxParams } from '../../../../shared/components/lightbox/lightbox.component';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
 import { DetailedMovie } from '../../../../shared/models/interfaces/detailed-movie';
+import { SimpleGridComponent } from '../../../../shared/components/simple-grid/simple-grid.component';
+import { Image } from '../../../../shared/models/interfaces/image';
+import { Location } from '@angular/common';
 
 @Component({
     selector: 'app-posters',
@@ -25,7 +25,7 @@ export class PostersComponent {
         this.posters = toSignal(this.activatedRoute.parent!.data.pipe(
             map(data => {
                 console.log(data)
-                return data['movie']['images']['posters'] as DetailedMovie["images"]["posters"]
+                return data['show']['images']['posters'] as DetailedMovie["images"]["posters"]
             })
         ), { requireSync: true })
     }
@@ -64,5 +64,6 @@ export class PostersComponent {
     closeLightbox(): void {
         this.lightboxOpen.set(undefined)
     }
+
 
 }
