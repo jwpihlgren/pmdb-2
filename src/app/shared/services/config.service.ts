@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { TmdbConfig } from '../models/interfaces/tmdb/tmdb-config';
 import { environment } from '../../../environments/environment';
-import { forkJoin, map, Observable, of } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of } from 'rxjs';
 import { StorageService } from './storage.service';
 import { Genre } from '../models/interfaces/genre';
 import Keyword from '../models/interfaces/keywords';
@@ -51,7 +51,10 @@ export class ConfigService {
                     const name = { name: cur.name }
                     acc[key] = name
                     return acc
-                }, {} as IsoCountryMap))
+                }, {} as IsoCountryMap)
+                ), catchError(() => {
+                    return of([])
+                })
             ),
             showGenres: this.http.get<{ genres: Genre[] }>(tvGenresUrl),
             dailyKeywordIds: this.http.get(dailyKeywordsIdExportUrl, { responseType: "text" })
