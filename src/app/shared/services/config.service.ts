@@ -53,7 +53,7 @@ export class ConfigService {
                     return acc
                 }, {} as IsoCountryMap)
                 ), catchError(() => {
-                    return of([])
+                    return of({})
                 })
             ),
             showGenres: this.http.get<{ genres: Genre[] }>(tvGenresUrl),

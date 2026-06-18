@@ -7,5 +7,7 @@ export const environment = {
     imdbMediaUrl: "https://www.imdb.com/title/",
     imdbPeopleUrl: "https://www.imdb.com/name/",
     dummyImageApiUrl: "https://dummyimage.com",
-    isoCountriesApiUrl: "https://restcountries.com/v3.1/all?fields=cca2,name"
+    //isoCountriesApiUrl: "https://restcountries.com/v3.1/all?fields=cca2,name"
+    isoCountriesApiUrl: "https://tmdb-file-proxy.pages.dev/api/countries"
+
 };
