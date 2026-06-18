@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --base-href https://jwpihlgren.github.io/pmdb-2",
-    "deploy": "ng build --output-path=dist --base-href=/pmdb-2/ && npx angular-cli-ghpages --dir=dist/browser",
+    "build": "ng build",
+    "deploy": "echo 'not implemented'",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
