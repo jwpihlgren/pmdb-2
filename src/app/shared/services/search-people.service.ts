@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, Subject, switchMap } from 'rxjs';
 import SearchQueryBuilderl from '../models/classes/movie-search-query-builder.class';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import TMDBSearchPeopleResult from '../models/classes/tmdb-people-search-result.class';
 import { Pagination } from '../models/interfaces/pagination';
 import { PlaceholderPagination } from '../models/classes/placeholder-pagination';

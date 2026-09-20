@@ -6,7 +6,7 @@ import { PlaceholderPagination } from '../models/classes/placeholder-pagination'
 import { TmdbTimeWindow } from '../models/types/tmdb-time-window';
 import { HttpClient } from '@angular/common/http';
 import SearchQueryBuilder from '../models/classes/movie-search-query-builder.class';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { TmdbResultShowResponse } from '../models/interfaces/tmdb/tmdb-result-show-response';
 import { TmdbPagination } from '../models/classes/tmdb-pagination';
 import { TmdbResultShow } from '../models/classes/tmdb-result-show';

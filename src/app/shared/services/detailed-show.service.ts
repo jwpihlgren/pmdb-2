@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { TmdbDetailedShow } from '../models/classes/tmdb-detailed-show';
 import { TmdbDetailedShowResponse } from '../models/interfaces/tmdb/tmdb-detailed-show-response';

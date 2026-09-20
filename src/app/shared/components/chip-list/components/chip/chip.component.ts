@@ -32,10 +32,6 @@ export class ChipComponent {
         if (params.event.key !== " " && params.event.key !== "Space") return
         this.onClick(params.value)
     }
-
-    test() {
-        console.log("test")
-    }
 }
 
 

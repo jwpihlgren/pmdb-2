@@ -23,7 +23,6 @@ import { SimpleGridComponent } from '../../../../shared/components/simple-grid/s
 import { ActivatedRoute, Router } from '@angular/router';
 import { DiscoverShowResult, DiscoverShowService } from '../../../../shared/services/discover/show/discover-show.service';
 import { IsoCountryService } from '../../../../shared/services/iso-country.service';
-import { tap } from 'rxjs';
 
 @Component({
     selector: 'app-discover-shows',
@@ -108,8 +107,7 @@ export class DiscoverShowsComponent {
             }))
     })
 
-    withOriginCountrySearchSignal = toSignal<string>(this.withOriginCountryForm.controls.country.valueChanges.pipe(
-        tap(d => console.log(d, "search"))))
+    withOriginCountrySearchSignal = toSignal<string>(this.withOriginCountryForm.controls.country.valueChanges)
     withOriginCountrySearchResult = computed(() => {
         return this.isoCountryService.search(
             this.withOriginCountrySearchSignal() || "",
@@ -187,10 +185,7 @@ export class DiscoverShowsComponent {
 
     onGenreRemove(genre: string): void {
         const selectedGenres: string[] = this.discoverForm.controls.withGenres.get("values")?.getRawValue()
-        const existingIndex = selectedGenres.findIndex(g => {
-            console.log(g, genre)
-            return g.toString() === genre.toString()
-        })
+        const existingIndex = selectedGenres.findIndex(g => g.toString() === genre.toString())
         if (existingIndex !== -1) {
             selectedGenres.splice(existingIndex, 1)
             this.discoverForm.controls.withGenres.get("values")?.setValue(selectedGenres)

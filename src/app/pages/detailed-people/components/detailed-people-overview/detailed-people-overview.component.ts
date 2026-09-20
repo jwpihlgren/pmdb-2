@@ -4,7 +4,7 @@ import DetailedPeople from '../../../../shared/models/interfaces/detailed-people
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { ImageComponent, ImageParams } from '../../../../shared/components/image/image.component';
-import { environment } from '../../../../../environments/environment.development';
+import { environment } from '../../../../../environments/environment';
 import { CardComponent, CardParams } from '../../../../shared/components/card/card.component';
 import Metadata from '../../../../shared/models/interfaces/meta-data.interface';
 import { RoutingService } from '../../../../shared/services/routing.service';

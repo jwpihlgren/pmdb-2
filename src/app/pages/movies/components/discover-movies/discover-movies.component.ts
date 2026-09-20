@@ -190,10 +190,7 @@ export class DiscoverMoviesComponent {
 
     onGenreRemove(genre: string): void {
         const selectedGenres: string[] = this.discoverForm.controls.withGenres.get("values")?.getRawValue()
-        const existingIndex = selectedGenres.findIndex(g => {
-            console.log(g, genre)
-            return g.toString() === genre.toString()
-        })
+        const existingIndex = selectedGenres.findIndex(g => g.toString() === genre.toString())
         if (existingIndex !== -1) {
             selectedGenres.splice(existingIndex, 1)
             this.discoverForm.controls.withGenres.get("values")?.setValue(selectedGenres)

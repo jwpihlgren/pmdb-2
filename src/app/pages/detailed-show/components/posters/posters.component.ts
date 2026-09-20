@@ -24,7 +24,6 @@ export class PostersComponent {
     constructor() {
         this.posters = toSignal(this.activatedRoute.parent!.data.pipe(
             map(data => {
-                console.log(data)
                 return data['show']['images']['posters'] as DetailedMovie["images"]["posters"]
             })
         ), { requireSync: true })

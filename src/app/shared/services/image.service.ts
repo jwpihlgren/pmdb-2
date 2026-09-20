@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { TmdbConfig } from '../models/interfaces/tmdb/tmdb-config';
 import { StorageService } from './storage.service';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import AspectRatio from '../models/types/aspect-ratio.type';
 
 type ImageType = "poster_sizes" | "backdrop_sizes" | "profile_sizes" | "logo_sizes" | "still_sizes"

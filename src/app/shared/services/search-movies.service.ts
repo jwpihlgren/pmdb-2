@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { debounceTime, map, Observable, Subject, switchMap, tap } from 'rxjs';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { TmdbResultMovieResponse } from '../models/interfaces/tmdb/tmdb-result-movie-response';
 import { ResultMovie } from '../models/interfaces/result-movie';
 import SearchQueryBuilder from '../models/classes/movie-search-query-builder.class';

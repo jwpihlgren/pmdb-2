@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { Pagination } from '../models/interfaces/pagination';
 import { PlaceholderPagination } from '../models/classes/placeholder-pagination';
 import { TmdbPagination } from '../models/classes/tmdb-pagination';

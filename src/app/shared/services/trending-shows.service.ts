@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, switchMap, tap } from 'rxjs';
 import { Pagination } from '../models/interfaces/pagination';
 import { TmdbTimeWindow } from '../models/types/tmdb-time-window';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { PlaceholderPagination } from '../models/classes/placeholder-pagination';
 import { HttpClient } from '@angular/common/http';
 import { TmdbPagination } from '../models/classes/tmdb-pagination';
