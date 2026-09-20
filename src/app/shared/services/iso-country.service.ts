@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { IsoCountry, IsoCountryMap } from './config.service';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { StorageService } from './storage.service';
 
 @Injectable({
