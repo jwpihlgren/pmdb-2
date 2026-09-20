@@ -1,0 +1,126 @@
+:host {
+    flex: 0 0 auto;
+    width: 320px;
+    max-width: 80vw;
+}
+
+.facade {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16/9;
+    padding: 0;
+    border: none;
+    border-radius: var(--radii-medium);
+    overflow: hidden;
+    background: var(--clr-surface-elevation-2);
+    color: var(--clr-petroleum-0);
+    cursor: pointer;
+}
+
+.facade__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.facade__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: var(--spacing-large);
+    height: var(--spacing-large);
+    border-radius: var(--radii-full);
+    background: var(--clr-accent);
+    box-shadow: var(--shadow-elevation-2);
+    transition: scale var(--duration-short);
+}
+
+.facade__play::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    translate: -50% -50%;
+    border-style: solid;
+    border-width: 0.4rem 0 0.4rem 0.65rem;
+    border-color: transparent transparent transparent var(--clr-on-accent);
+}
+
+.facade:hover .facade__play,
+.facade:focus-visible .facade__play {
+    scale: 1.15;
+}
+
+.facade__about {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    gap: var(--spacing-extra-small);
+    padding: var(--spacing-small) var(--spacing-medium);
+    text-align: start;
+    padding-block-start: var(--spacing-large);
+    background: linear-gradient(to top, rgba(16, 26, 33, 0.95) 40%, rgba(16, 26, 33, 0));
+}
+
+.facade__title {
+    font-size: var(--fs-body-small);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.facade__type {
+    font-size: var(--fs-body-small);
+    color: var(--clr-accent);
+}
+
+.player {
+    width: 100%;
+    height: 100%;
+    max-width: 100vw;
+    max-height: 100vh;
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+.player::backdrop {
+    background: rgba(16, 26, 33, 0.9);
+}
+
+.player__frame {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    padding: var(--spacing-large);
+}
+
+.player__video {
+    width: 100%;
+    max-width: 1440px;
+    aspect-ratio: 16/9;
+    border-radius: var(--radii-medium);
+}
+
+.player__close {
+    position: absolute;
+    top: var(--spacing-medium);
+    right: var(--spacing-medium);
+    padding: var(--spacing-small) var(--spacing-medium);
+    border: none;
+    border-radius: var(--radii-full);
+    background: var(--clr-surface-elevation-3);
+    color: var(--clr-on-surface);
+    cursor: pointer;
+}
+
+.player__close:hover {
+    background: var(--clr-surface-elevation-4);
+}

@@ -17,10 +17,12 @@ import { ContentHeroComponent } from '../../../../shared/components/content-hero
 import { ContentWithSidebarComponent } from '../../../../shared/components/content-with-sidebar/content-with-sidebar.component';
 import { DiscoverMoviesService } from '../../../../shared/services/discover/movie/discover-movies.service';
 import { Title } from '@angular/platform-browser';
+import { ExternalVideoPlayerComponent, ExternalVideoPlayerParams } from '../../../../shared/components/external-video-player/external-video-player.component';
+import Trailer from '../../../../shared/models/interfaces/trailer';
 
 @Component({
     selector: 'app-detailed-movie-overview',
-    imports: [ImageComponent, ChipComponent, CardComponent, DecimalPipe, OverflowRowComponent, ContentHeroComponent, ContentWithSidebarComponent, RouterLink],
+    imports: [ImageComponent, ChipComponent, CardComponent, DecimalPipe, OverflowRowComponent, ContentHeroComponent, ContentWithSidebarComponent, RouterLink, ExternalVideoPlayerComponent],
     templateUrl: './detailed-movie-overview.component.html',
     styleUrl: './detailed-movie-overview.component.css',
     hostDirectives: [{
@@ -45,6 +47,11 @@ export class DetailedMovieOverviewComponent {
         showMoreLink: ["cast-and-crew"],
         fallbackText: "No top bille cast",
         fallback: this.detailedMovie().credits.cast.length === 0
+    }))
+    trailerOptions = computed<OverflowRowOptions>(() => ({
+        title: "Trailers",
+        fallbackText: "No trailers",
+        fallback: this.detailedMovie().trailers.length === 0
     }))
     recommendedOptions = computed<OverflowRowOptions>(() => ({
         title: "Recommendations",
@@ -121,6 +128,10 @@ export class DetailedMovieOverviewComponent {
         }
 
         return params
+    }
+
+    createTrailerParams(trailer: Trailer): ExternalVideoPlayerParams {
+        return { site: trailer.site, key: trailer.key, name: trailer.name, type: trailer.type }
     }
 
     discoverGenres(genres: { id: number, name: string }[]): UrlTree {

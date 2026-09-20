@@ -15,10 +15,12 @@ import { ContentWithSidebarComponent } from '../../../../shared/components/conte
 import OverflowRowOptions, { OverflowRowComponent } from '../../../../shared/components/overflow-row/overflow-row.component';
 import { ContentHeroComponent } from '../../../../shared/components/content-hero/content-hero.component';
 import { DiscoverShowService } from '../../../../shared/services/discover/show/discover-show.service';
+import { ExternalVideoPlayerComponent, ExternalVideoPlayerParams } from '../../../../shared/components/external-video-player/external-video-player.component';
+import Trailer from '../../../../shared/models/interfaces/trailer';
 
 @Component({
     selector: 'app-detailed-show-overview',
-    imports: [ImageComponent, ChipComponent, DecimalPipe, CardComponent, ContentWithSidebarComponent, OverflowRowComponent, ContentHeroComponent, RouterLink],
+    imports: [ImageComponent, ChipComponent, DecimalPipe, CardComponent, ContentWithSidebarComponent, OverflowRowComponent, ContentHeroComponent, RouterLink, ExternalVideoPlayerComponent],
     templateUrl: './detailed-show-overview.component.html',
     styleUrl: './detailed-show-overview.component.css',
     hostDirectives: [AppEventTriggerDirective]
@@ -54,6 +56,12 @@ export class DetailedShowOverviewComponent {
         fallback: this.detailedShow()?.seasons.length === 0
     })
     )
+
+    trailerOptions = computed<OverflowRowOptions>(() => ({
+        title: "Trailers",
+        fallbackText: "No trailers",
+        fallback: this.detailedShow()?.trailers.length === 0
+    }))
 
     recommendationOptions = computed<OverflowRowOptions>(() => ({
         title: "Recommendations",
@@ -148,6 +156,10 @@ export class DetailedShowOverviewComponent {
         return params
     }
 
+
+    createTrailerParams(trailer: Trailer): ExternalVideoPlayerParams {
+        return { site: trailer.site, key: trailer.key, name: trailer.name, type: trailer.type }
+    }
 
     discoverGenres(genres: { id: number, name: string }[]): UrlTree {
         const builder = this.discoverService.discoverShowQueryBuilder()

@@ -2,6 +2,7 @@ import Gender from "../types/gender"
 import { CustomPageTitle } from "./custom-page-title"
 import Keyword from "./keywords"
 import { Image } from "./image"
+import Trailer from "./trailer"
 
 export interface DetailedShow extends CustomPageTitle {
     adult: boolean
@@ -92,6 +93,7 @@ export interface DetailedShow extends CustomPageTitle {
     }[]
     status: string
     tagline: string
+    trailers: Trailer[]
     type: string
     voteAverage: number
     voteCount: number

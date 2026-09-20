@@ -9,7 +9,7 @@ import { TmdbDetailedMovieResponse } from "../interfaces/tmdb/tmdb-detailed-movi
 import Trailer from "../interfaces/trailer";
 import Gender from "../types/gender";
 import { TmdbResultMovie } from "./tmdb-result-movie";
-import TmdbTrailer from "./tmdb-trailer.class";
+import { TmdbTrailerFactory } from "./tmdbTrailerFactory.class";
 import TmdbGenderFactory from "./tmdbGenderFactory.class";
 import { TmdbImages } from "./tmdbImages.class";
 import { TmdbKeywordsFactory } from "./tmdbKeywordsFactory.class";
@@ -121,7 +121,7 @@ export class TmdbDetailedMovie implements DetailedMovie {
     }
 
     private mapTrailers(raw: TmdbDetailedMovieResponse["videos"]): DetailedMovie["trailers"] {
-        return raw.results.map(result => new TmdbTrailer(result))
+        return TmdbTrailerFactory.create(raw)
     }
 }
 
