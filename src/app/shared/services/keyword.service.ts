@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import Keyword from '../models/interfaces/keywords';
 import { StorageService } from './storage.service';
 

@@ -1,23 +1,21 @@
 import { TestBed } from '@angular/core/testing';
-import { ResolveFn } from '@angular/router';
-import { DetailedShow } from '../models/interfaces/detailed-show';
 
-import { detailedShowResolver } from './detailed-show.resolver';
+import { DetailedShowService } from './detailed-show.service';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
 
-describe('detailedShowResolver', () => {
-  const executeResolver: ResolveFn<DetailedShow> = (...resolverParameters) => 
-      TestBed.runInInjectionContext(() => detailedShowResolver(...resolverParameters));
+describe('DetailedShowService', () => {
+  let service: DetailedShowService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])]
     });
+    service = TestBed.inject(DetailedShowService);
   });
 
   it('should be created', () => {
-    expect(executeResolver).toBeTruthy();
+    expect(service).toBeTruthy();
   });
 });

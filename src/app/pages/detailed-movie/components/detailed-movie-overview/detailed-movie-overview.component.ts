@@ -10,7 +10,7 @@ import { RoutingService } from '../../../../shared/services/routing.service';
 import { ResultMovie } from '../../../../shared/models/interfaces/result-movie';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
-import { environment } from '../../../../../environments/environment.development';
+import { environment } from '../../../../../environments/environment';
 import { AppEventTriggerDirective } from '../../../../shared/directives/app-event-trigger.directive';
 import OverflowRowOptions, { OverflowRowComponent } from '../../../../shared/components/overflow-row/overflow-row.component';
 import { ContentHeroComponent } from '../../../../shared/components/content-hero/content-hero.component';

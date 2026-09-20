@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import DetailedPeople from '../models/interfaces/detailed-people';
 import { map, Observable, tap } from 'rxjs';
 import SearchQueryBuilder from '../models/classes/movie-search-query-builder.class';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import TmdbDetailedPeopleResponse from '../models/interfaces/tmdb/tmdb-detailed-people-response';
 import TmdbDetailedPeople from '../models/classes/tmdb-detailed-people.class';
 

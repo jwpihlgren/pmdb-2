@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { debounceTime, map, Observable, ReplaySubject as BehaviorSubject, switchMap, of } from 'rxjs';
 import ResultMulti from './models/interfaces/result-multi';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import SearchQueryBuilder from './models/classes/movie-search-query-builder.class';
 import TmdbResultMultiResponse from './models/interfaces/tmdb/tmdb-result-multi-response';
 import { TmdbResultPeopleResponse } from './models/interfaces/tmdb/tmdb-search-people-response';

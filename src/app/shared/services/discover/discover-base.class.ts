@@ -3,7 +3,7 @@ import { inject } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { Router, ActivatedRouteSnapshot, UrlTree } from "@angular/router";
 import { BehaviorSubject, Observable, Subject, take } from "rxjs";
-import { environment } from "../../../../environments/environment.development";
+import { environment } from "../../../../environments/environment";
 import { FilterFormAdapter, FormValues } from "../../adapters/filterForm/filterForm.adapter";
 import { FilterUrlAdapter } from "../../adapters/filterUrl/filter-url.adapter";
 import { FilterAdapter } from "../../adapters/tmdb/tmdb-filter-adapter.types";

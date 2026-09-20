@@ -32,12 +32,11 @@ export class IsoCountryService {
     }
 
     commonNameByIsoCode(code: string) {
-        return this.isoCountriesMap[code].name.common ?? undefined
+        return this.isoCountriesMap[code]?.name?.common ?? undefined
     }
 
     search(query: string, limit: number = 50, filter: string[]): IsoCountry[] {
-        if (!this.isLoaded()) throw new Error(`IsoCountries are not loaded as expectd`)
-        if (!query.trim()) return []
+        if (!this.isLoaded() || !query.trim()) return []
 
         const lower = query.toLowerCase()
         const filteredIsoCountries = this.isoCountries.filter(c => !filter.includes(c.cca2))

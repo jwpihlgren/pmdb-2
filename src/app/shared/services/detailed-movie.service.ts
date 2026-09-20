@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { DetailedMovie } from '../models/interfaces/detailed-movie';
 import { TmdbDetailedMovie } from '../models/classes/tmdb-detailed-movie';
 import SearchQueryBuilder from '../models/classes/movie-search-query-builder.class';
