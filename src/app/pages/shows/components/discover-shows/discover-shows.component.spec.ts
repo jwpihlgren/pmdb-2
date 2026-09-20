@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DiscoverShowsComponent } from './discover-shows.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 
 describe('DiscoverShowsComponent', () => {
   let component: DiscoverShowsComponent;
@@ -8,7 +11,8 @@ describe('DiscoverShowsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DiscoverShowsComponent]
+      imports: [DiscoverShowsComponent],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])]
     })
     .compileComponents();
 

@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExpandableMultiSelectComponent } from './expandable-multi-select.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 
 describe('ExpandableMultiSelectComponent', () => {
   let component: ExpandableMultiSelectComponent;
@@ -8,7 +11,8 @@ describe('ExpandableMultiSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ExpandableMultiSelectComponent]
+      imports: [ExpandableMultiSelectComponent],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])]
     })
     .compileComponents();
 

@@ -51,7 +51,7 @@ export class SearchMoviesService {
 class TmdbResultMovie implements ResultMovie {
     adult: boolean
     backdropImagePath: string
-    genreIds: number[]
+    genreIds: string[]
     hasVideo: boolean
     id: number
     mediaType: string
@@ -69,7 +69,7 @@ class TmdbResultMovie implements ResultMovie {
     constructor(raw: TmdbResultMovieResponse["results"][0]) {
         this.adult = raw.adult 
         this.backdropImagePath = raw.backdrop_path
-        this.genreIds = raw.genre_ids
+        this.genreIds = raw.genre_ids.map(g => g.toString())
         this.hasVideo = raw.video
         this.id = raw.id = raw.id
         this.mediaType = raw.media_type

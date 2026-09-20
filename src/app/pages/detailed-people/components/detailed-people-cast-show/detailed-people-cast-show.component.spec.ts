@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DetailedPeopleCastShowComponent } from './detailed-people-cast-show.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 
 describe('DetailedPeopleCastShowComponent', () => {
   let component: DetailedPeopleCastShowComponent;
@@ -8,7 +11,8 @@ describe('DetailedPeopleCastShowComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DetailedPeopleCastShowComponent]
+      imports: [DetailedPeopleCastShowComponent],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])]
     })
     .compileComponents();
 

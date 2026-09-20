@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DetailedPeopleOverviewComponent } from './detailed-people-overview.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 
 describe('DetailedPeopleOverviewComponent', () => {
   let component: DetailedPeopleOverviewComponent;
@@ -8,7 +11,8 @@ describe('DetailedPeopleOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DetailedPeopleOverviewComponent]
+      imports: [DetailedPeopleOverviewComponent],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])]
     })
     .compileComponents();
 

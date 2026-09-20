@@ -1,8 +1,25 @@
+import { ElementRef } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 import { FocusLostDirective } from './focus-lost.directive';
 
 describe('FocusLostDirective', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([]),
+        { provide: ElementRef, useValue: new ElementRef(document.createElement('div')) },
+      ]
+    });
+  });
+
   it('should create an instance', () => {
-    const directive = new FocusLostDirective();
+    // inject() and input() need an injection context, so build it inside one.
+    const directive = TestBed.runInInjectionContext(() => new FocusLostDirective());
     expect(directive).toBeTruthy();
   });
 });
