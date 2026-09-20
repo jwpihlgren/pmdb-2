@@ -66,7 +66,6 @@ export class DiscoverShowsComponent {
 
     discoverForm = this.formBuilder.group({
         includeAdult: this.formBuilder.control<boolean | null>(null),
-        includeVideo: this.formBuilder.control<boolean | null>(null),
         sortBy: this.formBuilder.control<string | undefined>(undefined),
         page: this.formBuilder.control<number | undefined>(undefined),
         firstAirDateLte: this.formBuilder.control<string | undefined>(undefined),
