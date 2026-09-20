@@ -45,15 +45,12 @@ export class ConfigService {
         return forkJoin({
             config: this.http.get<TmdbConfig>(configUrl),
             movieGenres: this.http.get<{ genres: Genre[] }>(movieGenresUrl),
-            isoCountries: this.http.get<IsoCountry[]>(isoCountriesUrl).pipe(
-                map(data => data.reduce((acc, cur) => {
-                    const key = cur.cca2
-                    const name = { name: cur.name }
-                    acc[key] = name
-                    return acc
-                }, {} as IsoCountryMap)
-                ), catchError(() => {
-                    return of({})
+            isoCountries: this.http.get<unknown>(isoCountriesUrl).pipe(
+                map(data => this.toIsoCountryMap(data)),
+                catchError(error => {
+                    console.log("Could not load isoCountries")
+                    console.log(error)
+                    return of({} as IsoCountryMap)
                 })
             ),
             showGenres: this.http.get<{ genres: Genre[] }>(tvGenresUrl),
@@ -73,9 +70,30 @@ export class ConfigService {
                 this.config = data.config
                 this.movieGenres = data.movieGenres.genres
                 this.showGenres = data.showGenres.genres
+                this.isoCountriesMap = data.isoCountries
                 return true
             })
         )
+    }
+
+    /**
+     * The countries endpoint is served either as a list (restcountries.com) or as an
+     * already keyed map (the file proxy), so normalize both shapes into an IsoCountryMap.
+     * Anything else throws, which lets catchError log it instead of storing junk.
+     */
+    private toIsoCountryMap(data: unknown): IsoCountryMap {
+        const entries: [string, unknown][] = Array.isArray(data)
+            ? data.map(country => [country?.cca2, country])
+            : Object.entries(data ?? {})
+
+        const map = entries.reduce((acc, [code, country]) => {
+            const name = (country as IsoCountry | undefined)?.name
+            if (code && name?.common) acc[code] = { name }
+            return acc
+        }, {} as IsoCountryMap)
+
+        if (!Object.keys(map).length) throw new Error("Unexpected isoCountries response shape")
+        return map
     }
 }
 
