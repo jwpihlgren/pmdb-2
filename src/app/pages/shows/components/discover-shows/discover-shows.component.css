@@ -1,7 +1,12 @@
 :host {
     display: grid;
-    grid-template-columns: 360px 1fr;
+    grid-template-columns: 360px minmax(0, 1fr);
     gap: var(--spacing-lg, 2rem);
+
+    /* Side by side, the results column starts past the right edge of a phone. */
+    @media (max-width: 768px) {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }
 
 main {
