@@ -128,6 +128,10 @@
 @media screen and (max-width:768px) {
     :root {
         --app-footer-height: calc(100dvh - var(--app-header-height));
+        /* At 4rem a single word like "Recommendations" is wider than a phone. */
+        --fs-display-large: 2.25rem;
+        --fs-display-medium: 2rem;
+        --fs-display-small: 1.75rem;
     }
 }
 
@@ -216,6 +220,9 @@ h2,
 h3,
 h4 {
     font-family: var(--ff-heading);
+    /* A heading sits in grid tracks that grow to its longest word. Letting it
+       break keeps one long word from widening the whole page past the screen. */
+    overflow-wrap: anywhere;
 }
 
 h1 {
