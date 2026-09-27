@@ -50,6 +50,7 @@ export class DetailedMovieOverviewComponent {
     }))
     trailerOptions = computed<OverflowRowOptions>(() => ({
         title: "Trailers",
+        showMoreLink: ["trailers"],
         fallbackText: "No trailers",
         fallback: this.detailedMovie().trailers.length === 0
     }))

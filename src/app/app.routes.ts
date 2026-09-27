@@ -30,6 +30,8 @@ import { DetailedPeopleCastMovieComponent } from './pages/detailed-people/compon
 import { DetailedPeopleCastShowComponent } from './pages/detailed-people/components/detailed-people-cast-show/detailed-people-cast-show.component';
 import { PostersComponent as MoviePosters } from './pages/detailed-movie/components/posters/posters.component';
 import { PostersComponent as ShowsPosters } from './pages/detailed-show/components/posters/posters.component';
+import { TrailersComponent as MovieTrailers } from './pages/detailed-movie/components/trailers/trailers.component';
+import { TrailersComponent as ShowTrailers } from './pages/detailed-show/components/trailers/trailers.component';
 
 export const routes: Routes = [
     { path: "", pathMatch: "full", component: HomeComponent },
@@ -48,6 +50,7 @@ export const routes: Routes = [
             { path: "cast-and-crew", component: DetailedMovieCastComponent, pathMatch: "full" },
             { path: "recommendations", component: DetailedMovieRecommendationsComponent, pathMatch: "full" },
             { path: "posters", component: MoviePosters },
+            { path: "trailers", component: MovieTrailers },
         ]
     },
     //Shows
@@ -69,6 +72,7 @@ export const routes: Routes = [
             { path: "seasons", component: SeasonsComponent, pathMatch: "full" },
             { path: "seasons/:seasonId", component: DetailedSeasonComponent, pathMatch: "full", resolve: { season: detailedSeasonResolver } },
             { path: "posters", component: ShowsPosters },
+            { path: "trailers", component: ShowTrailers },
         ]
     },
     //People

@@ -1,0 +1,10 @@
+.list__item {
+    list-style: none;
+}
+
+/* The player sizes itself for an overflow row; in the grid it fills its cell instead. */
+app-external-video-player {
+    display: block;
+    width: auto;
+    max-width: none;
+}

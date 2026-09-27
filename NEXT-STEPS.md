@@ -7,20 +7,14 @@ after trailers landed.
 
 **Overflow rows cannot be scrolled.** `.article--grid` in
 `overflow-row.component.css:24` is `overflow: hidden` with no scroll and no
-controls, so anything past the visible width is unreachable. The gradient on
-the right edge implies otherwise.
+controls, so anything past the visible width is unreachable from the row
+itself. The gradient on the right edge implies otherwise.
 
-Cast, recommendations, posters and seasons get away with it because they each
-pass a `showMoreLink` and the "Show all" link leads to a full page. The new
-trailers row has no such page, so the ones past the edge cannot be opened at
-all — Inception renders 27 of them and roughly four fit at a desktop width.
-
-Two ways out, and they are not exclusive:
-
-- make the row itself scrollable (`overflow-x: auto`, plus prev/next buttons
-  and keyboard support), which fixes every row at once
-- give trailers a child route the way posters has one
-  (`movies/:id/trailers`), and pass it as `showMoreLink`
+Every row now has a way out: cast, recommendations, posters, seasons and
+trailers each pass a `showMoreLink`, and "Show all" leads to a full page
+(`movies/:id/trailers` and `shows/:id/trailers` for trailers). The row is
+still a dead end on its own, though. Making it scrollable (`overflow-x: auto`,
+plus prev/next buttons and keyboard support) would fix every row at once.
 
 ## Finish what the payload already pays for
 
