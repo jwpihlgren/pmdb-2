@@ -42,6 +42,11 @@
         </div>
     </ng-container>
     <ng-container ngProjectAs="main-content">
+        <app-overflow-row [options]="trailerOptions()">
+            @for(trailer of m.trailers; track trailer.id){
+            <app-external-video-player [params]="createTrailerParams(trailer)"></app-external-video-player>
+            }
+        </app-overflow-row>
         <app-overflow-row [options]="castOptions()">
             @for(top of topBilled(m); track $index){
             <app-card class="article--item" [params]="createTopCardParams(top)">

@@ -21,6 +21,9 @@
     position: relative;
     display: flex;
     gap: var(--spacing-medium);
+    /* Nothing past the edge is reachable: the row does not scroll and has no
+       controls. Rows that pass a showMoreLink have "Show all" as a way out,
+       but trailers have no page to link to yet. See NEXT-STEPS.md. */
     overflow: hidden;
     min-width: 0;
 }

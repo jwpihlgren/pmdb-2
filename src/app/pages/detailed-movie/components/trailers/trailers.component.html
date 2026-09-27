@@ -1,0 +1,12 @@
+<a [routerLink]="['../']" (click)="goBack($event)">Back</a>
+<h1>Trailers</h1>
+
+<section>
+    <app-simple-grid maxWidth="320px">
+        @for(trailer of trailers(); track trailer.id) {
+        <li class="list__item">
+            <app-external-video-player [params]="createTrailerParams(trailer)"></app-external-video-player>
+        </li>
+        }
+    </app-simple-grid>
+</section>

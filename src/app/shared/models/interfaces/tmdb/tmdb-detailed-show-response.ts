@@ -1,6 +1,7 @@
 import TmdbImage from "./tmdb-image"
 import TmdbKeywordsResponse from "./tmdb-keywords-response"
 import TmdbResponseWrapper from "./tmdb-response-wrapper"
+import TmdbVideosResponse from "./tmdb-videos-response"
 
 export interface TmdbDetailedShowResponse {
     adult: boolean
@@ -83,6 +84,7 @@ export interface TmdbDetailedShowResponse {
         name: string
     }[]
     recommendations: TmdbDetailedShowRecommendationsResponse
+    videos: TmdbVideosResponse
     seasons: {
         air_date: string
         episode_count: number

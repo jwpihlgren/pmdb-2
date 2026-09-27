@@ -7,6 +7,8 @@ import TmdbKeywordsResponse from "../interfaces/tmdb/tmdb-keywords-response";
 import Gender from "../types/gender";
 import TmdbGenderFactory from "./tmdbGenderFactory.class";
 import { TmdbKeywordsFactory } from "./tmdbKeywordsFactory.class";
+import { TmdbTrailerFactory } from "./tmdbTrailerFactory.class";
+import Trailer from "../interfaces/trailer";
 
 export class TmdbDetailedShow implements DetailedShow {
     adult: boolean
@@ -93,6 +95,7 @@ export class TmdbDetailedShow implements DetailedShow {
     }[]
     status: string
     tagline: string
+    trailers: Trailer[]
     type: string
     voteAverage: number
     voteCount: number
@@ -132,11 +135,16 @@ export class TmdbDetailedShow implements DetailedShow {
         this.spokenLanguages = this.mapSpokenLanguages(data.spoken_languages)
         this.status = data.status
         this.tagline = data.tagline
+        this.trailers = this.mapTrailers(data.videos)
         this.type = data.type
         this.voteAverage = data.vote_average
         this.voteCount = data.vote_count
         this.images = this.mapImages(data.images)
 
+    }
+
+    mapTrailers(data: TmdbDetailedShowResponse["videos"]): Trailer[] {
+        return TmdbTrailerFactory.create(data)
     }
 
     mapKeywords(data: TmdbKeywordsResponse): Keyword[] {

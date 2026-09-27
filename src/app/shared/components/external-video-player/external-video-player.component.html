@@ -1,0 +1,24 @@
+@let p = params();
+@if(embedUrl()) {
+<button type="button" class="facade" (click)="open()" [attr.aria-label]="'Play ' + p.name">
+    @if(thumbnailUrl(); as thumbnail) {
+    <img class="facade__image" [src]="thumbnail" alt="" loading="lazy" width="320" height="180">
+    }
+    <span class="facade__play" aria-hidden="true"></span>
+    <span class="facade__about">
+        <span class="facade__title">{{p.name}}</span>
+        <span class="facade__type">{{p.type}}</span>
+    </span>
+</button>
+
+<dialog #dialog class="player" (close)="onClose()" (click)="onDialogClick($event)">
+    <div class="player__frame">
+        <button type="button" class="player__close" (click)="close()">Close</button>
+        @if(playing()) {
+        <iframe class="player__video" [src]="embedUrl()" [title]="p.name" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        }
+    </div>
+</dialog>
+}
