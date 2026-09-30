@@ -58,6 +58,11 @@ export class ConfigService {
                 .pipe(
                     map(data => {
                         return data.split("\n").filter(line => line.trim()).map(line => JSON.parse(line) as Keyword)
+                    }),
+                    catchError(error => {
+                        console.log("Could not load keywords")
+                        console.log(error)
+                        return of([] as Keyword[])
                     })
                 )
         }).pipe(
@@ -65,7 +70,7 @@ export class ConfigService {
                 this.storage.setSessionItem<TmdbConfig>(this.configStorageKey, data.config)
                 this.storage.setSessionItem<Genre[]>(this.movieGenresStorageKey, data.movieGenres.genres)
                 this.storage.setSessionItem<Genre[]>(this.tvGenresStorageKey, data.showGenres.genres)
-                this.storage.setSessionItem<any>(this.dailyKeywordKey, data.dailyKeywordIds)
+                if (data.dailyKeywordIds.length) this.storage.setSessionItem<Keyword[]>(this.dailyKeywordKey, data.dailyKeywordIds)
                 this.storage.setLocalItem<IsoCountryMap>(this.isoCountriesKey, data.isoCountries)
                 this.config = data.config
                 this.movieGenres = data.movieGenres.genres
